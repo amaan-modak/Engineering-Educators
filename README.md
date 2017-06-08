@@ -3,5 +3,5 @@ CSE 542 - Software Engineering Concepts Project. Creating a software which is a 
 
 To run the executable jar file:
 
-java -jar SEC.jar /*path to Questions folder*/
+java -jar SEC.jar 
 
