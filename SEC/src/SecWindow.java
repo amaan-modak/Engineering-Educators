@@ -15,8 +15,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Random;
-
+import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -27,6 +28,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
@@ -45,16 +47,21 @@ public class SecWindow {
 	/**
 	 * Launch the application.
 	 */
-	static String path="";
-	static String folderPath="";
-	static  JPanel panel;
+	static String path = "";
+	static String folderPath = "";
+	static JPanel panel;
+	static EngineeringEducator eduObject = new EngineeringEducator();
+	static EngineeringEducatorLogic eduLogicObj = new EngineeringEducatorLogic();
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					//path=args[0];
-					folderPath="Questions/";
+					// path=args[0];
+					folderPath = "Questions/";
 					System.out.println("path" + folderPath);
+					eduObject.setParentDir(new File(folderPath));
+					eduLogicObj.FolderRandomSelection(eduObject, folderPath);
 					SecWindow window = new SecWindow();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
@@ -66,8 +73,9 @@ public class SecWindow {
 
 	/**
 	 * Create the application.
-	 * @param path 
-	 * @throws IOException 
+	 * 
+	 * @param path
+	 * @throws IOException
 	 */
 	public SecWindow() throws IOException {
 		initialize();
@@ -75,67 +83,19 @@ public class SecWindow {
 
 	/**
 	 * Initialize the contents of the frame.
-	 * @throws IOException 
+	 * 
+	 * @throws IOException
 	 */
 	private void initialize() throws IOException {
-		
-		//String path = "C:\\Users\\manish k\\workspace\\SecProject\\Questions\\";
-		File dir = new File(folderPath);
-		String[] quesfolders = new String[20];
-		quesfolders = dir.list();
-		Random rand = new Random();
-		String folder = quesfolders[rand.nextInt(quesfolders.length)];
-		//System.out.println("folder selected " + folder);
-		path = folderPath+folder;
-		System.out.println("new path=" + path);
-		File dir1 = new File(path);
-		File[] files = dir1.listFiles();
-		BufferedImage fbdimg = null;
-		BufferedImage modelimg = null;
-		String assumptionspath = null;
-		String reasonspath = null;
-		for(int i = 0 ; i < files.length ; i++)
-		{
-			BufferedImage img = null;
-			//BufferedImage fbdimg = null;
-			//BufferedImage modelimg = null;
-			System.out.println(files[i].getName());
-			if(files[i].getName().equals("fbd.jpg")){
-				try {
-					img = ImageIO.read(new File(files[i].getPath()));
-					//finimg = resizeImg(img,200,200);
-					fbdimg = resizeImg(img,200,200);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				//lblNewLabel.setIcon(new ImageIcon(finimg));
-			}
-			else if(files[i].getName().equals("model.jpg")){
-				try {
-					img = ImageIO.read(new File(files[i].getPath()));
-					modelimg = resizeImg(img,200,200);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			else if(files[i].getName().equals("assumptions.txt")){
-					assumptionspath = files[i].getPath();
-					System.out.println(assumptionspath + " assumptions");
-			}
-			else if(files[i].getName().equals("reasons.txt")){
-				reasonspath = files[i].getPath();
-				System.out.println(reasonspath + " reasons");
-			}
-			
-		}
-		if(frame==null)
+		System.out.println("new path=" + eduObject.questionDir);
+		File dir1 = new File(eduObject.questionDir);
+		eduLogicObj.DataPreProcessing(eduObject);
+		if (frame == null)
 			frame = new JFrame();
-		else{
-			
+		else {
+
 			frame.dispose();
-			frame=new JFrame();
+			frame = new JFrame();
 		}
 		frame.setBounds(100, 100, 450, 300);
 		frame.setForeground(Color.BLACK);
@@ -143,253 +103,165 @@ public class SecWindow {
 		frame.getContentPane().setBackground(new Color(51, 153, 204));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		// create a jtextarea
-		if(panel==null)
+		if (panel == null)
 			panel = new JPanel();
 		else
 			panel.removeAll();
-        panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
-        
-      //Final Score Displayed Here
-      	lblNewLabel = new JLabel(" ");
-      	lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
-      	lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-      	lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-      	panel.add(lblNewLabel);
-      	JInternalFrame internalFrame = new JInternalFrame("ENGINEERING EDUCATORS");
-      	internalFrame.setNormalBounds(new Rectangle(10, 10, 200, 200));
-		//panel.add(internalFrame, "2, 4, 9, 1, fill, fill");
-      	panel.add(internalFrame);
-		//Set layout as Form Layout
-		internalFrame.getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,},
-			new RowSpec[] {
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,}));
-		
-		//Model
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+		// Final Score Displayed Here
+		lblNewLabel = new JLabel(" ");
+		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		panel.add(lblNewLabel);
+		JInternalFrame internalFrame = new JInternalFrame("ENGINEERING EDUCATORS");
+		internalFrame.setNormalBounds(new Rectangle(10, 10, 200, 200));
+		// panel.add(internalFrame, "2, 4, 9, 1, fill, fill");
+		panel.add(internalFrame);
+		// Set layout as Form Layout
+		internalFrame.getContentPane()
+				.setLayout(new FormLayout(new ColumnSpec[] { FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC,
+						FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, FormSpecs.RELATED_GAP_COLSPEC,
+						FormSpecs.DEFAULT_COLSPEC, FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC,
+						FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, FormSpecs.RELATED_GAP_COLSPEC,
+						FormSpecs.DEFAULT_COLSPEC, FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC,
+						FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC,
+						FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, FormSpecs.RELATED_GAP_COLSPEC,
+						FormSpecs.DEFAULT_COLSPEC, FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, },
+						new RowSpec[] { FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+								FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+								FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+								FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+								FormSpecs.DEFAULT_ROWSPEC, }));
+
+		// Model
 		JLabel lblNewLabel_1 = new JLabel("Real world Scenario");
 		lblNewLabel_1.setAlignmentY(50);
-		lblNewLabel_1.setIcon(new ImageIcon(modelimg));
-		internalFrame.getContentPane().add(lblNewLabel_1, "22, 2, fill, default"); 
-		
-		//FBD
-		JLabel lblNewLabel_2 = new JLabel("Free Body Diagram");
-		lblNewLabel_2.setIcon(new ImageIcon(fbdimg));
-		internalFrame.getContentPane().add(lblNewLabel_2, "22, 6, fill, default");
-		
-		//Checkboxes inside Internal Frame 1 (Assumptions)
-		
-		
-		FileInputStream fstream = new FileInputStream(assumptionspath);
-		BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+		lblNewLabel_1.setIcon(new ImageIcon(eduObject.modelImg));
+		internalFrame.getContentPane().add(lblNewLabel_1, "22, 2, fill, default");
 
-		String strLine;
-		String[] a = new String[3];
-		int i = 0;
+		// FBD
+		JLabel lblNewLabel_2 = new JLabel("Free Body Diagram");
+		lblNewLabel_2.setIcon(new ImageIcon(eduObject.fbdImg));
+		internalFrame.getContentPane().add(lblNewLabel_2, "22, 6, fill, default");
+
+		// Checkboxes inside Internal Frame 1 (Assumptions)
+
+		ArrayList<String> tempAssumptions = eduLogicObj.FileReading(eduObject.assumptionsPath);
+		ArrayList<String> assumptions = new ArrayList<String>();
+		ArrayList<Integer> assumptionAns = new ArrayList<Integer>();
+		ArrayList<JCheckBox> assumptionList = new ArrayList<JCheckBox>();
 		
-		//Read File Line By Line
-		while ((strLine = br.readLine()) != null){
-			a[i] = strLine;
-			System.out.println (strLine);
-			i++;
+		
+		// Checkboxes inside Internal Frame 2
+		for (int j = 0; j < tempAssumptions.size(); j++) {
+			String[] splitter = tempAssumptions.get(j).split("\\|");
+			assumptions.add(splitter[0]);
+			assumptionAns.add(Integer.parseInt(splitter[1]));
+			JCheckBox chkAssumption = new JCheckBox(assumptions.get(j));
+			assumptionList.add(chkAssumption);
+			internalFrame.getContentPane().add(chkAssumption, "22," + new Integer((j * 2) + 10).toString());
 		}
-		br.close();
-		
-		
-		JCheckBox chckbxNewCheckBox_4 = new JCheckBox(a[0]);
-		internalFrame.getContentPane().add(chckbxNewCheckBox_4, "22, 10, fill, default");
-		
-		JCheckBox chckbxNewCheckBox_5 = new JCheckBox(a[1]);
-		internalFrame.getContentPane().add(chckbxNewCheckBox_5, "22, 12, fill, default");
-		
-		JCheckBox chckbxNewCheckBox_6 = new JCheckBox(a[2]);
-		internalFrame.getContentPane().add(chckbxNewCheckBox_6, "22, 14, fill, default");
-		//JButton btnSubmit = new JButton("Submit");
-		JButton retakebtn=new JButton("Retake Test");
+
+		JButton retakebtn = new JButton("Retake Test");
 		retakebtn.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
-					
+
 					initialize();
-					
+
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
+
 			}
 		});
 		retakebtn.setVisible(false);
-		
+
 		internalFrame.pack();
 		internalFrame.setResizable(true);
 		internalFrame.setVisible(true);
-		//Internal Frame 1 ends
-		
-		
-		//Internal Frame 2 starts (Reasons)
+		// Internal Frame 1 ends
+
+		// Internal Frame 2 starts (Reasons)
 		JInternalFrame internalFrame_1 = new JInternalFrame("SELECT VALID REASONS");
 		panel.add(internalFrame_1);
-		internalFrame_1.getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),},
-				new RowSpec[] {
-					FormSpecs.RELATED_GAP_ROWSPEC,
-					FormSpecs.DEFAULT_ROWSPEC,
-					FormSpecs.RELATED_GAP_ROWSPEC,
-					FormSpecs.DEFAULT_ROWSPEC,
-					FormSpecs.RELATED_GAP_ROWSPEC,
-					FormSpecs.DEFAULT_ROWSPEC,
-					FormSpecs.RELATED_GAP_ROWSPEC,
-					FormSpecs.DEFAULT_ROWSPEC,
-					FormSpecs.RELATED_GAP_ROWSPEC,
-					FormSpecs.DEFAULT_ROWSPEC,
-					FormSpecs.RELATED_GAP_ROWSPEC,
-					FormSpecs.DEFAULT_ROWSPEC,}));
+		internalFrame_1.getContentPane().setLayout(new FormLayout(
+				new ColumnSpec[] { FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("default:grow"), },
+				new RowSpec[] { FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, }));
 
-		
-		FileInputStream fstream2 = new FileInputStream(reasonspath);
-		BufferedReader br2 = new BufferedReader(new InputStreamReader(fstream2));
-
-		String strLine2;
-		String[] r = new String[4];
-		 i = 0;
-		
-		//Read File Line By Line
-		while ((strLine2 = br2.readLine()) != null){
-			r[i] = strLine2;
-			System.out.println (strLine2);
-			i++;
+		ArrayList<String> tempReasons = eduLogicObj.FileReading(eduObject.reasonsPath);
+		ArrayList<JRadioButton> reasonList = new ArrayList<JRadioButton>();
+		ArrayList<String> reasons = new ArrayList<String>();
+		ArrayList<Integer> reasonAns = new ArrayList<Integer>();
+		// Radio buttons inside Internal Frame 2
+		for (int j = 0; j < tempReasons.size(); j++) {
+			String[] splitter = tempReasons.get(j).split("\\|");
+			reasons.add(splitter[0]);
+			reasonAns.add(Integer.parseInt(splitter[1]));
+			JRadioButton rdbReason = new JRadioButton(reasons.get(j));
+			reasonList.add(rdbReason);
+			internalFrame_1.getContentPane().add(rdbReason, "2," + new Integer((j + 1) * 2).toString());
 		}
-		br2.close();
-
-		
-		//Checkboxes inside Internal Frame 2
-		JCheckBox chckbxNewCheckBox = new JCheckBox(r[0]);
-		internalFrame_1.getContentPane().add(chckbxNewCheckBox, "2, 2, fill, default");
-			
-				
-		JCheckBox chckbxNewCheckBox_1 = new JCheckBox(r[1]);
-		internalFrame_1.getContentPane().add(chckbxNewCheckBox_1, "2, 4");
-				
-		JCheckBox chckbxNewCheckBox_2 = new JCheckBox(r[2]);
-		internalFrame_1.getContentPane().add(chckbxNewCheckBox_2, "2, 6");
-				
-		JCheckBox chckbxNewCheckBox_3 = new JCheckBox(r[3]);
-		internalFrame_1.getContentPane().add(chckbxNewCheckBox_3, "2, 8");
-				
 		internalFrame_1.pack();
 		internalFrame_1.setResizable(true);
 		internalFrame_1.setVisible(false);
-		
-		//Submit button
+
+		// Submit button
 		JButton submitButton = new JButton("Submit");
-		//JButton retake=new JButton("Retake Test");
-		
-		
+		// JButton retake=new JButton("Retake Test");
+
 		submitButton.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent arg0) {
-				if(internalFrame_1.isVisible()){
-					if(chckbxNewCheckBox.isSelected() && !chckbxNewCheckBox_1.isSelected() && !chckbxNewCheckBox_2.isSelected() && !chckbxNewCheckBox_3.isSelected()){
-					JOptionPane.showMessageDialog(null, " RESUBMITTED!!! \n Score = 2");
-					lblNewLabel.setText("Score = 2");
-					}
-					else
-					{
-						JOptionPane.showMessageDialog(null, "Resubmitted!! Score : 0" );
+			public void actionPerformed(ActionEvent arg0) {
+				if (internalFrame_1.isVisible()) {
+					if (reasonList.get(0).isSelected()) {
+						JOptionPane.showMessageDialog(null, " RESUBMITTED!!! \n Score = 2");
+						lblNewLabel.setText("Score = 2");
+					} else {
+						JOptionPane.showMessageDialog(null, "Resubmitted!! Score : 0");
 						lblNewLabel.setText("Score = 0");
-						
+
 					}
-					chckbxNewCheckBox.setEnabled(false);
-					chckbxNewCheckBox_1.setEnabled(false);
-					chckbxNewCheckBox_2.setEnabled(false);
-					chckbxNewCheckBox_3.setEnabled(false);
+					eduLogicObj.DisableRadioButton(reasonList);
 					submitButton.setVisible(false);
 					retakebtn.setVisible(true);
-					
-					
-					
-				}
-				else{
-					//If first assumption is the only correct one
-					if(chckbxNewCheckBox_4.isSelected() && !chckbxNewCheckBox_5.isSelected()
-							&&!chckbxNewCheckBox_6.isSelected()){
+
+				} else {
+					boolean ans = true;
+					// If first assumption is the only correct one
+					for(int j = 0 ; j < assumptionList.size() ; j++){
+						ans = ans & eduLogicObj.CheckAnswer(assumptionList.get(j), assumptionAns.get(j));
+					}
+					if (ans) {
 						JOptionPane.showMessageDialog(null, " SUBMITTED!!! \n Score = 3");
 						lblNewLabel.setText("Score = 3");
-						chckbxNewCheckBox_4.setEnabled(false);
-						chckbxNewCheckBox_5.setEnabled(false);
-						chckbxNewCheckBox_6.setEnabled(false);
 						submitButton.setVisible(false);
 						retakebtn.setVisible(true);
-					}
-					else{
+					} else {
 						JOptionPane.showMessageDialog(null, " INCORRECT ANSWER!!! Choose reason");
-					chckbxNewCheckBox_4.setEnabled(false);
-					chckbxNewCheckBox_5.setEnabled(false);
-					chckbxNewCheckBox_6.setEnabled(false);
-					internalFrame_1.setVisible(true);
+						internalFrame_1.setVisible(true);
 					}
+					eduLogicObj.DisableCheckBox(assumptionList);
+					
 				}
 			}
 		});
 		panel.add(submitButton);
 		panel.add(retakebtn);
 		JScrollPane scrollPane = new JScrollPane(panel);
-        frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
-        frame.setVisible(true);
-	
-	}
-	public static BufferedImage resizeImg(BufferedImage img, int width, int height){
-		System.out.println("Inside resizing");
-		BufferedImage bimg = new BufferedImage(width, height, BufferedImage.TRANSLUCENT);
-		Graphics2D g2d = (Graphics2D) bimg.createGraphics();
-		g2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
-		g2d.drawImage(img, 0, 0, width,height,null);
-		g2d.dispose();
-		System.out.println("Exiting resizing");
-		return bimg;
-	}
+		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
+		frame.setVisible(true);
 
+	}
 }
