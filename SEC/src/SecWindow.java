@@ -1,10 +1,12 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,6 +30,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -36,11 +40,12 @@ import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
 import java.awt.Rectangle;
 import javax.swing.SwingConstants;
+import java.awt.FlowLayout;
 
 public class SecWindow {
 
-	private static JFrame frame;
-	private JLabel lblNewLabel;
+	private JFrame frame;
+	
 
 	/**
 	 * Launch the application.
@@ -104,7 +109,7 @@ public class SecWindow {
 				try {
 					img = ImageIO.read(new File(files[i].getPath()));
 					//finimg = resizeImg(img,200,200);
-					fbdimg = resizeImg(img,200,200);
+					fbdimg = resizeImg(img,300,300);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -114,7 +119,7 @@ public class SecWindow {
 			else if(files[i].getName().equals("model.jpg")){
 				try {
 					img = ImageIO.read(new File(files[i].getPath()));
-					modelimg = resizeImg(img,200,200);
+					modelimg = resizeImg(img,300,300);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -147,78 +152,52 @@ public class SecWindow {
 			panel = new JPanel();
 		else
 			panel.removeAll();
+		//panel.setLayout(new BorderLayout());
         panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
         
       //Final Score Displayed Here
-      	lblNewLabel = new JLabel(" ");
+        JLabel lblNewLabel,lblNewLabel2;
+        lblNewLabel2=new JLabel("SCORE=0");
+      	lblNewLabel = new JLabel("ENGINEERING EDUCATORS ");
       	lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
       	lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
       	lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
       	panel.add(lblNewLabel);
-      	JInternalFrame internalFrame = new JInternalFrame("ENGINEERING EDUCATORS");
-      	internalFrame.setNormalBounds(new Rectangle(10, 10, 200, 200));
-		//panel.add(internalFrame, "2, 4, 9, 1, fill, fill");
-      	panel.add(internalFrame);
-		//Set layout as Form Layout
-		internalFrame.getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,},
-			new RowSpec[] {
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,}));
+      	panel.add(lblNewLabel2);
+      	JSeparator sep = new JSeparator();
+	    sep.setMaximumSize(new Dimension(0, 30));
+	    sep.setOpaque(false);
+	    panel.add(sep);
+      	
+	    //splitpane
+	    JPanel panel1= new JPanel();
+	    FlowLayout flowLayout_1 = (FlowLayout) panel1.getLayout();
+	    flowLayout_1.setHgap(150);
+	    flowLayout_1.setVgap(50);
+	    flowLayout_1.setAlignment(FlowLayout.LEFT);
+	    JPanel panel2=new JPanel();
+	    FlowLayout flowLayout = (FlowLayout) panel2.getLayout();
+	    flowLayout.setHgap(150);
+	    flowLayout.setVgap(50);
+	    flowLayout.setAlignment(FlowLayout.LEFT);
+		JLabel lblNewLabel_1 = new JLabel("");
+		lblNewLabel_1.setVerticalAlignment(SwingConstants.TOP);
 		
-		//Model
-		JLabel lblNewLabel_1 = new JLabel("Real world Scenario");
-		lblNewLabel_1.setAlignmentY(50);
 		lblNewLabel_1.setIcon(new ImageIcon(modelimg));
-		internalFrame.getContentPane().add(lblNewLabel_1, "22, 2, fill, default"); 
+		panel1.add(lblNewLabel_1, "22, 2, fill, default"); 
 		
-		//FBD
-		JLabel lblNewLabel_2 = new JLabel("Free Body Diagram");
+		JLabel lblNewLabel_2 = new JLabel("");
+		lblNewLabel_2.setVerticalAlignment(SwingConstants.TOP);
+		
 		lblNewLabel_2.setIcon(new ImageIcon(fbdimg));
-		internalFrame.getContentPane().add(lblNewLabel_2, "22, 6, fill, default");
+		
+		panel2.add(lblNewLabel_2, "22, 6, fill, default");
+		JSplitPane splitpane= new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,false,panel1,panel2);
+		splitpane.setAlignmentY(0.5f);
+		
+		panel.add(splitpane);
 		
 		//Checkboxes inside Internal Frame 1 (Assumptions)
-		
-		
 		FileInputStream fstream = new FileInputStream(assumptionspath);
 		BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 
@@ -233,16 +212,19 @@ public class SecWindow {
 			i++;
 		}
 		br.close();
-		
-		
+		//JSeparator sep2 = new JSeparator();
+	    //sep2.setMaximumSize(new Dimension(0, 30));
+	    //sep2.setOpaque(false);
+	    //panel.add(sep2);
 		JCheckBox chckbxNewCheckBox_4 = new JCheckBox(a[0]);
-		internalFrame.getContentPane().add(chckbxNewCheckBox_4, "22, 10, fill, default");
-		
+		//internalFrame.getContentPane().add(chckbxNewCheckBox_4, "22, 10, fill, default");
+		panel.add(chckbxNewCheckBox_4, "22, 17, fill, default");
 		JCheckBox chckbxNewCheckBox_5 = new JCheckBox(a[1]);
-		internalFrame.getContentPane().add(chckbxNewCheckBox_5, "22, 12, fill, default");
-		
+		//internalFrame.getContentPane().add(chckbxNewCheckBox_5, "22, 12, fill, default");
+		panel.add(chckbxNewCheckBox_5, "22, 12, fill, default");
 		JCheckBox chckbxNewCheckBox_6 = new JCheckBox(a[2]);
-		internalFrame.getContentPane().add(chckbxNewCheckBox_6, "22, 14, fill, default");
+	//	internalFrame.getContentPane().add(chckbxNewCheckBox_6, "22, 14, fill, default");
+		panel.add(chckbxNewCheckBox_6, "22, 14, fill, default");
 		//JButton btnSubmit = new JButton("Submit");
 		JButton retakebtn=new JButton("Retake Test");
 		retakebtn.addActionListener(new ActionListener() {
@@ -263,32 +245,6 @@ public class SecWindow {
 		});
 		retakebtn.setVisible(false);
 		
-		internalFrame.pack();
-		internalFrame.setResizable(true);
-		internalFrame.setVisible(true);
-		//Internal Frame 1 ends
-		
-		
-		//Internal Frame 2 starts (Reasons)
-		JInternalFrame internalFrame_1 = new JInternalFrame("SELECT VALID REASONS");
-		panel.add(internalFrame_1);
-		internalFrame_1.getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),},
-				new RowSpec[] {
-					FormSpecs.RELATED_GAP_ROWSPEC,
-					FormSpecs.DEFAULT_ROWSPEC,
-					FormSpecs.RELATED_GAP_ROWSPEC,
-					FormSpecs.DEFAULT_ROWSPEC,
-					FormSpecs.RELATED_GAP_ROWSPEC,
-					FormSpecs.DEFAULT_ROWSPEC,
-					FormSpecs.RELATED_GAP_ROWSPEC,
-					FormSpecs.DEFAULT_ROWSPEC,
-					FormSpecs.RELATED_GAP_ROWSPEC,
-					FormSpecs.DEFAULT_ROWSPEC,
-					FormSpecs.RELATED_GAP_ROWSPEC,
-					FormSpecs.DEFAULT_ROWSPEC,}));
-
 		
 		FileInputStream fstream2 = new FileInputStream(reasonspath);
 		BufferedReader br2 = new BufferedReader(new InputStreamReader(fstream2));
@@ -308,21 +264,24 @@ public class SecWindow {
 		
 		//Checkboxes inside Internal Frame 2
 		JCheckBox chckbxNewCheckBox = new JCheckBox(r[0]);
-		internalFrame_1.getContentPane().add(chckbxNewCheckBox, "2, 2, fill, default");
+		//internalFrame_1.getContentPane().add(chckbxNewCheckBox, "2, 2, fill, default");
+		panel.add(chckbxNewCheckBox);
 			
 				
 		JCheckBox chckbxNewCheckBox_1 = new JCheckBox(r[1]);
-		internalFrame_1.getContentPane().add(chckbxNewCheckBox_1, "2, 4");
-				
+		//internalFrame_1.getContentPane().add(chckbxNewCheckBox_1, "2, 4");
+		panel.add(chckbxNewCheckBox_1);
+		
 		JCheckBox chckbxNewCheckBox_2 = new JCheckBox(r[2]);
-		internalFrame_1.getContentPane().add(chckbxNewCheckBox_2, "2, 6");
-				
+		//internalFrame_1.getContentPane().add(chckbxNewCheckBox_2, "2, 6");
+		panel.add(chckbxNewCheckBox_2);
+		
 		JCheckBox chckbxNewCheckBox_3 = new JCheckBox(r[3]);
-		internalFrame_1.getContentPane().add(chckbxNewCheckBox_3, "2, 8");
-				
-		internalFrame_1.pack();
-		internalFrame_1.setResizable(true);
-		internalFrame_1.setVisible(false);
+		//internalFrame_1.getContentPane().add(chckbxNewCheckBox_3, "2, 8");
+		panel.add(chckbxNewCheckBox_3);		
+		//internalFrame_1.pack();
+		//internalFrame_1.setResizable(true);
+		//internalFrame_1.setVisible(false);
 		
 		//Submit button
 		JButton submitButton = new JButton("Submit");
@@ -331,17 +290,18 @@ public class SecWindow {
 		
 		submitButton.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
-				if(internalFrame_1.isVisible()){
+				//if(internalFrame_1.isVisible()){
 					if(chckbxNewCheckBox.isSelected() && !chckbxNewCheckBox_1.isSelected() && !chckbxNewCheckBox_2.isSelected() && !chckbxNewCheckBox_3.isSelected()){
-					JOptionPane.showMessageDialog(null, " RESUBMITTED!!! \n Score = 2");
-					lblNewLabel.setText("Score = 2");
-					}
-					else
-					{
-						JOptionPane.showMessageDialog(null, "Resubmitted!! Score : 0" );
-						lblNewLabel.setText("Score = 0");
+					//JOptionPane.showMessageDialog(null, " RESUBMITTED!!! \n Score = 2");
+					
+					lblNewLabel2.setText("Current Score = 2");
+					//}
+					//else
+					//{
+						//JOptionPane.showMessageDialog(null, "Resubmitted!! Score : 0" );
+						lblNewLabel2.setText("Current Score = 0");
 						
-					}
+					//}
 					chckbxNewCheckBox.setEnabled(false);
 					chckbxNewCheckBox_1.setEnabled(false);
 					chckbxNewCheckBox_2.setEnabled(false);
@@ -356,8 +316,8 @@ public class SecWindow {
 					//If first assumption is the only correct one
 					if(chckbxNewCheckBox_4.isSelected() && !chckbxNewCheckBox_5.isSelected()
 							&&!chckbxNewCheckBox_6.isSelected()){
-						JOptionPane.showMessageDialog(null, " SUBMITTED!!! \n Score = 3");
-						lblNewLabel.setText("Score = 3");
+						//JOptionPane.showMessageDialog(null, " SUBMITTED!!! \n Score = 3");
+						lblNewLabel2.setText("Score = 3");
 						chckbxNewCheckBox_4.setEnabled(false);
 						chckbxNewCheckBox_5.setEnabled(false);
 						chckbxNewCheckBox_6.setEnabled(false);
@@ -365,11 +325,11 @@ public class SecWindow {
 						retakebtn.setVisible(true);
 					}
 					else{
-						JOptionPane.showMessageDialog(null, " INCORRECT ANSWER!!! Choose reason");
+						//JOptionPane.showMessageDialog(null, " INCORRECT ANSWER!!! Choose reason");
 					chckbxNewCheckBox_4.setEnabled(false);
 					chckbxNewCheckBox_5.setEnabled(false);
 					chckbxNewCheckBox_6.setEnabled(false);
-					internalFrame_1.setVisible(true);
+					//internalFrame_1.setVisible(true);
 					}
 				}
 			}
