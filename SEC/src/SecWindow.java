@@ -50,6 +50,9 @@ public class SecWindow {
 	static String path="";
 	static String folderPath="";
 	static  JPanel panel;
+	static EngineeringEducator eduObject = new EngineeringEducator();
+	static EngineeringEducatorLogic eduLogicObj = new EngineeringEducatorLogic();
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -82,15 +85,10 @@ public class SecWindow {
 	private void initialize() throws IOException {
 		
 		//String path = "C:\\Users\\manish k\\workspace\\SecProject\\Questions\\";
-		File dir = new File(folderPath);
-		String[] quesfolders = new String[20];
-		quesfolders = dir.list();
-		Random rand = new Random();
-		String folder = quesfolders[rand.nextInt(quesfolders.length)];
-		//System.out.println("folder selected " + folder);
-		path = folderPath+folder;
-		System.out.println("new path=" + path);
-		File dir1 = new File(path);
+		eduObject.setParentDir(new File(folderPath));
+		eduLogicObj.FolderRandomSelection(eduObject, folderPath);
+		System.out.println("new path=" + eduObject.questionDir);
+		File dir1 = new File(eduObject.questionDir);
 		File[] files = dir1.listFiles();
 		BufferedImage fbdimg = null;
 		BufferedImage modelimg = null;
@@ -282,7 +280,7 @@ public class SecWindow {
 		//internalFrame_1.setVisible(false);
 		
 		//Submit button
-		JButton submitButton = new JButton("SubmitZaki");
+		JButton submitButton = new JButton("Submit");
 		//JButton retake=new JButton("Retake Test");
 		
 		
