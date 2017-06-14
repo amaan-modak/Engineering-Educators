@@ -282,7 +282,7 @@ public class SecWindow {
 		//internalFrame_1.setVisible(false);
 		
 		//Submit button
-		JButton submitButton = new JButton("SubmitZaki");
+		JButton submitButton = new JButton("Submit");
 		//JButton retake=new JButton("Retake Test");
 		
 		
