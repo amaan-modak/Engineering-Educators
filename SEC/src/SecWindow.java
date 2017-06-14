@@ -17,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -29,6 +30,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
@@ -89,48 +91,9 @@ public class SecWindow {
 		eduLogicObj.FolderRandomSelection(eduObject, folderPath);
 		System.out.println("new path=" + eduObject.questionDir);
 		File dir1 = new File(eduObject.questionDir);
-		File[] files = dir1.listFiles();
-		BufferedImage fbdimg = null;
-		BufferedImage modelimg = null;
-		String assumptionspath = null;
-		String reasonspath = null;
+		eduLogicObj.DataPreProcessing(eduObject);
 		is_submitted = false;
-		for(int i = 0 ; i < files.length ; i++)
-		{
-			BufferedImage img = null;
-			//BufferedImage fbdimg = null;
-			//BufferedImage modelimg = null;
-			System.out.println(files[i].getName());
-			if(files[i].getName().equals("fbd.jpg")){
-				try {
-					img = ImageIO.read(new File(files[i].getPath()));
-					//finimg = resizeImg(img,200,200);
-					fbdimg = resizeImg(img,300,300);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				//lblNewLabel.setIcon(new ImageIcon(finimg));
-			}
-			else if(files[i].getName().equals("model.jpg")){
-				try {
-					img = ImageIO.read(new File(files[i].getPath()));
-					modelimg = resizeImg(img,300,300);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			else if(files[i].getName().equals("assumptions.txt")){
-					assumptionspath = files[i].getPath();
-					System.out.println(assumptionspath + " assumptions");
-			}
-			else if(files[i].getName().equals("reasons.txt")){
-				reasonspath = files[i].getPath();
-				System.out.println(reasonspath + " reasons");
-			}
-			
-		}
+	
 		if(frame==null)
 			frame = new JFrame();
 		else{
@@ -179,13 +142,13 @@ public class SecWindow {
 		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setVerticalAlignment(SwingConstants.TOP);
 		
-		lblNewLabel_1.setIcon(new ImageIcon(modelimg));
+		lblNewLabel_1.setIcon(new ImageIcon(eduObject.getModelImg()));
 		panel1.add(lblNewLabel_1, "22, 2, fill, default"); 
 		
 		JLabel lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setVerticalAlignment(SwingConstants.TOP);
 		
-		lblNewLabel_2.setIcon(new ImageIcon(fbdimg));
+		lblNewLabel_2.setIcon(new ImageIcon(eduObject.getFbdImg()));
 		
 		panel2.add(lblNewLabel_2, "22, 6, fill, default");
 		JSplitPane splitpane= new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,false,panel1,panel2);
@@ -194,34 +157,21 @@ public class SecWindow {
 		panel.add(splitpane);
 		
 		//Checkboxes inside Internal Frame 1 (Assumptions)
-		FileInputStream fstream = new FileInputStream(assumptionspath);
-		BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
-
-		String strLine;
-		String[] a = new String[3];
-		int i = 0;
+		ArrayList<String> tempAssumptions = eduLogicObj.FileReading(eduObject.assumptionsPath);
+		ArrayList<String> assumptions = new ArrayList<String>();
+		ArrayList<Integer> assumptionAns = new ArrayList<Integer>();
+		ArrayList<JCheckBox> assumptionChkbxList = new ArrayList<JCheckBox>();
 		
-		//Read File Line By Line
-		while ((strLine = br.readLine()) != null){
-			a[i] = strLine;
-			System.out.println (strLine);
-			i++;
+		for (int j = 0; j < tempAssumptions.size(); j++) {
+			String[] splitter = tempAssumptions.get(j).split("\\|");
+			assumptions.add(splitter[0]);
+			assumptionAns.add(Integer.parseInt(splitter[1]));
+			JCheckBox chkbxAssumption = new JCheckBox(assumptions.get(j));
+			assumptionChkbxList.add(chkbxAssumption);
+			panel.add(chkbxAssumption, "22," + new Integer((j * 2) + 10).toString()+", fill, default");
 		}
-		br.close();
-		//JSeparator sep2 = new JSeparator();
-	    //sep2.setMaximumSize(new Dimension(0, 30));
-	    //sep2.setOpaque(false);
-	    //panel.add(sep2);
-		JCheckBox chckbxNewCheckBox_4 = new JCheckBox(a[0]);
-		//internalFrame.getContentPane().add(chckbxNewCheckBox_4, "22, 10, fill, default");
-		panel.add(chckbxNewCheckBox_4, "22, 17, fill, default");
-		JCheckBox chckbxNewCheckBox_5 = new JCheckBox(a[1]);
-		//internalFrame.getContentPane().add(chckbxNewCheckBox_5, "22, 12, fill, default");
-		panel.add(chckbxNewCheckBox_5, "22, 12, fill, default");
-		JCheckBox chckbxNewCheckBox_6 = new JCheckBox(a[2]);
-	//	internalFrame.getContentPane().add(chckbxNewCheckBox_6, "22, 14, fill, default");
-		panel.add(chckbxNewCheckBox_6, "22, 14, fill, default");
-		//JButton btnSubmit = new JButton("Submit");
+		
+		
 		JButton retakebtn=new JButton("Retake Test");
 		retakebtn.addActionListener(new ActionListener() {
 			
@@ -242,42 +192,20 @@ public class SecWindow {
 		retakebtn.setVisible(false);
 		
 		
-		FileInputStream fstream2 = new FileInputStream(reasonspath);
-		BufferedReader br2 = new BufferedReader(new InputStreamReader(fstream2));
-
-		String strLine2;
-		String[] r = new String[4];
-		 i = 0;
+		ArrayList<String> tempReasons = eduLogicObj.FileReading(eduObject.reasonsPath);
+		ArrayList<JRadioButton> reasonList = new ArrayList<JRadioButton>();
+		ArrayList<String> reasons = new ArrayList<String>();
+		ArrayList<Integer> reasonAns = new ArrayList<Integer>();
+		// Radio buttons inside Internal Frame 2
+				for (int j = 0; j < tempReasons.size(); j++) {
+					String[] splitter = tempReasons.get(j).split("\\|");
+					reasons.add(splitter[0]);
+					reasonAns.add(Integer.parseInt(splitter[1]));
+					JRadioButton rdbReason = new JRadioButton(reasons.get(j));
+					reasonList.add(rdbReason);
+					panel.add(rdbReason, "2," + new Integer((j + 1) * 2).toString());
+				}
 		
-		//Read File Line By Line
-		while ((strLine2 = br2.readLine()) != null){
-			r[i] = strLine2;
-			System.out.println (strLine2);
-			i++;
-		}
-		br2.close();
-
-		
-		//Checkboxes inside Internal Frame 2
-		JCheckBox chckbxNewCheckBox = new JCheckBox(r[0]);
-		//internalFrame_1.getContentPane().add(chckbxNewCheckBox, "2, 2, fill, default");
-		panel.add(chckbxNewCheckBox);
-			
-				
-		JCheckBox chckbxNewCheckBox_1 = new JCheckBox(r[1]);
-		//internalFrame_1.getContentPane().add(chckbxNewCheckBox_1, "2, 4");
-		panel.add(chckbxNewCheckBox_1);
-		
-		JCheckBox chckbxNewCheckBox_2 = new JCheckBox(r[2]);
-		//internalFrame_1.getContentPane().add(chckbxNewCheckBox_2, "2, 6");
-		panel.add(chckbxNewCheckBox_2);
-		
-		JCheckBox chckbxNewCheckBox_3 = new JCheckBox(r[3]);
-		//internalFrame_1.getContentPane().add(chckbxNewCheckBox_3, "2, 8");
-		panel.add(chckbxNewCheckBox_3);		
-		//internalFrame_1.pack();
-		//internalFrame_1.setResizable(true);
-		//internalFrame_1.setVisible(false);
 		
 		//Submit button
 		JButton submitButton = new JButton("Submit");
@@ -287,7 +215,7 @@ public class SecWindow {
 		submitButton.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 				if(is_submitted){
-					if(chckbxNewCheckBox.isSelected() && !chckbxNewCheckBox_1.isSelected() && !chckbxNewCheckBox_2.isSelected() && !chckbxNewCheckBox_3.isSelected()){
+					if(reasonList.get(0).isSelected()){
 					//JOptionPane.showMessageDialog(null, " RESUBMITTED!!! \n Score = 2");
 					
 					lblNewLabel2.setText("Current Score = 2");
@@ -298,10 +226,7 @@ public class SecWindow {
 						lblNewLabel2.setText("Current Score = 0");
 						
 					}
-					chckbxNewCheckBox.setEnabled(false);
-					chckbxNewCheckBox_1.setEnabled(false);
-					chckbxNewCheckBox_2.setEnabled(false);
-					chckbxNewCheckBox_3.setEnabled(false);
+					eduLogicObj.DisableRadioButton(reasonList);
 					submitButton.setVisible(false);
 					retakebtn.setVisible(true);
 					
@@ -309,24 +234,22 @@ public class SecWindow {
 					
 				}
 				else{
-					//If first assumption is the only correct one
-					if(chckbxNewCheckBox_4.isSelected() && !chckbxNewCheckBox_5.isSelected()
-							&&!chckbxNewCheckBox_6.isSelected()){
+					boolean ans = true;
+					// If first assumption is the only correct one
+					for(int j = 0 ; j < assumptionChkbxList.size() ; j++){
+						ans = ans & eduLogicObj.CheckAnswer(assumptionChkbxList.get(j), assumptionAns.get(j));
+					}
+					if(ans){
 						//JOptionPane.showMessageDialog(null, " SUBMITTED!!! \n Score = 3");
 						lblNewLabel2.setText("Score = 3");
-						chckbxNewCheckBox_4.setEnabled(false);
-						chckbxNewCheckBox_5.setEnabled(false);
-						chckbxNewCheckBox_6.setEnabled(false);
 						submitButton.setVisible(false);
 						retakebtn.setVisible(true);
 					}
 					else{
 						//JOptionPane.showMessageDialog(null, " INCORRECT ANSWER!!! Choose reason");
-					chckbxNewCheckBox_4.setEnabled(false);
-					chckbxNewCheckBox_5.setEnabled(false);
-					chckbxNewCheckBox_6.setEnabled(false);
 					//internalFrame_1.setVisible(true);
 					}
+					eduLogicObj.DisableCheckBox(assumptionChkbxList);
 					is_submitted = true;
 				}
 			}
