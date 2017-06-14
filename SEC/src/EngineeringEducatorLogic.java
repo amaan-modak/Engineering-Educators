@@ -58,7 +58,7 @@ public class EngineeringEducatorLogic {
 		for (int i = 0; i < files.length; i++) {
 			BufferedImage img = null;
 			System.out.println(files[i].getName());
-			if (files[i].getName().equals("fbd.jpg")) {
+			if (files[i].getName().equals("fbd.jpg") || files[i].getName().equals("fbd.png")) {
 				try {
 					img = ImageIO.read(new File(files[i].getPath()));
 					obj.setFbdImg(ImageResizing(img, 200, 200));
@@ -66,7 +66,7 @@ public class EngineeringEducatorLogic {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			} else if (files[i].getName().equals("model.jpg")) {
+			} else if (files[i].getName().equals("model.jpg") || files[i].getName().equals("model.png")) {
 				try {
 					img = ImageIO.read(new File(files[i].getPath()));
 					obj.setModelImg(ImageResizing(img, 200, 200));
@@ -77,10 +77,12 @@ public class EngineeringEducatorLogic {
 			} else if (files[i].getName().equals("assumptions.txt")) {
 				obj.setAssumptionsPath(files[i].getPath());
 				System.out.println(obj.assumptionsPath + " assumptions");
-			} else if (files[i].getName().equals("reasons.txt")) {
+			} /*else if (files[i].getName().equals("reasons.txt")) {
 				obj.setReasonsPath(files[i].getPath());
 				System.out.println(obj.reasonsPath + " reasons");
-			}
+			}*/
+			obj.setReasonsPath(dir1.getPath()+"/reasons");
+			System.out.println(obj.reasonsPath + " reasons");
 		}
 	}
 

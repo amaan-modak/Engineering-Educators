@@ -44,7 +44,7 @@ public class SecWindow {
 
 	private JFrame frame;
 	boolean is_submitted = false;
-	
+	int score =0;
 
 	/**
 	 * Launch the application.
@@ -93,6 +93,7 @@ public class SecWindow {
 		File dir1 = new File(eduObject.questionDir);
 		eduLogicObj.DataPreProcessing(eduObject);
 		is_submitted = false;
+		score =0;
 	
 		if(frame==null)
 			frame = new JFrame();
@@ -116,7 +117,7 @@ public class SecWindow {
         
       //Final Score Displayed Here
         JLabel lblNewLabel,lblNewLabel2;
-        lblNewLabel2=new JLabel("SCORE=0");
+        lblNewLabel2=new JLabel("Score = 0");
       	lblNewLabel = new JLabel("ENGINEERING EDUCATORS ");
       	lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
       	lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -161,14 +162,59 @@ public class SecWindow {
 		ArrayList<String> assumptions = new ArrayList<String>();
 		ArrayList<Integer> assumptionAns = new ArrayList<Integer>();
 		ArrayList<JCheckBox> assumptionChkbxList = new ArrayList<JCheckBox>();
+		ArrayList<ArrayList<JRadioButton>> listOfRdbtnListForReasons = new ArrayList<ArrayList<JRadioButton>>();
+		ArrayList<JLabel> reasonMsgLabelList = new ArrayList<JLabel>();
+		//stores answer for reasons of each assumption if that assumption has reasons otherwise stores 0
+		ArrayList<Integer> reasonAns = new ArrayList<Integer>();
 		
 		for (int j = 0; j < tempAssumptions.size(); j++) {
+			
 			String[] splitter = tempAssumptions.get(j).split("\\|");
 			assumptions.add(splitter[0]);
-			assumptionAns.add(Integer.parseInt(splitter[1]));
+			Integer assumptionAnswer = Integer.parseInt(splitter[1]);
+			assumptionAns.add(assumptionAnswer);
 			JCheckBox chkbxAssumption = new JCheckBox(assumptions.get(j));
 			assumptionChkbxList.add(chkbxAssumption);
 			panel.add(chkbxAssumption, "22," + new Integer((j * 2) + 10).toString()+", fill, default");
+			if(assumptionAnswer == 1) {
+				listOfRdbtnListForReasons.add(null);
+				reasonAns.add(-1);
+				reasonMsgLabelList.add(null);
+			} else { //for incorrect assumptions add reasons below it, but hide them
+				ArrayList<String> tempReasons = eduLogicObj.FileReading(eduObject.reasonsPath+"_"+new Integer(j+1).toString()+".txt");
+				ArrayList<JRadioButton> reasonList = new ArrayList<JRadioButton>();
+				ArrayList<String> reasons = new ArrayList<String>();
+				
+				//add a label saying this assumption is incorrect/ complicated
+				if(assumptionAnswer == 0)
+				{
+					JLabel lblIncorrect = new JLabel("This assumption is incorrect, what could be the reason?");
+					panel.add(lblIncorrect);
+					lblIncorrect.setVisible(false);
+					reasonMsgLabelList.add(lblIncorrect);
+				} else if(assumptionAnswer == 2) {
+					JLabel lblIncorrect = new JLabel("This assumption is a complicating factor, what could be the reason?");
+					panel.add(lblIncorrect);
+					lblIncorrect.setVisible(false);
+					reasonMsgLabelList.add(lblIncorrect);
+				}
+				
+						for (int reasonIndex = 0; reasonIndex < tempReasons.size(); reasonIndex++) {
+							String[] reasonSplit = tempReasons.get(reasonIndex).split("\\|");
+							reasons.add(reasonSplit[0]);
+							Integer reasonAnswer = Integer.parseInt(reasonSplit[1]);
+							if(reasonAnswer == 1) {
+								reasonAns.add(reasonIndex);								
+							}
+							
+								
+							JRadioButton rdbReason = new JRadioButton(reasons.get(reasonIndex));
+							reasonList.add(rdbReason);
+							panel.add(rdbReason);
+							rdbReason.setVisible(false);
+						}
+				listOfRdbtnListForReasons.add(reasonList);
+			}
 		}
 		
 		
@@ -192,20 +238,20 @@ public class SecWindow {
 		retakebtn.setVisible(false);
 		
 		
-		ArrayList<String> tempReasons = eduLogicObj.FileReading(eduObject.reasonsPath);
-		ArrayList<JRadioButton> reasonList = new ArrayList<JRadioButton>();
-		ArrayList<String> reasons = new ArrayList<String>();
-		ArrayList<Integer> reasonAns = new ArrayList<Integer>();
-		// Radio buttons inside Internal Frame 2
-				for (int j = 0; j < tempReasons.size(); j++) {
-					String[] splitter = tempReasons.get(j).split("\\|");
-					reasons.add(splitter[0]);
-					reasonAns.add(Integer.parseInt(splitter[1]));
-					JRadioButton rdbReason = new JRadioButton(reasons.get(j));
-					reasonList.add(rdbReason);
-					panel.add(rdbReason, "2," + new Integer((j + 1) * 2).toString());
-				}
-		
+//		ArrayList<String> tempReasons = eduLogicObj.FileReading(eduObject.reasonsPath);
+//		ArrayList<JRadioButton> reasonList = new ArrayList<JRadioButton>();
+//		ArrayList<String> reasons = new ArrayList<String>();
+//		ArrayList<Integer> reasonAns = new ArrayList<Integer>();
+//		// Radio buttons inside Internal Frame 2
+//				for (int j = 0; j < tempReasons.size(); j++) {
+//					String[] splitter = tempReasons.get(j).split("\\|");
+//					reasons.add(splitter[0]);
+//					reasonAns.add(Integer.parseInt(splitter[1]));
+//					JRadioButton rdbReason = new JRadioButton(reasons.get(j));
+//					reasonList.add(rdbReason);
+//					panel.add(rdbReason, "2," + new Integer((j + 1) * 2).toString());
+//				}
+//		
 		
 		//Submit button
 		JButton submitButton = new JButton("Submit");
@@ -215,18 +261,44 @@ public class SecWindow {
 		submitButton.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 				if(is_submitted){
-					if(reasonList.get(0).isSelected()){
-					//JOptionPane.showMessageDialog(null, " RESUBMITTED!!! \n Score = 2");
-					
-					lblNewLabel2.setText("Current Score = 2");
-					}
-					else
-					{
-						//JOptionPane.showMessageDialog(null, "Resubmitted!! Score : 0" );
-						lblNewLabel2.setText("Current Score = 0");
+					for(int i=0; i<listOfRdbtnListForReasons.size(); i++) {
+						//if there are no reasons for this assumption then skip
+						if(listOfRdbtnListForReasons.get(i) == null)
+							continue;
+						// if there are reasons but they are not visible i.e. that assumption was not selected then skip
+						if(listOfRdbtnListForReasons.get(i).get(0).isVisible() == false)
+							continue;
+						for(int j=0; j<listOfRdbtnListForReasons.get(i).size(); j++) {
+							if(reasonAns.get(i) == j && listOfRdbtnListForReasons.get(i).get(j).isSelected())
+							{
+								listOfRdbtnListForReasons.get(i).get(j).setBackground(new Color(102, 255, 102));
+								score+= 1;
+							}
+							else if(reasonAns.get(i) == j) {
+								listOfRdbtnListForReasons.get(i).get(j).setBackground(new Color(102, 255, 102));
+							}
+							else if(reasonAns.get(i) != j && listOfRdbtnListForReasons.get(i).get(j).isSelected()) {
+								listOfRdbtnListForReasons.get(i).get(j).setBackground(new Color(204, 0, 0));
+							}
+								
+						}
 						
 					}
-					eduLogicObj.DisableRadioButton(reasonList);
+					
+//					if(listOfRdbtnListForReasons.get(1).get(0).isSelected()){
+//					//JOptionPane.showMessageDialog(null, " RESUBMITTED!!! \n Score = 2");
+//					score = score + 2;
+//					lblNewLabel2.setText("Score = "+score);
+//					}
+//					else
+//					{
+//						//JOptionPane.showMessageDialog(null, "Resubmitted!! Score : 0" );
+//						lblNewLabel2.setText("Score = "+score);
+//						
+//					}
+					
+					lblNewLabel2.setText("Score = "+score);
+					eduLogicObj.DisableRadioButton(listOfRdbtnListForReasons.get(1));
 					submitButton.setVisible(false);
 					retakebtn.setVisible(true);
 					
@@ -237,17 +309,44 @@ public class SecWindow {
 					boolean ans = true;
 					// If first assumption is the only correct one
 					for(int j = 0 ; j < assumptionChkbxList.size() ; j++){
-						ans = ans & eduLogicObj.CheckAnswer(assumptionChkbxList.get(j), assumptionAns.get(j));
+						boolean ansChkbxComparison = true;
+						ansChkbxComparison = eduLogicObj.CheckAnswer(assumptionChkbxList.get(j), assumptionAns.get(j));
+						
+						//if selection doesnt compare with answer make background red otherwise green
+						if(ansChkbxComparison == false) {
+							assumptionChkbxList.get(j).setBackground(new Color(204, 0, 0));  //red
+
+							if(listOfRdbtnListForReasons.get(j) == null)
+								continue;
+							for(int k=0; k<listOfRdbtnListForReasons.get(j).size(); k++) {
+								listOfRdbtnListForReasons.get(j).get(k).setVisible(true);
+							}
+							reasonMsgLabelList.get(j).setVisible(true);
+						}
+							
+						else
+							assumptionChkbxList.get(j).setBackground(new Color(102, 255, 102));  //green
+						
+						//compute cumulative answer
+						ans = ans & ansChkbxComparison;
 					}
 					if(ans){
 						//JOptionPane.showMessageDialog(null, " SUBMITTED!!! \n Score = 3");
-						lblNewLabel2.setText("Score = 3");
+						score = score + 5;
+						lblNewLabel2.setText("Score = "+score);
 						submitButton.setVisible(false);
 						retakebtn.setVisible(true);
 					}
 					else{
 						//JOptionPane.showMessageDialog(null, " INCORRECT ANSWER!!! Choose reason");
 					//internalFrame_1.setVisible(true);
+//						for(int i=0; i<listOfRdbtnListForReasons.size(); i++) {
+//							if(listOfRdbtnListForReasons.get(i) == null)
+//								continue;
+//							for(int j=0; j<listOfRdbtnListForReasons.get(i).size(); j++) {
+//								listOfRdbtnListForReasons.get(i).get(j).setVisible(true);
+//							}
+//						}
 					}
 					eduLogicObj.DisableCheckBox(assumptionChkbxList);
 					is_submitted = true;
