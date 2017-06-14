@@ -102,7 +102,7 @@ public class SecWindow {
 			frame.dispose();
 			frame=new JFrame();
 		}
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(0, 0, 1200, 800);
 		frame.setForeground(Color.BLACK);
 		frame.setBackground(Color.RED);
 		frame.getContentPane().setBackground(new Color(51, 153, 204));
@@ -132,12 +132,12 @@ public class SecWindow {
 	    //splitpane
 	    JPanel panel1= new JPanel();
 	    FlowLayout flowLayout_1 = (FlowLayout) panel1.getLayout();
-	    flowLayout_1.setHgap(150);
+	    //flowLayout_1.setHgap(150);
 	    flowLayout_1.setVgap(50);
 	    flowLayout_1.setAlignment(FlowLayout.LEFT);
 	    JPanel panel2=new JPanel();
 	    FlowLayout flowLayout = (FlowLayout) panel2.getLayout();
-	    flowLayout.setHgap(150);
+	    //flowLayout.setHgap(150);
 	    flowLayout.setVgap(50);
 	    flowLayout.setAlignment(FlowLayout.LEFT);
 		JLabel lblNewLabel_1 = new JLabel("");
@@ -154,6 +154,9 @@ public class SecWindow {
 		panel2.add(lblNewLabel_2, "22, 6, fill, default");
 		JSplitPane splitpane= new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,false,panel1,panel2);
 		splitpane.setAlignmentY(0.5f);
+		splitpane.setResizeWeight(0.5)
+		splitpane.setDividerSize(0);
+		splitpane.setMaximumSize(new Dimension(1200,450)
 		
 		panel.add(splitpane);
 		
