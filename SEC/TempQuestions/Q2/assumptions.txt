@@ -1,0 +1,4 @@
+assumption1|1
+assumption2|0
+assumption3|1
+assumption4|2
