@@ -34,10 +34,6 @@ import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.FormSpecs;
-import com.jgoodies.forms.layout.RowSpec;
 import java.awt.Rectangle;
 import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
@@ -45,6 +41,7 @@ import java.awt.FlowLayout;
 public class SecWindow {
 
 	private JFrame frame;
+	boolean is_submitted = false;
 	
 
 	/**
@@ -99,6 +96,7 @@ public class SecWindow {
 		BufferedImage modelimg = null;
 		String assumptionspath = null;
 		String reasonspath = null;
+		is_submitted = false;
 		for(int i = 0 ; i < files.length ; i++)
 		{
 			BufferedImage img = null;
@@ -284,24 +282,24 @@ public class SecWindow {
 		//internalFrame_1.setVisible(false);
 		
 		//Submit button
-		JButton submitButton = new JButton("Submit");
+		JButton submitButton = new JButton("SubmitZaki");
 		//JButton retake=new JButton("Retake Test");
 		
 		
 		submitButton.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
-				//if(internalFrame_1.isVisible()){
+				if(is_submitted){
 					if(chckbxNewCheckBox.isSelected() && !chckbxNewCheckBox_1.isSelected() && !chckbxNewCheckBox_2.isSelected() && !chckbxNewCheckBox_3.isSelected()){
 					//JOptionPane.showMessageDialog(null, " RESUBMITTED!!! \n Score = 2");
 					
 					lblNewLabel2.setText("Current Score = 2");
-					//}
-					//else
-					//{
+					}
+					else
+					{
 						//JOptionPane.showMessageDialog(null, "Resubmitted!! Score : 0" );
 						lblNewLabel2.setText("Current Score = 0");
 						
-					//}
+					}
 					chckbxNewCheckBox.setEnabled(false);
 					chckbxNewCheckBox_1.setEnabled(false);
 					chckbxNewCheckBox_2.setEnabled(false);
@@ -331,6 +329,7 @@ public class SecWindow {
 					chckbxNewCheckBox_6.setEnabled(false);
 					//internalFrame_1.setVisible(true);
 					}
+					is_submitted = true;
 				}
 			}
 		});
