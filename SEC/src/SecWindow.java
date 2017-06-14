@@ -150,8 +150,15 @@ public class SecWindow {
 		splitpane.setAlignmentY(0.5f);
 		splitpane.setResizeWeight(0.5);
 		splitpane.setDividerSize(0);
-		splitpane.setMaximumSize(new Dimension(1200, 450));
+		splitpane.setMaximumSize(new Dimension(2000, 450));
+		splitpane.setBorder(null);
 		panel.add(splitpane);
+		
+		/* Gap between splitpane, and assumptions and reasons */
+		JSeparator sep1 = new JSeparator();
+	    	sep1.setMaximumSize(new Dimension(0, 30));
+	    	sep1.setOpaque(false);
+	    	panel.add(sep1);
 
 		/* Designing check boxes for assumptions */
 		ArrayList<String> tempAssumptions = eduLogicObj.FileReading(eduObject.assumptionsPath);
@@ -223,6 +230,11 @@ public class SecWindow {
 				}
 			}
 		});
+		/* Gap between options and button */
+		JSeparator sep2 = new JSeparator();
+	    	sep2.setMaximumSize(new Dimension(0, 30));
+	    	sep2.setOpaque(false);
+	    	panel.add(sep2);
 		panel.add(submitButton);
 		panel.add(retakebtn);
 		JScrollPane scrollPane = new JScrollPane(panel);
