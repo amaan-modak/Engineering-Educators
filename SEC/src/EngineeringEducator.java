@@ -1,5 +1,3 @@
-package sec;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 
