@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -83,7 +84,7 @@ public class SecWindow {
 	 */
 	private void initialize() throws IOException {
 		/* Local variable initialization */
-		JLabel lblTitle, lblScore;
+		JLabel lblTitle, lblScore, lblQuestion;
 		isSubmitted = false;
 		score = 0;
 		/* Designing frame */
@@ -106,13 +107,18 @@ public class SecWindow {
 		else
 			panel.removeAll();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setBackground(new Color(46, 42, 42));
+        	panel.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30)); //Padding around panel
 
 		/* Labels to display title and score at the top of the panel */
 		lblScore = new JLabel("Score = 0");
 		lblTitle = new JLabel("ENGINEERING EDUCATORS ");
 		lblTitle.setVerticalAlignment(SwingConstants.TOP);
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblScore.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblTitle.setForeground(Color.WHITE);
+		lblScore.setForeground(Color.WHITE);
 		panel.add(lblTitle);
 		panel.add(lblScore);
 		JSeparator sep = new JSeparator();
@@ -133,17 +139,26 @@ public class SecWindow {
 		FlowLayout flowLayout = (FlowLayout) innerPanel2.getLayout();
 		flowLayout.setVgap(50);
 		flowLayout.setAlignment(FlowLayout.LEFT);
+		
+		innerPanel1.setBackground(new Color(46, 42, 42));
+		innerPanel2.setBackground(new Color(46, 42, 42));
 
 		// Label for model image
-		JLabel lblModelImg = new JLabel("");
+		JLabel lblModelImg = new JLabel("Real World Model");
 		lblModelImg.setVerticalAlignment(SwingConstants.TOP);
 		lblModelImg.setIcon(new ImageIcon(eduObject.getModelImg()));
+		lblModelImg.setHorizontalTextPosition(JLabel.CENTER);
+		lblModelImg.setVerticalTextPosition(JLabel.BOTTOM);
+		lblModelImg.setForeground(Color.WHITE);
 		innerPanel1.add(lblModelImg, "22, 2, fill, default");
 
 		// Label for FBD image
-		JLabel lblFbdImg = new JLabel("");
+		JLabel lblFbdImg = new JLabel("Free Body Diagram");
 		lblFbdImg.setVerticalAlignment(SwingConstants.TOP);
 		lblFbdImg.setIcon(new ImageIcon(eduObject.getFbdImg()));
+		lblFbdImg.setHorizontalTextPosition(JLabel.CENTER);
+		lblFbdImg.setVerticalTextPosition(JLabel.BOTTOM);
+		lblFbdImg.setForeground(Color.WHITE);
 		innerPanel2.add(lblFbdImg, "22, 6, fill, default");
 
 		JSplitPane splitpane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, innerPanel1, innerPanel2);
@@ -159,6 +174,12 @@ public class SecWindow {
 	    	sep1.setMaximumSize(new Dimension(0, 30));
 	    	sep1.setOpaque(false);
 	    	panel.add(sep1);
+
+		/* Question String */
+	    	lblQuestion = new JLabel("Q: Which of the following assumptions are correct?");
+	    	lblQuestion.setForeground(Color.WHITE);
+		lblQuestion.setFont(new Font("Tahoma", Font.BOLD, 14));
+		panel.add(lblQuestion);
 
 		/* Designing check boxes for assumptions */
 		ArrayList<String> tempAssumptions = eduLogicObj.FileReading(eduObject.assumptionsPath);
@@ -256,6 +277,8 @@ public class SecWindow {
 			assumptionAns.add(assumptionAnswer);
 			JCheckBox chkbxAssumption = new JCheckBox(assumptions.get(j));
 			assumptionChkbxList.add(chkbxAssumption);
+			chkbxAssumption.setBackground(new Color(46, 42, 42));
+			chkbxAssumption.setForeground(Color.WHITE);
 			panel.add(chkbxAssumption, "22," + new Integer((j * 2) + 10).toString() + ", fill, default");
 			
 			//If assumption is the correct answer
@@ -274,12 +297,16 @@ public class SecWindow {
 				// add a label saying this assumption is incorrect/ complicated
 				if (assumptionAnswer == 0) {
 					JLabel lblIncorrect = new JLabel("This assumption is incorrect, what could be the reason?");
+					lblIncorrect.setForeground(Color.WHITE);
+					lblIncorrect.setBorder(BorderFactory.createEmptyBorder(5, 30, 5, 30));
 					panel.add(lblIncorrect);
 					lblIncorrect.setVisible(false);
 					reasonMsgLabelList.add(lblIncorrect);
 				} else if (assumptionAnswer == 2) {
 					JLabel lblIncorrect = new JLabel(
 							"This assumption is a complicating factor, what could be the reason?");
+					lblIncorrect.setForeground(Color.WHITE);
+					lblIncorrect.setBorder(BorderFactory.createEmptyBorder(5, 30, 5, 30));
 					panel.add(lblIncorrect);
 					lblIncorrect.setVisible(false);
 					reasonMsgLabelList.add(lblIncorrect);
@@ -296,6 +323,9 @@ public class SecWindow {
 
 					JRadioButton rdbReason = new JRadioButton(reasons.get(reasonIndex));
 					reasonList.add(rdbReason);
+					rdbReason.setBackground(new Color(46, 42, 42));
+					rdbReason.setForeground(Color.WHITE);
+					rdbReason.setBorder(BorderFactory.createEmptyBorder(5, 30, 5, 30));
 					panel.add(rdbReason);
 					rdbReason.setVisible(false);
 				}
