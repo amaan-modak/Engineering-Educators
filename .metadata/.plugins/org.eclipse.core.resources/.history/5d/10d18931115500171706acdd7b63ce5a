@@ -1,0 +1,23 @@
+import java.util.ArrayList;
+
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JRadioButton;
+
+public class EngineeringEducatorReason {
+	public ArrayList<String> reasons = new ArrayList<String>();
+	public ArrayList<Integer> answers = new ArrayList<Integer>();
+	public ArrayList<ArrayList<JRadioButton>> listOfRdbtnListForReasons = new ArrayList<ArrayList<JRadioButton>>();
+	public ArrayList<JLabel> reasonMsgLabelList = new ArrayList<JLabel>();
+	public String path;
+	
+	/* DISABLE RADIOBUTTONS
+	 * Method to disable all the radio buttons
+	 * Input: Arraylist containing radio buttons*/	
+	public void DisableRadioButton(){
+		for(int i = 0; i < listOfRdbtnListForReasons.get(1).size() ; i++){
+			if(listOfRdbtnListForReasons.get(i).isEnabled())
+				listOfRdbtnListForReasons.get(i).setEnabled(false);
+		}
+	}
+}

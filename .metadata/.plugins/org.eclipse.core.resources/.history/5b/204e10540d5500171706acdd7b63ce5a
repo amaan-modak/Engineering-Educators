@@ -1,0 +1,10 @@
+import java.util.ArrayList;
+
+import javax.swing.JCheckBox;
+
+public class EngineeringEducatorReason {
+	public ArrayList<String> reasons;
+	public ArrayList<Integer> answers;
+	public ArrayList<JCheckBox> reasonsRdbList = new ArrayList<JCheckBox>();
+	String path;
+}
