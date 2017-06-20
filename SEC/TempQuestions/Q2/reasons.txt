@@ -1,0 +1,4 @@
+reason1|1
+reason2|0
+reason3|0
+reason4|0
