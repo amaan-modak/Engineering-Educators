@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,19 +10,22 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 
 public class EngineeringEducatorAssumption {
-	public ArrayList<String> allAssumptions = new ArrayList<String>();
-	public ArrayList<String> assumptions = new ArrayList<String>();
-	public ArrayList<Integer> answers = new ArrayList<Integer>();
-	public ArrayList<JCheckBox> assumptionChkbxList = new ArrayList<JCheckBox>();
+	ArrayList<String> assumptions = new ArrayList<String>();
+	ArrayList<Integer> answers = new ArrayList<Integer>();
+	ArrayList<JCheckBox> assumptionChkbxList = new ArrayList<JCheckBox>();
+	boolean cumAnswerFlag = true;
 	String path;
+	
 
 	/*
 	 * READ ASSUMPTIONS Method to read text file line by line and store the
-	 * result in an array list Input: Path of the text file Output: Array list
+	 * result in an array list 
+	 * Input: Path of the text file 
 	 * of String containing textual data of file
 	 */
-	public void ReadAssumptions() {
+	public void ReadAssumptions(String path) {
 		FileInputStream fstream2;
+		ArrayList<String> allAssumptions = new ArrayList<String>();
 		try {
 			fstream2 = new FileInputStream(path);
 			BufferedReader br2 = new BufferedReader(new InputStreamReader(fstream2));
@@ -29,9 +33,18 @@ public class EngineeringEducatorAssumption {
 			// Read File Line By Line
 			while ((strLine2 = br2.readLine()) != null) {
 				allAssumptions.add(strLine2);
-				System.out.println(strLine2);
 			}
 			br2.close();
+
+			// Splitting into assumptions and reasons
+			for (int j = 0; j < allAssumptions.size(); j++) {
+				String[] splitter = allAssumptions.get(j).split("\\|");
+				assumptions.add(splitter[0]);
+				Integer assumptionAnswer = Integer.parseInt(splitter[1]);
+				answers.add(assumptionAnswer);
+				JCheckBox chkbxAssumption = CreateCheckBox(assumptions.get(j));
+				assumptionChkbxList.add(chkbxAssumption);
+			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -41,16 +54,15 @@ public class EngineeringEducatorAssumption {
 		}
 	}
 
-	public void Splitter() {
-		for (int j = 0; j < allAssumptions.size(); j++) {
-			String[] splitter = allAssumptions.get(j).split("\\|");
-			assumptions.add(splitter[0]);
-			Integer assumptionAnswer = Integer.parseInt(splitter[1]);
-			answers.add(assumptionAnswer);
-			JCheckBox chkbxAssumption = new JCheckBox(assumptions.get(j));
-			assumptionChkbxList.add(chkbxAssumption);
-
-		}
+	/*
+	 * CREATE CHECKBOX Method to create checkbox with given value
+	 * Input: Path of the text file 
+	 * Output: Checkbox
+	 * of String containing textual data of file
+	 */
+	public JCheckBox CreateCheckBox(String value) {
+		JCheckBox chkbxAssumption = new JCheckBox(value);
+		return chkbxAssumption;
 	}
 
 	public JLabel TypeOfAssumption(EngineeringEducatorReason reasonObject, int ansType) {
@@ -61,19 +73,60 @@ public class EngineeringEducatorAssumption {
 			reasonObject.reasonMsgLabelList.add(null);
 		} else {
 			// for incorrect assumptions add reasons below it, but hide them
-						// add a label saying this assumption is incorrect/ complicated
+			// add a label saying this assumption is incorrect/ complicated
 			if (ansType == 0) {
 				lblIncorrect = new JLabel("This assumption is incorrect, what could be the reason?");
 				lblIncorrect.setVisible(false);
 				reasonObject.reasonMsgLabelList.add(lblIncorrect);
 			} else if (ansType == 2) {
-				lblIncorrect = new JLabel(
-						"This assumption is a complicating factor, what could be the reason?");
+				lblIncorrect = new JLabel("This assumption is a complicating factor, what could be the reason?");
 				lblIncorrect.setVisible(false);
 				reasonObject.reasonMsgLabelList.add(lblIncorrect);
 			}
+
 		}
 		return lblIncorrect;
+	}
+
+	public int ScoreCalculation(int score, EngineeringEducatorReason reasonObj) {
+		cumAnswerFlag = true;
+		for (int j = 0; j < assumptionChkbxList.size(); j++) {
+			boolean ansChkbxComparison = true;
+			ansChkbxComparison = CheckAnswer(assumptionChkbxList.get(j), answers.get(j));
+
+			// if selection doesnt compare with answer make
+			// background red otherwise green
+			if (ansChkbxComparison == false) {
+				assumptionChkbxList.get(j).setBackground(new Color(204, 0, 0)); // red
+
+				if (reasonObj.listOfRdbtnListForReasons.get(j) == null)
+					continue;
+				for (int k = 0; k < reasonObj.listOfRdbtnListForReasons.get(j).size(); k++) {
+					reasonObj.listOfRdbtnListForReasons.get(j).get(k).setVisible(true);
+				}
+				reasonObj.reasonMsgLabelList.get(j).setVisible(true);
+			} else
+				assumptionChkbxList.get(j).setBackground(new Color(102, 255, 102)); // green
+			// compute cumulative answer
+			cumAnswerFlag = cumAnswerFlag & ansChkbxComparison;
+		}
+		if (cumAnswerFlag) {
+			score = score + 5;
+		}
+		return score;
+	}
+
+	/*
+	 * CHECK ANSWER Method to check whether selected assumption is correct or
+	 * not Input: Check box and actual answer for that check box Output: True if
+	 * selected assumption is correct, otherwise false
+	 */
+	public boolean CheckAnswer(JCheckBox chkBox, int ans) {
+		if (chkBox.isSelected() && ans == 1)
+			return true;
+		else if (!chkBox.isSelected() && (ans == 0 || ans == 2))
+			return true;
+		return false;
 	}
 
 	/*

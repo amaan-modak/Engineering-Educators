@@ -40,42 +40,19 @@ public class SecWindow {
 	static JPanel panel;
 
 	// Global declaration of class objects
-	static EngineeringEducator eduObject = new EngineeringEducator();
-	static EngineeringEducatorLogic eduLogicObj = new EngineeringEducatorLogic();
 
-	static EngineeringEducatorQuestions quesObject = new EngineeringEducatorQuestions();
-	static EngineeringEducatorAssumption assumObject = new EngineeringEducatorAssumption();
-	static EngineeringEducatorReason reasonObject = new EngineeringEducatorReason();
-	static EngineeringEducatorModelImage modelImgObject = new EngineeringEducatorModelImage();
-	static EngineeringEducatorFBDImage fbdImgObject = new EngineeringEducatorFBDImage();
+	static EngineeringEducatorQuestions quesObject;
+	static EngineeringEducatorAssumption assumObject;
+	static EngineeringEducatorReason reasonObject;
+	static EngineeringEducatorModelImage modelImgObject;
+	static EngineeringEducatorFBDImage fbdImgObject;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					folderPath = "Questions/";
-					/* Calling method to select random question folder */
-					questionPath = quesObject.FolderRandomSelection(folderPath);
-					System.out.println("new path=" + questionPath);
-					/* Calling method to fetch data from question folder */
-					// eduLogicObj.DataPreProcessing(eduObject);
-
-					File dir1 = new File(questionPath);
-					File[] files = dir1.listFiles();
-
-					for (int i = 0; i < files.length; i++) {
-						if (files[i].getName().contains("fbd.")) {
-							fbdImgObject.ReadImage(new File(files[i].getPath()));
-						} else if (files[i].getName().contains("model.")) {
-							modelImgObject.ReadImage(new File(files[i].getPath()));
-						} else if (files[i].getName().contains("assumptions.")) {
-							assumObject.path = files[i].getPath();
-							System.out.println(assumObject.path + " assumptions");
-						}
-					}
-					reasonObject.path = dir1.getPath() + "/reasons";
-					System.out.println(reasonObject.path + " reasons");
-
+					CreateObjects();
+					InitializeContents();
 					SecWindow window = new SecWindow();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
@@ -94,6 +71,40 @@ public class SecWindow {
 		initialize();
 	}
 
+	public static void CreateObjects() {
+		quesObject = new EngineeringEducatorQuestions();
+		assumObject = new EngineeringEducatorAssumption();
+		reasonObject = new EngineeringEducatorReason();
+		modelImgObject = new EngineeringEducatorModelImage();
+		fbdImgObject = new EngineeringEducatorFBDImage();
+	}
+
+	public static void InitializeContents() {
+		folderPath = "Questions/";
+		/* Calling method to select random question folder */
+		questionPath = quesObject.FolderRandomSelection(folderPath);
+		System.out.println("new path=" + questionPath);
+		/* Calling method to fetch data from question folder */
+		// eduLogicObj.DataPreProcessing(eduObject);
+
+		File dir1 = new File(questionPath);
+		File[] files = dir1.listFiles();
+
+		for (int i = 0; i < files.length; i++) {
+			if (files[i].getName().contains("fbd.")) {
+				fbdImgObject.ReadImage(new File(files[i].getPath()));
+			} else if (files[i].getName().contains("model.")) {
+				modelImgObject.ReadImage(new File(files[i].getPath()));
+			} else if (files[i].getName().contains("assumptions.")) {
+				assumObject.path = files[i].getPath();
+				System.out.println(assumObject.path + " assumptions");
+			}
+		}
+		reasonObject.path = dir1.getPath() + "/reasons";
+		System.out.println(reasonObject.path + " reasons");
+
+	}
+
 	/**
 	 * Initialize the contents of the frame.
 	 * 
@@ -107,9 +118,7 @@ public class SecWindow {
 		if (frame == null)
 			frame = new JFrame();
 		else {
-
-			frame.dispose();
-			frame = new JFrame();
+			frame.getContentPane().removeAll();
 		}
 		frame.setBounds(0, 0, 1200, 800);
 		frame.setForeground(Color.BLACK);
@@ -172,63 +181,57 @@ public class SecWindow {
 		panel.add(sep1);
 
 		/* Designing check boxes for assumptions */
-		assumObject.ReadAssumptions();
+		assumObject.ReadAssumptions(assumObject.path);
 		GUISettingAssumptionsList();
 
 		// Calling method to set Assumption list on GUI
 		// GUISettingAssumptionsList(tempAssumptions);
 
+		// Next Button
 		// Retake button
-		JButton retakebtn = new JButton("Retake Test");
-		retakebtn.addActionListener(new ActionListener() {
+		JButton nxtButton = new JButton("Next Question");
+		nxtButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				CreateObjects();
+				InitializeContents();
 				initialize();
 			}
 		});
-		retakebtn.setVisible(false);
-		/*
-		 * // Submit button JButton submitButton = new JButton("Submit");
-		 * submitButton.addActionListener(new ActionListener() { public void
-		 * actionPerformed(ActionEvent arg0) { if (isSubmitted) { //Calling
-		 * method to set Reasons list on GUI GUISettingReasonsList();
-		 * lblScore.setText("Score = " + score);
-		 * eduLogicObj.DisableRadioButton(listOfRdbtnListForReasons.get(1));
-		 * submitButton.setVisible(false); retakebtn.setVisible(true); } else {
-		 * boolean ans = true;
-		 * 
-		 * //***************Transfer to ScoreCalculation of Assumption
-		 * class************************************ for (int j = 0; j <
-		 * assumptionChkbxList.size(); j++) { boolean ansChkbxComparison = true;
-		 * ansChkbxComparison =
-		 * eduLogicObj.CheckAnswer(assumptionChkbxList.get(j),
-		 * assumptionAns.get(j));
-		 * 
-		 * // if selection doesnt compare with answer make // background red
-		 * otherwise green if (ansChkbxComparison == false) {
-		 * assumptionChkbxList.get(j).setBackground(new Color(204, 0, 0)); //
-		 * red
-		 * 
-		 * if (listOfRdbtnListForReasons.get(j) == null) continue; for (int k =
-		 * 0; k < listOfRdbtnListForReasons.get(j).size(); k++) {
-		 * listOfRdbtnListForReasons.get(j).get(k).setVisible(true); }
-		 * reasonMsgLabelList.get(j).setVisible(true); } else
-		 * assumptionChkbxList.get(j).setBackground(new Color(102, 255, 102));
-		 * // green // compute cumulative answer ans = ans & ansChkbxComparison;
-		 * } if (ans) { score = score + 5; lblScore.setText("Score = " + score);
-		 * submitButton.setVisible(false); retakebtn.setVisible(true); }
-		 * eduLogicObj.DisableCheckBox(assumptionChkbxList); isSubmitted = true;
-		 * } } });
-		 */
+		nxtButton.setVisible(false);
+
+		// Submit button
+		JButton submitButton = new JButton("Submit");
+		submitButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (isSubmitted) {
+					// Calling method to set Reasons list on GUI
+					score = reasonObject.ScoreCalculation(score);
+					System.out.println("Inside isSubmitted true score:" + score);
+					lblScore.setText("Score = " + score);
+					submitButton.setVisible(false);
+					nxtButton.setVisible(true);
+				} else {
+					score = assumObject.ScoreCalculation(score, reasonObject);
+					if (assumObject.cumAnswerFlag) {
+						lblScore.setText("Score = " + score);
+						submitButton.setVisible(false);
+					}
+					assumObject.DisableCheckBox();
+					isSubmitted = true;
+				}
+				nxtButton.setVisible(true);
+			}
+		});
 		/* Gap between options and button */
 		JSeparator sep2 = new JSeparator();
 		sep2.setMaximumSize(new Dimension(0, 30));
 		sep2.setOpaque(false);
 		panel.add(sep2);
-		// panel.add(submitButton);
-		panel.add(retakebtn);
+		panel.add(submitButton);
+		panel.add(nxtButton);
 		JScrollPane scrollPane = new JScrollPane(panel);
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		frame.setVisible(true);
@@ -240,56 +243,47 @@ public class SecWindow {
 	 * (Correct/Incorrect/Complicated) Input: List of all assumptions
 	 */
 	public void GUISettingAssumptionsList() {
-		//Split all assumptions in answer and statements, create check boxes
-		assumObject.Splitter();
-		
-		//Traverse through check boxes and add them on panel
-		for (int i = 0; i < assumObject.assumptionChkbxList.size(); i++) {
-			panel.add(assumObject.assumptionChkbxList.get(i), "22," + new Integer((i * 2) + 10).toString() + ", fill, default");
-			JLabel lblIncorrect =assumObject.TypeOfAssumption(reasonObject, assumObject.answers.get(i)); 
-			if(lblIncorrect != null){
+		final String xAxisLocation = "22,";
+		// Split all assumptions in answer and statements, create check boxes
+		// Traverse through check boxes and add them on panel
+		for (int i = 0; i < assumObject.assumptions.size(); i++) {
+			panel.add(assumObject.assumptionChkbxList.get(i),
+					xAxisLocation + ((i * 2) + 10) + ", fill, default");
+			JLabel lblIncorrect = assumObject.TypeOfAssumption(reasonObject, assumObject.answers.get(i));
+
+			// Incorrect assumption
+			if (lblIncorrect != null) {
 				panel.add(lblIncorrect);
-				// Splitting each reason into statement and corresponding answer
-				ArrayList<String> tempReasons = reasonObject.GetReasonsForIncorrectAssumptions(i);
-				if(tempReasons != null){
-					for (int reasonIndex = 0; reasonIndex < tempReasons.size(); reasonIndex++) {
-						//Adding radio button returned by splitter onto panel
-						panel.add(reasonObject.Splitter(reasonIndex, tempReasons));
-					}
-					reasonObject.listOfRdbtnListForReasons.add(reasonObject.reasonList);
-				}
+				// Calling method to add reasons for incorrect assumption
+				GUISettingReasonsList(i);
 			}
-						
-			/*	// Splitting each reason into statement and corresponding answer
-						}
+		}
 	}
-	// *********************Transfer to score calculation method of Reasons
-	// class*********************************8
+
 	/*
 	 * GUI SETTING REASONS LIST Method to display all reasons on the GUI based
 	 * on the assumption selected
 	 */
-	/*
-	 * public void GUISettingReasonsList(){ // if there are no reasons for this
-	 * assumption then skip for (int i = 0; i <
-	 * listOfRdbtnListForReasons.size(); i++) { if
-	 * (listOfRdbtnListForReasons.get(i) == null) continue; // if there are
-	 * reasons but they are not visible i.e. // that assumption was not selected
-	 * then skip if (listOfRdbtnListForReasons.get(i).get(0).isVisible() ==
-	 * false) continue;
-	 * 
-	 * 
-	 * for (int j = 0; j < listOfRdbtnListForReasons.get(i).size(); j++) { if
-	 * (reasonAns.get(i) == j &&
-	 * listOfRdbtnListForReasons.get(i).get(j).isSelected()) {
-	 * listOfRdbtnListForReasons.get(i).get(j).setBackground(new Color(102, 255,
-	 * 102)); score += 1; } else if (reasonAns.get(i) == j) {
-	 * listOfRdbtnListForReasons.get(i).get(j).setBackground(new Color(102, 255,
-	 * 102)); } else if (reasonAns.get(i) != j &&
-	 * listOfRdbtnListForReasons.get(i).get(j).isSelected()) {
-	 * listOfRdbtnListForReasons.get(i).get(j).setBackground(new Color(204, 0,
-	 * 0)); }
-	 * 
-	 * } } }
-	 */
+
+	public void GUISettingReasonsList(int assumptionIdx) {
+		// Read reason file for incorrect assumption
+		ArrayList<String> tempReasons = new ArrayList<String>();
+		ArrayList<JRadioButton> rdbList = new ArrayList<JRadioButton>();
+		System.out.println("Assumption index:" + assumptionIdx);
+		tempReasons = reasonObject.GetReasonsForIncorrectAssumption(assumptionIdx, reasonObject.path);
+		System.out.println("After reading file:");
+		for (int j = 0; j < tempReasons.size(); j++) {
+			System.out.println(tempReasons.get(j));
+		}
+
+		if (tempReasons != null) {
+			// Create radio buttons for all reasons
+			rdbList = reasonObject.CreateReasonList(tempReasons);
+			for (int rdbIndex = 0; rdbIndex < rdbList.size(); rdbIndex++) {
+				// Adding radio buttons onto panel
+				panel.add(rdbList.get(rdbIndex));
+			}
+			reasonObject.listOfRdbtnListForReasons.add(rdbList);
+		}
+	}
 }
