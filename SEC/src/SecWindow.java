@@ -173,6 +173,12 @@ public class SecWindow {
 		splitpane.setMaximumSize(new Dimension(2000, 450));
 		splitpane.setBorder(null);
 		panel.add(splitpane);
+		
+		/* Gap between splitpane, and assumptions and reasons */
+		JSeparator sep1 = new JSeparator();
+	    	sep1.setMaximumSize(new Dimension(0, 30));
+	    	sep1.setOpaque(false);
+	    	panel.add(sep1);
 
 		/* Gap between splitpane, and assumptions and reasons */
 		JSeparator sep1 = new JSeparator();
@@ -227,9 +233,15 @@ public class SecWindow {
 		});
 		/* Gap between options and button */
 		JSeparator sep2 = new JSeparator();
+<<<<<<< HEAD
 		sep2.setMaximumSize(new Dimension(0, 30));
 		sep2.setOpaque(false);
 		panel.add(sep2);
+=======
+	    	sep2.setMaximumSize(new Dimension(0, 30));
+	    	sep2.setOpaque(false);
+	    	panel.add(sep2);
+>>>>>>> 32a6aed8b4dd3f03d303c43d7a343b842ba967a8
 		panel.add(submitButton);
 		panel.add(nxtButton);
 		JScrollPane scrollPane = new JScrollPane(panel);
