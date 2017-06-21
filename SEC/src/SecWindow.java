@@ -2,19 +2,16 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -23,7 +20,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
-import java.awt.FlowLayout;
 
 public class SecWindow {
 	/**
@@ -111,7 +107,7 @@ public class SecWindow {
 	 */
 	private void initialize() {
 		/* Local variable initialization */
-		JLabel lblTitle, lblScore;
+		JLabel lblTitle, lblScore, lblQuestion;
 		isSubmitted = false;
 		score = 0;
 		/* Designing frame */
@@ -120,7 +116,7 @@ public class SecWindow {
 		else {
 			frame.getContentPane().removeAll();
 		}
-		frame.setBounds(0, 0, 1200, 800);
+		frame.setBounds(0, 0, 1366, 768);
 		frame.setForeground(Color.BLACK);
 		frame.setBackground(Color.RED);
 		frame.getContentPane().setBackground(new Color(51, 153, 204));
@@ -132,13 +128,20 @@ public class SecWindow {
 		else
 			panel.removeAll();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setBackground(new Color(46, 42, 42));
+		panel.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30)); //Padding around panel
+
 
 		/* Labels to display title and score at the top of the panel */
 		lblScore = new JLabel("Score = 0");
 		lblTitle = new JLabel("ENGINEERING EDUCATORS ");
+		//lblTitle.setIcon(new ImageIcon (Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/logo.png")))));
 		lblTitle.setVerticalAlignment(SwingConstants.TOP);
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblScore.setFont(new Font("Tahoma", Font.BOLD, 24));
+		lblTitle.setForeground(Color.WHITE);
+		lblScore.setForeground(Color.WHITE);
 		panel.add(lblTitle);
 		panel.add(lblScore);
 		JSeparator sep = new JSeparator();
@@ -152,13 +155,16 @@ public class SecWindow {
 		 */
 		JPanel innerPanel1 = new JPanel();
 		FlowLayout flowLayout_1 = (FlowLayout) innerPanel1.getLayout();
-		flowLayout_1.setVgap(50);
-		flowLayout_1.setAlignment(FlowLayout.LEFT);
+		flowLayout_1.setVgap(20);
+		flowLayout_1.setAlignment(FlowLayout.CENTER);
 
 		JPanel innerPanel2 = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) innerPanel2.getLayout();
-		flowLayout.setVgap(50);
-		flowLayout.setAlignment(FlowLayout.LEFT);
+		flowLayout.setVgap(20);
+		flowLayout.setAlignment(FlowLayout.CENTER);
+
+		innerPanel1.setBackground(new Color(46, 42, 42));
+		innerPanel2.setBackground(new Color(46, 42, 42));
 
 		// Label for model image
 		innerPanel1.add(modelImgObject.SetImage(), "22, 2, fill, default");
@@ -179,6 +185,12 @@ public class SecWindow {
 		sep1.setMaximumSize(new Dimension(0, 30));
 		sep1.setOpaque(false);
 		panel.add(sep1);
+
+		/* Question String */
+	    lblQuestion = new JLabel("Q: Which of the following assumptions are correct?");
+	    lblQuestion.setForeground(Color.WHITE);
+		lblQuestion.setFont(new Font("Tahoma", Font.BOLD, 14));
+		panel.add(lblQuestion);
 
 		/* Designing check boxes for assumptions */
 		assumObject.ReadAssumptions(assumObject.path);
@@ -209,7 +221,7 @@ public class SecWindow {
 				if (isSubmitted) {
 					// Calling method to set Reasons list on GUI
 					score = reasonObject.ScoreCalculation(score);
-					System.out.println("Inside isSubmitted true score:" + score);
+					System.out.println("Inside is Submitted true score:" + score);
 					lblScore.setText("Score = " + score);
 					submitButton.setVisible(false);
 					nxtButton.setVisible(true);
@@ -253,6 +265,8 @@ public class SecWindow {
 
 			// Incorrect assumption
 			if (lblIncorrect != null) {
+				lblIncorrect.setForeground(Color.WHITE);
+				lblIncorrect.setBorder(BorderFactory.createEmptyBorder(5, 30, 5, 30));
 				panel.add(lblIncorrect);
 				// Calling method to add reasons for incorrect assumption
 				GUISettingReasonsList(i);
