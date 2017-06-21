@@ -43,6 +43,8 @@ public class EngineeringEducatorAssumption {
 				Integer assumptionAnswer = Integer.parseInt(splitter[1]);
 				answers.add(assumptionAnswer);
 				JCheckBox chkbxAssumption = CreateCheckBox(assumptions.get(j));
+				chkbxAssumption.setBackground(new Color(46, 42, 42));
+				chkbxAssumption.setForeground(Color.WHITE);
 				assumptionChkbxList.add(chkbxAssumption);
 			}
 		} catch (FileNotFoundException e) {
@@ -94,7 +96,7 @@ public class EngineeringEducatorAssumption {
 			boolean ansChkbxComparison = true;
 			ansChkbxComparison = CheckAnswer(assumptionChkbxList.get(j), answers.get(j));
 
-			// if selection doesnt compare with answer make
+			// if selection doesn't compare with answer make
 			// background red otherwise green
 			if (ansChkbxComparison == false) {
 				assumptionChkbxList.get(j).setBackground(new Color(204, 0, 0)); // red
