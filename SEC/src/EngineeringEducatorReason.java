@@ -5,8 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-
-import javax.swing.JCheckBox;
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 
@@ -59,6 +58,9 @@ public class EngineeringEducatorReason {
 			}
 
 			JRadioButton rdbReason = CreateRadioButton(reasons.get(reasonIndex));
+			rdbReason.setBackground(new Color(46, 42, 42));
+			rdbReason.setForeground(Color.WHITE);
+			rdbReason.setBorder(BorderFactory.createEmptyBorder(5, 30, 5, 30));
 			reasonList.add(rdbReason);
 			rdbReason.setVisible(false);
 		}
