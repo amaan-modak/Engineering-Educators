@@ -32,6 +32,8 @@ public class SecWindow {
 	boolean isSubmitted = false;
 	int score = 0;
 	static String folderPath = "", questionPath = "";
+	static int totQuestions = 0;
+	static ArrayList<String> displayedQuestionFolders = new ArrayList<String>();
 
 	// Global declaration of GUI elements
 	private JFrame frame;
@@ -51,6 +53,7 @@ public class SecWindow {
 				try {
 					CreateObjects();
 					InitializeContents();
+					totQuestions = quesObject.getTotalQuestions(folderPath);
 					SecWindow window = new SecWindow();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
@@ -80,7 +83,17 @@ public class SecWindow {
 	public static void InitializeContents() {
 		folderPath = "Questions/";
 		/* Calling method to select random question folder */
-		questionPath = quesObject.FolderRandomSelection(folderPath);
+		do{
+			questionPath = quesObject.FolderRandomSelection(folderPath);
+			if(!displayedQuestionFolders.contains(questionPath)){
+				displayedQuestionFolders.add(questionPath);
+				isDisplayed = false;
+			}
+			else{
+				isDisplayed = true;
+			}
+		}while(isDisplayed && displayedQuestionFolders.size() != totQuestions);
+		
 		System.out.println("new path=" + questionPath);
 		/* Calling method to fetch data from question folder */
 		// eduLogicObj.DataPreProcessing(eduObject);
@@ -111,7 +124,7 @@ public class SecWindow {
 		/* Local variable initialization */
 		JLabel lblTitle, lblScore, lblQuestion;
 		isSubmitted = false;
-		score = 0;
+		//score = 0;
 		/* Designing frame */
 		if (frame == null)
 			frame = new JFrame();
@@ -225,17 +238,23 @@ public class SecWindow {
 					System.out.println("Inside is Submitted true score:" + score);
 					lblScore.setText("Score = " + score);
 					submitButton.setVisible(false);
-					nxtButton.setVisible(true);
+					if(totQuestions == displayedQuestionFolders.size())
+						nxtButton.setVisible(false);
+					else
+						nxtButton.setVisible(true);
 				} else {
 					score = assumObject.ScoreCalculation(score, reasonObject);
 					if (assumObject.cumAnswerFlag) {
 						lblScore.setText("Score = " + score);
 						submitButton.setVisible(false);
+						if(totQuestions == displayedQuestionFolders.size())
+						nxtButton.setVisible(false);
+					else
+						nxtButton.setVisible(true);
 					}
 					assumObject.DisableCheckBox();
 					isSubmitted = true;
 				}
-				nxtButton.setVisible(true);
 			}
 		});
 		/* Gap between options and button */
