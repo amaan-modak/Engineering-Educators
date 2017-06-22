@@ -17,15 +17,27 @@ public class EngineeringEducatorQuestions {
 			Random rand = new Random();
 			
 			String folder = quesfolders[rand.nextInt(quesfolders.length)];
-			if(!displayedQuestionFolders.contains(folder)){
-				displayedQuestionFolders.add(folder);
-				questionPath = folderPath + folder;
-			}
+			questionPath = folderPath + folder;
 			
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 		
 		return questionPath;
+	}
+	
+	public int getTotalQuestions(String folderPath){
+		String questionPath = null;
+		int num = 0;
+		try{
+			File dir = new File(folderPath);
+			String[] quesfolders = dir.list();
+			num = quesfolders.length;
+			
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		
+		return num;
 	}
 }

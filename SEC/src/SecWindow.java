@@ -30,6 +30,8 @@ public class SecWindow {
 	boolean isSubmitted = false;
 	int score = 0;
 	static String folderPath = "", questionPath = "";
+	static int totQuestions = 0;
+	static ArrayList<String> displayedQuestionFolders = new ArrayList<String>();
 	// Global declaration of GUI elements
 	private JFrame frame;
 	static JPanel panel;
@@ -48,6 +50,7 @@ public class SecWindow {
 				try {
 					CreateObjects();
 					InitializeContents();
+					totQuestions = quesObject.getTotalQuestions(folderPath);
 					SecWindow window = new SecWindow();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
@@ -75,9 +78,24 @@ public class SecWindow {
 	}
 
 	public static void InitializeContents() {
+		System.out.println("displayed questions count:"+displayedQuestionFolders.size());
+		boolean isDisplayed = false;
 		folderPath = "Questions/";
+		
 		/* Calling method to select random question folder */
-		questionPath = quesObject.FolderRandomSelection(folderPath);
+		do{
+			questionPath = quesObject.FolderRandomSelection(folderPath);
+			if(!displayedQuestionFolders.contains(questionPath)){
+				System.out.println("folder path not added");
+				displayedQuestionFolders.add(questionPath);
+				isDisplayed = false;
+			}
+			else{
+				System.out.println("folder path added");
+				isDisplayed = true;
+			}
+		}while(isDisplayed && displayedQuestionFolders.size() != totQuestions);
+		
 		System.out.println("new path=" + questionPath);
 		/* Calling method to fetch data from question folder */
 		// eduLogicObj.DataPreProcessing(eduObject);
@@ -108,7 +126,7 @@ public class SecWindow {
 		/* Local variable initialization */
 		JLabel lblTitle, lblScore, lblQuestion;
 		isSubmitted = false;
-		score = 0;
+		//score = 0;
 		/* Designing frame */
 		if (frame == null)
 			frame = new JFrame();
@@ -128,13 +146,15 @@ public class SecWindow {
 			panel.removeAll();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setBackground(new Color(46, 42, 42));
-		panel.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30)); //Padding around panel
-
+		panel.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30)); // Padding
+																			// around
+																			// panel
 
 		/* Labels to display title and score at the top of the panel */
-		lblScore = new JLabel("Score = 0");
+		lblScore = new JLabel("Score = "+score);
 		lblTitle = new JLabel("ENGINEERING EDUCATORS ");
-		//lblTitle.setIcon(new ImageIcon (Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/logo.png")))));
+		// lblTitle.setIcon(new ImageIcon
+		// (Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/logo.png")))));
 		lblTitle.setVerticalAlignment(SwingConstants.TOP);
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -186,8 +206,8 @@ public class SecWindow {
 		panel.add(sep1);
 
 		/* Question String */
-	    lblQuestion = new JLabel("Q: Which of the following assumptions are correct?");
-	    lblQuestion.setForeground(Color.WHITE);
+		lblQuestion = new JLabel("Q: Which of the following assumptions are correct?");
+		lblQuestion.setForeground(Color.WHITE);
 		lblQuestion.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panel.add(lblQuestion);
 
@@ -222,20 +242,26 @@ public class SecWindow {
 					score = reasonObject.ScoreCalculation(score);
 					lblScore.setText("Score = " + score);
 					submitButton.setVisible(false);
-					nxtButton.setVisible(true);
+					if(totQuestions == displayedQuestionFolders.size())
+						nxtButton.setVisible(false);
+					else
+						nxtButton.setVisible(true);
 				} else {
 					score = assumObject.ScoreCalculation(score, reasonObject);
 					if (assumObject.cumAnswerFlag) {
 						lblScore.setText("Score = " + score);
 						submitButton.setVisible(false);
-						nxtButton.setVisible(true);
+						if(totQuestions == displayedQuestionFolders.size())
+							nxtButton.setVisible(false);
+						else
+							nxtButton.setVisible(true);
 					}
 					assumObject.DisableCheckBox();
 					isSubmitted = true;
 				}
 			}
 		});
-		
+
 		/* Gap between options and button */
 		JSeparator sep2 = new JSeparator();
 		sep2.setMaximumSize(new Dimension(0, 30));
@@ -258,8 +284,7 @@ public class SecWindow {
 		// Split all assumptions in answer and statements, create check boxes
 		// Traverse through check boxes and add them on panel
 		for (int i = 0; i < assumObject.assumptions.size(); i++) {
-			panel.add(assumObject.assumptionChkbxList.get(i),
-					xAxisLocation + ((i * 2) + 10) + ", fill, default");
+			panel.add(assumObject.assumptionChkbxList.get(i), xAxisLocation + ((i * 2) + 10) + ", fill, default");
 			JLabel lblIncorrect = assumObject.TypeOfAssumption(reasonObject, assumObject.answers.get(i));
 
 			// Incorrect assumption
