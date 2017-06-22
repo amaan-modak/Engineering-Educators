@@ -94,10 +94,10 @@ public class EngineeringEducatorReason {
 				continue;
 			for (int j = 0; j < listOfRdbtnListForReasons.get(i).size(); j++) {
 				if (answers.get(i) == j && listOfRdbtnListForReasons.get(i).get(j).isSelected()) {
-					listOfRdbtnListForReasons.get(i).get(j).setBackground(new Color(102, 255, 102));
+					listOfRdbtnListForReasons.get(i).get(j).setBackground(new Color(0, 102, 34));
 					score += 1;
 				} else if (answers.get(i) == j) {
-					listOfRdbtnListForReasons.get(i).get(j).setBackground(new Color(102, 255, 102));
+					listOfRdbtnListForReasons.get(i).get(j).setBackground(new Color(0, 102, 34));
 				} else if (answers.get(i) != j && listOfRdbtnListForReasons.get(i).get(j).isSelected()) {
 					listOfRdbtnListForReasons.get(i).get(j).setBackground(new Color(204, 0, 0));
 				}

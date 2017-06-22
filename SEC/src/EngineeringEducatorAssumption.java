@@ -99,7 +99,14 @@ public class EngineeringEducatorAssumption {
 			// if selection doesn't compare with answer make
 			// background red otherwise green
 			if (ansChkbxComparison == false) {
-				assumptionChkbxList.get(j).setBackground(new Color(204, 0, 0)); // red
+				
+				if(answers.get(j) == 0) {
+					assumptionChkbxList.get(j).setBackground(new Color(204, 0, 0)); // red	
+				} else if(answers.get(j) == 2) {
+					assumptionChkbxList.get(j).setBackground(new Color(204, 51, 0)); // red
+				}
+				
+				
 
 				if (reasonObj.listOfRdbtnListForReasons.get(j) == null)
 					continue;
@@ -107,8 +114,12 @@ public class EngineeringEducatorAssumption {
 					reasonObj.listOfRdbtnListForReasons.get(j).get(k).setVisible(true);
 				}
 				reasonObj.reasonMsgLabelList.get(j).setVisible(true);
-			} else
-				assumptionChkbxList.get(j).setBackground(new Color(102, 255, 102)); // green
+			} else {
+				if(answers.get(j) == 1) {
+					assumptionChkbxList.get(j).setBackground(new Color(0, 102, 34)); // green	
+				}
+			}
+				
 			// compute cumulative answer
 			cumAnswerFlag = cumAnswerFlag & ansChkbxComparison;
 		}
@@ -136,8 +147,8 @@ public class EngineeringEducatorAssumption {
 	 * containing check boxes
 	 */
 	public void DisableCheckBox() {
-		for (int i = 0; i < assumptionChkbxList.size(); i++) {
-			assumptionChkbxList.get(i).setEnabled(false);
-		}
+//		for (int i = 0; i < assumptionChkbxList.size(); i++) {
+//			assumptionChkbxList.get(i).setEnabled(false);
+//		}
 	}
 }
