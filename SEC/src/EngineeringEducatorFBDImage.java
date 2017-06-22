@@ -11,7 +11,7 @@ import javax.swing.SwingConstants;
 
 public class EngineeringEducatorFBDImage {
 	BufferedImage fbdImg;
-	JLabel lblFbdImg = new JLabel("");
+	JLabel lblFbdImg = new JLabel("Free Body Diagram");
 	
 	public void ReadImage(File dir){
 		try {
@@ -27,6 +27,9 @@ public class EngineeringEducatorFBDImage {
 	public JLabel SetImage(){
 		lblFbdImg.setVerticalAlignment(SwingConstants.TOP);
 		lblFbdImg.setIcon(new ImageIcon(fbdImg));
+		lblFbdImg.setHorizontalTextPosition(JLabel.CENTER);
+		lblFbdImg.setVerticalTextPosition(JLabel.BOTTOM);
+		lblFbdImg.setForeground(Color.WHITE);
 		return lblFbdImg;
 	}
 	
