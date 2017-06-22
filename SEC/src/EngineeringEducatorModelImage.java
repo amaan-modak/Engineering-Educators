@@ -11,7 +11,7 @@ import javax.swing.SwingConstants;
 
 public class EngineeringEducatorModelImage {
 	BufferedImage modelImg;
-	JLabel lblModelImg = new JLabel("");
+	JLabel lblModelImg = new JLabel("Real World Model");
 	
 	public void ReadImage(File dir){
 		try {
@@ -27,6 +27,9 @@ public class EngineeringEducatorModelImage {
 	public JLabel SetImage(){
 		lblModelImg.setVerticalAlignment(SwingConstants.TOP);
 		lblModelImg.setIcon(new ImageIcon(modelImg));
+		lblModelImg.setHorizontalTextPosition(JLabel.CENTER);
+		lblModelImg.setVerticalTextPosition(JLabel.BOTTOM);
+		lblModelImg.setForeground(Color.WHITE);
 		return lblModelImg;
 	}
 	
