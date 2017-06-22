@@ -1,0 +1,13 @@
+import java.util.ArrayList;
+
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JRadioButton;
+
+public class EngineeringEducatorReason {
+	ArrayList<String> reasons = new ArrayList<String>();
+	ArrayList<Integer> answers = new ArrayList<Integer>();
+	ArrayList<ArrayList<JRadioButton>> listOfRdbtnListForReasons = new ArrayList<ArrayList<JRadioButton>>();
+	ArrayList<JLabel> reasonMsgLabelList = new ArrayList<JLabel>();
+	String path;
+}

@@ -1,0 +1,80 @@
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+
+import javax.swing.JCheckBox;
+
+import org.junit.Before;
+import org.junit.Test;
+
+public class EngineeringEducatorsLogicTest {
+
+	EngineeringEducatorLogic eel;
+	EngineeringEducator ee;
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void setUp() throws Exception {
+		eel =new EngineeringEducatorLogic();
+		ee=new EngineeringEducator();
+	}
+
+	/**
+	 * Test method for {@link sec.EngineeringEducatorLogic#FileReading(java.lang.String)}.
+	 */
+	@Test
+	public void testFileReading() {
+		//assertNull(EngineeringEducatorLogic.FileReading(eel));
+		assertNotNull(eel.FileReading("testfile.txt"));
+		ArrayList<String> str = eel.FileReading("testfile.txt");
+		for(int i=0; i<str.size(); i++){
+			System.out.println(str.get(i));
+			assertEquals(new Integer(i+1).toString(), str.get(i));
+		}
+		
+		
+		
+	}
+
+	/**
+	 * Test method for {@link sec.EngineeringEducatorLogic#FolderRandomSelection(sec.EngineeringEducator, java.lang.String)}.
+	 */
+//	@Test
+//	public void testFolderRandomSelection() {
+//		assertNotEquals(ee.getParentDir(),null);
+//	}
+
+	/**
+	 * Test method for {@link sec.EngineeringEducatorLogic#DataPreProcessing(sec.EngineeringEducator)}.
+	 */
+//	@Test
+//	public void testDataPreProcessing() {
+//		assertNotNull(ee.questionDir);
+//	}
+
+	/**
+	 * Test method for {@link sec.EngineeringEducatorLogic#ImageResizing(java.awt.image.BufferedImage, int, int)}.
+	 */
+//	@Test
+//	public void testImageResizing() {
+//		assertNotNull(EngineeringEducatorLogic.ImageResizing(null, 0, 0));
+//	}
+
+	/**
+	 * Test method for {@link sec.EngineeringEducatorLogic#CheckAnswer(javax.swing.JCheckBox, int)}.
+	 */
+	@Test
+	public void testCheckAnswer() {
+		JCheckBox chkbx1 = new JCheckBox();
+		chkbx1.setSelected(true);
+		assertEquals(eel.CheckAnswer(chkbx1, 1), true);
+		assertNotEquals(eel.CheckAnswer(chkbx1, 1), false);
+		chkbx1.setSelected(false);
+		assertEquals(eel.CheckAnswer(chkbx1, 0), true);
+		assertNotEquals(eel.CheckAnswer(chkbx1, 0), false);
+
+//		assertNotEquals(null, eel.CheckAnswer(null, 0));
+	}
+
+}

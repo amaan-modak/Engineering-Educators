@@ -1,0 +1,21 @@
+import java.util.ArrayList;
+
+import javax.swing.JCheckBox;
+
+public class EngineeringEducatorAssumption {
+	public ArrayList<String> assumptions = new ArrayList<String>();
+	public ArrayList<Integer> answers = new ArrayList<Integer>();
+	public ArrayList<JCheckBox> assumptionChkbxList = new ArrayList<JCheckBox>();
+	String path;
+	
+	
+	
+	/* DISABLE CHECKBOX
+	 * Method to disable all the checkboxes
+	 * Input: Arraylist containing check boxes*/
+	public void DisableCheckBox(){
+		for(int i = 0; i < assumptionChkbxList.size() ; i++){
+			assumptionChkbxList.get(i).setEnabled(false);
+		}
+	}
+}
