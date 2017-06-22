@@ -82,6 +82,7 @@ public class SecWindow {
 
 	public static void InitializeContents() {
 		folderPath = "Questions/";
+		boolean isDisplayed = false;
 		/* Calling method to select random question folder */
 		do{
 			questionPath = quesObject.FolderRandomSelection(folderPath);
@@ -148,7 +149,7 @@ public class SecWindow {
 
 
 		/* Labels to display title and score at the top of the panel */
-		lblScore = new JLabel("Score = 0");
+		lblScore = new JLabel("Score = "+score);
 		lblTitle = new JLabel("");
 		lblTitle.setIcon(new ImageIcon (Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/logo.png")))));
 		//lblTitle.setIcon(new ImageIcon (Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/logoalt.png"))))); //For alternate logo design
