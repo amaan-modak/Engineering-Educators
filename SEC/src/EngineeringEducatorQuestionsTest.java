@@ -16,7 +16,10 @@ public class EngineeringEducatorQuestionsTest {
 	@Test
 	public void testFolderRandomSelection() {
 		//fail("Not yet implemented");
-		assertNotNull(eeq.FolderRandomSelection("Questions"));
+		String randomFolder = null;
+		randomFolder = eeq.FolderRandomSelection("TestFiles/TestQuestions/");
+		assertNotNull(randomFolder);
+		assertTrue(randomFolder.equals("TestFiles/TestQuestions/Q1") || randomFolder.equals("TestFiles/TestQuestions/Q2"));		
 	}
 
 }

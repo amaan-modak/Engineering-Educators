@@ -10,7 +10,7 @@ public class EngineeringEducatorQuestions {
 	 * containing question folders
 	 */
 	public String FolderRandomSelection(String folderPath) {
-		String questionPath = "";
+		String questionPath = null;
 		try{
 			File dir = new File(folderPath);
 			String[] quesfolders = dir.list();
