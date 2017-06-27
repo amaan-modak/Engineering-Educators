@@ -1,4 +1,6 @@
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -65,7 +67,7 @@ public class EngineeringEducatorReason {
 			rdbReason.setBorder(BorderFactory.createEmptyBorder(5, 30, 5, 30));
 			reasonList.add(rdbReason);
 			rdbReason.setVisible(false);
-			bgroup.add(rdbReason);
+//			bgroup.add(rdbReason);
 		}
 		return reasonList;
 	}
@@ -106,6 +108,7 @@ public class EngineeringEducatorReason {
 				}
 
 			}
+			DisableRadioButton(listOfRdbtnListForReasons.get(i));
 		}
 		return score;
 	}
@@ -116,8 +119,21 @@ public class EngineeringEducatorReason {
 	 */
 	public void DisableRadioButton(ArrayList<JRadioButton> rdbList){
 		for(int i = 0; i < rdbList.size() ; i++){
-			if(rdbList.get(i).isEnabled())
-				rdbList.get(i).setEnabled(false);
+			if(rdbList.get(i).isEnabled()) {
+				final int rdbIndex = i;
+				rdbList.get(i).addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						if(rdbList.get(rdbIndex).isSelected())
+							rdbList.get(rdbIndex).setSelected(false);
+						else
+							rdbList.get(rdbIndex).setSelected(true);
+					}
+				});
+			}
+				
 		}
 	}
 }
