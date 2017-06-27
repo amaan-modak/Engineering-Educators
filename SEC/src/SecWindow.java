@@ -137,6 +137,7 @@ public class SecWindow {
 		frame.setBackground(Color.RED);
 		frame.getContentPane().setBackground(new Color(51, 153, 204));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setTitle("Engineering Educators");
 
 		/* Designing panel */
 		if (panel == null)
@@ -202,7 +203,7 @@ public class SecWindow {
 		panel.add(sep1);
 
 		/* Question String */
-	    lblQuestion = new JLabel("Q: Which of the following assumptions are correct?");
+	    lblQuestion = new JLabel("Q: Which of the following assumptions are needed?");
 	    lblQuestion.setForeground(Color.WHITE);
 		lblQuestion.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panel.add(lblQuestion);
