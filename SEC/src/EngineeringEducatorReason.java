@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 
@@ -45,6 +46,7 @@ public class EngineeringEducatorReason {
 	public 	ArrayList<JRadioButton> CreateReasonList(ArrayList<String> tempReasons) {
 		ArrayList<JRadioButton> reasonList = new ArrayList<JRadioButton>();
 		ArrayList<String> reasons = new ArrayList<String>();
+		ButtonGroup bgroup = new ButtonGroup();
 		System.out.println("Inside Create Reason List");
 		for (int j = 0; j < tempReasons.size(); j++) {
 			System.out.println(tempReasons.get(j));
@@ -63,6 +65,7 @@ public class EngineeringEducatorReason {
 			rdbReason.setBorder(BorderFactory.createEmptyBorder(5, 30, 5, 30));
 			reasonList.add(rdbReason);
 			rdbReason.setVisible(false);
+			bgroup.add(rdbReason);
 		}
 		return reasonList;
 	}
