@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -7,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
@@ -62,12 +64,13 @@ public class EngineeringEducatorReason {
 			}
 
 			JRadioButton rdbReason = CreateRadioButton(reasons.get(reasonIndex));
-			rdbReason.setBackground(new Color(46, 42, 42));
+			rdbReason.setBackground(new Color(0, 44, 61));
 			rdbReason.setForeground(Color.WHITE);
+			rdbReason.setFont(new Font("Georgia", Font.PLAIN, 16));
 			rdbReason.setBorder(BorderFactory.createEmptyBorder(5, 30, 5, 30));
 			reasonList.add(rdbReason);
 			rdbReason.setVisible(false);
-//			bgroup.add(rdbReason);
+			bgroup.add(rdbReason);
 		}
 		return reasonList;
 	}
