@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -106,19 +107,35 @@ public class EngineeringEducatorAssumption {
 					assumptionChkbxList.get(j).setBackground(new Color(204, 0, 0)); // red	
 				} else if(answers.get(j) == 2) {
 					assumptionChkbxList.get(j).setBackground(new Color(204, 51, 0)); // red
+				} else if(answers.get(j) == 1) {
+					assumptionChkbxList.get(j).setBackground(new Color(0, 102, 34)); // green
+					Font defultFont = assumptionChkbxList.get(j).getFont();
+					Font boldFont = new Font(defultFont.getFontName(), Font.ITALIC, defultFont.getSize());
+					assumptionChkbxList.get(j).setFont(boldFont);
 				}
 				
 				
 
 				if (reasonObj.listOfRdbtnListForReasons.get(j) == null)
+				{
+					cumAnswerFlag = cumAnswerFlag & ansChkbxComparison;
 					continue;
+				}
+					
 				for (int k = 0; k < reasonObj.listOfRdbtnListForReasons.get(j).size(); k++) {
 					reasonObj.listOfRdbtnListForReasons.get(j).get(k).setVisible(true);
 				}
 				reasonObj.reasonMsgLabelList.get(j).setVisible(true);
 			} else {
 				if(answers.get(j) == 1) {
-					assumptionChkbxList.get(j).setBackground(new Color(0, 102, 34)); // green	
+					assumptionChkbxList.get(j).setBackground(new Color(0, 102, 34)); // green
+					Font defultFont = assumptionChkbxList.get(j).getFont();
+					Font boldFont = new Font(defultFont.getFontName(), Font.ITALIC, defultFont.getSize());
+					assumptionChkbxList.get(j).setFont(boldFont);
+				}
+				//grey out correctly unselected incorrect answers
+				else {
+					assumptionChkbxList.get(j).setEnabled(false);
 				}
 			}
 				
