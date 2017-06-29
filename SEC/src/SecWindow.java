@@ -156,7 +156,7 @@ public class SecWindow {
 		lblScore = new JLabel("Score = "+score);
 		lblTitle = new JLabel("");
 		//lblTitle.setIcon(new ImageIcon (Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/logo.png")))));
-		lblTitle.setIcon(new ImageIcon (Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/logoalt.png"))))); //For alternate logo design
+		lblTitle.setIcon(new ImageIcon (Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/altlogo.png"))))); //For alternate logo design
 		lblScore.setFont(new Font("Georgia", Font.ITALIC+Font.BOLD, 28));
 		lblScore.setForeground(Color.WHITE);
 		lblScore.setMaximumSize(new Dimension(1366, 100));

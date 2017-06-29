@@ -100,7 +100,7 @@ public class EndPage {
 
 		//Team Photo
 		JLabel lblWcLogo = new JLabel("");
-		lblWcLogo.setIcon(new ImageIcon (Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/logoalt.png")))));
+		lblWcLogo.setIcon(new ImageIcon (Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/altlogo.png")))));
 		lblWcLogo.setAlignmentX(0.5f);
 		screen.add(lblWcLogo, BorderLayout.CENTER);
 		screen.add(Box.createVerticalStrut(40));
