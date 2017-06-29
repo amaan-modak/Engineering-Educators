@@ -25,11 +25,14 @@ public class EndPage {
 
 	private JFrame endFrame;
 	static JPanel screen;
-
+	static int score = 0;
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		if(args.length > 0) {
+			score = Integer.parseInt(args[0]);
+		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -88,7 +91,7 @@ public class EndPage {
 		screen.add(lblThank, BorderLayout.NORTH);
 		screen.add(Box.createVerticalStrut(40));
 		
-		JLabel lblFinScore = new JLabel("Your Final Score is 6");
+		JLabel lblFinScore = new JLabel("Your Final Score is "+score);
 		lblFinScore.setFont(new Font("Georgia", Font.BOLD+Font.ITALIC, 34));
 		lblFinScore.setForeground(Color.WHITE);
 		lblFinScore.setAlignmentX(0.5f);

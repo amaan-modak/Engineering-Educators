@@ -156,7 +156,7 @@ public class SecWindow {
 		lblScore = new JLabel("Score = "+score);
 		lblTitle = new JLabel("");
 		//lblTitle.setIcon(new ImageIcon (Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/logo.png")))));
-		lblTitle.setIcon(new ImageIcon (Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/altlogo.png"))))); //For alternate logo design
+		lblTitle.setIcon(new ImageIcon (Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/logoalt.png"))))); //For alternate logo design
 		lblScore.setFont(new Font("Georgia", Font.ITALIC+Font.BOLD, 28));
 		lblScore.setForeground(Color.WHITE);
 		lblScore.setMaximumSize(new Dimension(1366, 100));
@@ -215,7 +215,18 @@ public class SecWindow {
 		// GUISettingAssumptionsList(tempAssumptions);
 
 		//End Test Button
-		//JButton endButton = new JButton("End Test");
+		JButton endButton = new JButton("End Test");
+		endButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				frame.dispose();
+				String [] arguments = {""+score};
+				EndPage.main(arguments);
+			}
+		});
+		endButton.setVisible(false);
 		
 		// Next Button
 		JButton nxtButton = new JButton("Next Question");
@@ -241,19 +252,28 @@ public class SecWindow {
 					System.out.println("Inside is Submitted true score:" + score);
 					lblScore.setText("Score = " + score);
 					submitButton.setVisible(false);
-					if(totQuestions == displayedQuestionFolders.size())
+					if(totQuestions == displayedQuestionFolders.size()) {
 						nxtButton.setVisible(false);
-					else
+						endButton.setVisible(true);
+					}	
+					else {
 						nxtButton.setVisible(true);
+					}
+						
 				} else {
 					score = assumObject.ScoreCalculation(score, reasonObject);
 					if (assumObject.cumAnswerFlag) {
 						lblScore.setText("Score = " + score);
 						submitButton.setVisible(false);
-						if(totQuestions == displayedQuestionFolders.size())
-						nxtButton.setVisible(false);
-					else
+						if(totQuestions == displayedQuestionFolders.size()) {
+							nxtButton.setVisible(false);
+							endButton.setVisible(true);
+						}
+						
+					else {
 						nxtButton.setVisible(true);
+					}
+						
 					}
 					assumObject.DisableCheckBox();
 					isSubmitted = true;
@@ -264,6 +284,7 @@ public class SecWindow {
 		panel.add(Box.createVerticalStrut(20));
 		panel.add(submitButton);
 		panel.add(nxtButton);
+		panel.add(endButton);
 		JScrollPane scrollPane = new JScrollPane(panel);
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		frame.setVisible(true);
