@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -7,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
@@ -62,12 +64,13 @@ public class EngineeringEducatorReason {
 			}
 
 			JRadioButton rdbReason = CreateRadioButton(reasons.get(reasonIndex));
-			rdbReason.setBackground(new Color(46, 42, 42));
+			rdbReason.setBackground(new Color(0, 44, 61));
 			rdbReason.setForeground(Color.WHITE);
+			rdbReason.setFont(new Font("Georgia", Font.PLAIN, 16));
 			rdbReason.setBorder(BorderFactory.createEmptyBorder(5, 30, 5, 30));
 			reasonList.add(rdbReason);
 			rdbReason.setVisible(false);
-//			bgroup.add(rdbReason);
+			bgroup.add(rdbReason);
 		}
 		return reasonList;
 	}
@@ -99,12 +102,12 @@ public class EngineeringEducatorReason {
 				continue;
 			for (int j = 0; j < listOfRdbtnListForReasons.get(i).size(); j++) {
 				if (answers.get(i) == j && listOfRdbtnListForReasons.get(i).get(j).isSelected()) {
-					listOfRdbtnListForReasons.get(i).get(j).setBackground(new Color(0, 102, 34));
+					listOfRdbtnListForReasons.get(i).get(j).setForeground(new Color(49, 216, 23));
 					score += 1;
 				} else if (answers.get(i) == j) {
-					listOfRdbtnListForReasons.get(i).get(j).setBackground(new Color(0, 102, 34));
+					listOfRdbtnListForReasons.get(i).get(j).setForeground(new Color(49, 216, 23));
 				} else if (answers.get(i) != j && listOfRdbtnListForReasons.get(i).get(j).isSelected()) {
-					listOfRdbtnListForReasons.get(i).get(j).setBackground(new Color(204, 0, 0));
+					listOfRdbtnListForReasons.get(i).get(j).setForeground(new Color(249, 29, 44));
 				}
 
 			}

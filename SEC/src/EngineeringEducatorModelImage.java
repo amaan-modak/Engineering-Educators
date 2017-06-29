@@ -17,7 +17,7 @@ public class EngineeringEducatorModelImage {
 	public void ReadImage(File dir){
 		try {
 			BufferedImage img = ImageIO.read(dir);
-			modelImg = ImageResizing(img, 500, 300);
+			modelImg = ImageResizing(img, 420, 250);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

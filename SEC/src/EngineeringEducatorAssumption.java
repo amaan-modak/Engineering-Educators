@@ -46,8 +46,9 @@ public class EngineeringEducatorAssumption {
 				Integer assumptionAnswer = Integer.parseInt(splitter[1]);
 				answers.add(assumptionAnswer);
 				JCheckBox chkbxAssumption = CreateCheckBox(assumptions.get(j));
-				chkbxAssumption.setBackground(new Color(46, 42, 42));
+				chkbxAssumption.setBackground(new Color(0, 44, 61));
 				chkbxAssumption.setForeground(Color.WHITE);
+				chkbxAssumption.setFont(new Font("Georgia", Font.PLAIN, 16));
 				assumptionChkbxList.add(chkbxAssumption);
 			}
 		} catch (FileNotFoundException e) {
@@ -81,10 +82,12 @@ public class EngineeringEducatorAssumption {
 			// add a label saying this assumption is incorrect/ complicated
 			if (ansType == 0) {
 				lblIncorrect = new JLabel("This assumption is incorrect, what could be the reason?");
+				lblIncorrect.setFont(new Font("Georgia", Font.PLAIN, 16));
 				lblIncorrect.setVisible(false);
 				reasonObject.reasonMsgLabelList.add(lblIncorrect);
 			} else if (ansType == 2) {
 				lblIncorrect = new JLabel("This assumption is a complicating factor, what could be the reason?");
+				lblIncorrect.setFont(new Font("Georgia", Font.PLAIN, 16));
 				lblIncorrect.setVisible(false);
 				reasonObject.reasonMsgLabelList.add(lblIncorrect);
 			}

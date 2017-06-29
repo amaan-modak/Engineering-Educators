@@ -12,12 +12,12 @@ import javax.swing.SwingConstants;
 
 public class EngineeringEducatorFBDImage {
 	BufferedImage fbdImg;
-	JLabel lblFbdImg = new JLabel("Free Body Diagram");
+	JLabel lblFbdImg = new JLabel("Idealized Model");
 	
 	public void ReadImage(File dir){
 		try {
 			BufferedImage img = ImageIO.read(dir);
-			fbdImg = ImageResizing(img, 700, 300);
+			fbdImg = ImageResizing(img, 600, 250);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
