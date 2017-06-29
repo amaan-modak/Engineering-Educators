@@ -116,6 +116,14 @@ public class WelcomePage {
 		startButton.setFocusPainted(false);
 		screen.add(startButton, BorderLayout.SOUTH);
 		screen.add(Box.createVerticalStrut(40));
+		startButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+				homeFrame.dispose();
+				SecWindow.main(null);
+			}
+		});
 				
 		homeFrame.getContentPane().add(screen);
 	}
