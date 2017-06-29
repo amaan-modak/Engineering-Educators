@@ -7,6 +7,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -95,7 +97,7 @@ public class EndPage {
 
 		//Team Photo
 		JLabel lblWcLogo = new JLabel("");
-		lblWcLogo.setIcon(new ImageIcon (Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/altlogo.png")))));
+		lblWcLogo.setIcon(new ImageIcon (Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/logoalt.png")))));
 		lblWcLogo.setAlignmentX(0.5f);
 		screen.add(lblWcLogo, BorderLayout.CENTER);
 		screen.add(Box.createVerticalStrut(40));
@@ -122,7 +124,14 @@ public class EndPage {
 		exitButton.setFocusPainted(false);
 		screen.add(exitButton, BorderLayout.SOUTH);
 		screen.add(Box.createVerticalStrut(40));
+		exitButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				endFrame.dispose();
 				
+			}
+		});		
 		endFrame.getContentPane().add(screen);
 	}
 
