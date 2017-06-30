@@ -1,4 +1,7 @@
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -43,8 +46,9 @@ public class EngineeringEducatorAssumption {
 				Integer assumptionAnswer = Integer.parseInt(splitter[1]);
 				answers.add(assumptionAnswer);
 				JCheckBox chkbxAssumption = CreateCheckBox(assumptions.get(j));
-				chkbxAssumption.setBackground(new Color(46, 42, 42));
+				chkbxAssumption.setBackground(new Color(0, 44, 61));
 				chkbxAssumption.setForeground(Color.WHITE);
+				chkbxAssumption.setFont(new Font("Georgia", Font.PLAIN, 16));
 				assumptionChkbxList.add(chkbxAssumption);
 			}
 		} catch (FileNotFoundException e) {
@@ -78,10 +82,12 @@ public class EngineeringEducatorAssumption {
 			// add a label saying this assumption is incorrect/ complicated
 			if (ansType == 0) {
 				lblIncorrect = new JLabel("This assumption is incorrect, what could be the reason?");
+				lblIncorrect.setFont(new Font("Georgia", Font.PLAIN, 16));
 				lblIncorrect.setVisible(false);
 				reasonObject.reasonMsgLabelList.add(lblIncorrect);
 			} else if (ansType == 2) {
 				lblIncorrect = new JLabel("This assumption is a complicating factor, what could be the reason?");
+				lblIncorrect.setFont(new Font("Georgia", Font.PLAIN, 16));
 				lblIncorrect.setVisible(false);
 				reasonObject.reasonMsgLabelList.add(lblIncorrect);
 			}
@@ -104,19 +110,35 @@ public class EngineeringEducatorAssumption {
 					assumptionChkbxList.get(j).setBackground(new Color(204, 0, 0)); // red	
 				} else if(answers.get(j) == 2) {
 					assumptionChkbxList.get(j).setBackground(new Color(204, 51, 0)); // red
+				} else if(answers.get(j) == 1) {
+					assumptionChkbxList.get(j).setBackground(new Color(0, 102, 34)); // green
+					Font defultFont = assumptionChkbxList.get(j).getFont();
+					Font boldFont = new Font(defultFont.getFontName(), Font.ITALIC, defultFont.getSize());
+					assumptionChkbxList.get(j).setFont(boldFont);
 				}
 				
 				
 
 				if (reasonObj.listOfRdbtnListForReasons.get(j) == null)
+				{
+					cumAnswerFlag = cumAnswerFlag & ansChkbxComparison;
 					continue;
+				}
+					
 				for (int k = 0; k < reasonObj.listOfRdbtnListForReasons.get(j).size(); k++) {
 					reasonObj.listOfRdbtnListForReasons.get(j).get(k).setVisible(true);
 				}
 				reasonObj.reasonMsgLabelList.get(j).setVisible(true);
 			} else {
 				if(answers.get(j) == 1) {
-					assumptionChkbxList.get(j).setBackground(new Color(0, 102, 34)); // green	
+					assumptionChkbxList.get(j).setBackground(new Color(0, 102, 34)); // green
+					Font defultFont = assumptionChkbxList.get(j).getFont();
+					Font boldFont = new Font(defultFont.getFontName(), Font.ITALIC, defultFont.getSize());
+					assumptionChkbxList.get(j).setFont(boldFont);
+				}
+				//grey out correctly unselected incorrect answers
+				else {
+					assumptionChkbxList.get(j).setEnabled(false);
 				}
 			}
 				
@@ -147,8 +169,21 @@ public class EngineeringEducatorAssumption {
 	 * containing check boxes
 	 */
 	public void DisableCheckBox() {
-//		for (int i = 0; i < assumptionChkbxList.size(); i++) {
+		for (int i = 0; i < assumptionChkbxList.size(); i++) {
 //			assumptionChkbxList.get(i).setEnabled(false);
-//		}
+			final int chkbxIndex = i;
+			assumptionChkbxList.get(i).addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					if(assumptionChkbxList.get(chkbxIndex).isSelected())
+						assumptionChkbxList.get(chkbxIndex).setSelected(false);
+					else
+						assumptionChkbxList.get(chkbxIndex).setSelected(true);
+//					assumptionChkbxList.get(chkbxIndex).setSelected(false);
+				}
+			});
+		}
 	}
 }

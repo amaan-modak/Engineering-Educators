@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -11,12 +12,12 @@ import javax.swing.SwingConstants;
 
 public class EngineeringEducatorModelImage {
 	BufferedImage modelImg;
-	JLabel lblModelImg = new JLabel("");
+	JLabel lblModelImg = new JLabel("Real World Model");
 	
 	public void ReadImage(File dir){
 		try {
 			BufferedImage img = ImageIO.read(dir);
-			modelImg = ImageResizing(img, 500, 300);
+			modelImg = ImageResizing(img, 420, 250);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -27,6 +28,9 @@ public class EngineeringEducatorModelImage {
 	public JLabel SetImage(){
 		lblModelImg.setVerticalAlignment(SwingConstants.TOP);
 		lblModelImg.setIcon(new ImageIcon(modelImg));
+		lblModelImg.setHorizontalTextPosition(JLabel.CENTER);
+		lblModelImg.setVerticalTextPosition(JLabel.BOTTOM);
+		lblModelImg.setForeground(Color.WHITE);
 		return lblModelImg;
 	}
 	

@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -11,12 +12,12 @@ import javax.swing.SwingConstants;
 
 public class EngineeringEducatorFBDImage {
 	BufferedImage fbdImg;
-	JLabel lblFbdImg = new JLabel("");
+	JLabel lblFbdImg = new JLabel("Idealized Model");
 	
 	public void ReadImage(File dir){
 		try {
 			BufferedImage img = ImageIO.read(dir);
-			fbdImg = ImageResizing(img, 700, 300);
+			fbdImg = ImageResizing(img, 600, 250);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -27,6 +28,9 @@ public class EngineeringEducatorFBDImage {
 	public JLabel SetImage(){
 		lblFbdImg.setVerticalAlignment(SwingConstants.TOP);
 		lblFbdImg.setIcon(new ImageIcon(fbdImg));
+		lblFbdImg.setHorizontalTextPosition(JLabel.CENTER);
+		lblFbdImg.setVerticalTextPosition(JLabel.BOTTOM);
+		lblFbdImg.setForeground(Color.WHITE);
 		return lblFbdImg;
 	}
 	

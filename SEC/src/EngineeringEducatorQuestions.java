@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class EngineeringEducatorQuestions {
-	ArrayList<String> displayedQuestionFolders = new ArrayList<String>();
 	/*
 	 * FOLDER RANDOM SELECTION Method to randomly select a question folder
 	 * Input: 1. EngineeringEducator class object 2. Path of the directory
@@ -27,7 +26,6 @@ public class EngineeringEducatorQuestions {
 	}
 	
 	public int getTotalQuestions(String folderPath){
-		String questionPath = null;
 		int num = 0;
 		try{
 			File dir = new File(folderPath);
