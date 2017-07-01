@@ -1,3 +1,0 @@
-Valid Reason|1
-Invalid Reason|0
-Invalid Reason|0

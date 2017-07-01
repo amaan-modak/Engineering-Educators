@@ -1,0 +1,8 @@
+MaxScore:4
+ScorePerAssum:1
+ScorePerReason:0
+Assumptions:
+Forces are reasonably approximated using static analysis|correct
+Lower leg remains approximately perpendicular to upper leg|correct
+Hip acts as a pivot point (no lifting off the bed)|correct
+Patient does not slide on the bed|correct

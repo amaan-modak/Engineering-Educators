@@ -1,4 +1,0 @@
-Weight of upper leg is more than weight of lower leg.|0
-tension in lift rope is directly proportional to position of upper leg.|1
-Upper leg is at 90 degree with bed.|0
-Length of upper leg is less than length of lower leg.|0
