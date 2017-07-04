@@ -1,6 +1,7 @@
-MaxScore:4
-ScorePerAssum:1
+MaxScore:8
+ScorePerAssum:2
 ScorePerReason:0
+ScorePerNegAssum:-1
 Assumptions:
 Forces are reasonably approximated using static analysis|correct
 Lower leg remains approximately perpendicular to upper leg|correct

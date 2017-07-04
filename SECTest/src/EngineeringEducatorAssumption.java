@@ -7,16 +7,17 @@ import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JRadioButton;
 
-public class TestAssumption {
+public class EngineeringEducatorAssumption {
 	String assumption = "";
 	String answer = "";
 	ArrayList<String> reasonList = new ArrayList<String>();
-	HashMap<String,TestReason> reasonObjMap = new HashMap<String,TestReason>(); //Key = Reason, value = Reason class object
+	HashMap<String,EngineeringEducatorReason> reasonObjMap = new HashMap<String,EngineeringEducatorReason>(); //Key = Reason, value = Reason class object
 	ArrayList<JRadioButton> reasonRdbList = new ArrayList<JRadioButton>();
+	boolean anywrongreason = false;
 
 	
 	/***Constructor***/
-	public TestAssumption(String assumption, String answer) {
+	public EngineeringEducatorAssumption(String assumption, String answer) {
 		// TODO Auto-generated constructor stub
 		this.assumption = assumption;
 		this.answer = answer;
@@ -47,17 +48,20 @@ public class TestAssumption {
 	
 	public int setReasonList(int reasonIdx, ArrayList<String> content) {
 		String reasonText = "";
+		System.out.println(reasonIdx);
 		while (reasonIdx < content.size()) {
 			reasonText = content.get(reasonIdx);
+			//System.out.println(reasonText);
 			if (!reasonText.equals("End Reasons")) {
 				String[] reasonSplit = reasonText.split("\\|");
 				reasonList.add(reasonSplit[0]);
-				TestReason reasonObj = new TestReason(reasonSplit[0], reasonSplit[1]);
+				EngineeringEducatorReason reasonObj = new EngineeringEducatorReason(reasonSplit[0], reasonSplit[1]);
 				reasonObjMap.put(reasonSplit[0],reasonObj);
 				reasonIdx++;
 			} else
 				break;
 		}
+		//System.out.println(reasonList.get(0));
 		setReasonRdbList();
 		return reasonIdx;
 	}
@@ -72,6 +76,7 @@ public class TestAssumption {
 	
 	public void setReasonRdbList() {
 		int numAssum = getNumberOfReasons();
+		//System.out.println(numAssum);
 		for (int i = 0; i < numAssum; i++) {
 			String reason = getReason(i);
 			JRadioButton rdbReason = reasonObjMap.get(reason).CreateRadioButton(reason);
@@ -99,4 +104,38 @@ public class TestAssumption {
 		
 	//Score calculation (int score)
 	//
+	public boolean ScoreCalculation(){
+		for (int i = 0; i < reasonRdbList.size(); i++) {
+			
+			boolean ansRdbComparison = true;
+			String reasonans = reasonObjMap.get(reasonList.get(i)).answer;
+			//System.out.println(assumptions.get(j));
+			if (reasonRdbList.get(i).isSelected() && reasonans.equals("valid"))
+				ansRdbComparison = true;
+			else if (!reasonRdbList.get(i).isSelected() && reasonans.equals("invalid"))
+				ansRdbComparison = true;
+			else
+				ansRdbComparison = false;
+
+			if (ansRdbComparison == false) {
+				
+				if(reasonans.equals("invalid")) {
+					reasonRdbList.get(i).setBackground(new Color(204, 0, 0)); // red
+					anywrongreason = true;
+				}
+				else if(reasonans.equals("valid")){
+					reasonRdbList.get(i).setBackground(new Color(0, 102, 34)); // green
+					anywrongreason = true;
+				}
+				
+			}
+			System.out.println(reasonans);
+			if(reasonans.equals("correct")) {
+				reasonRdbList.get(i).setBackground(new Color(0, 102, 34)); // green	
+			}
+		}
+				//DisableRadioButton(listOfRdbtnListForReasons.get(i));
+		//DisableRadioButton(listOfRdbtnListForReasons.get(i));
+		return anywrongreason;
+	}
 }

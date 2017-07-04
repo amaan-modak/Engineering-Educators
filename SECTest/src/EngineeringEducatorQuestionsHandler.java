@@ -2,12 +2,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class QuestionHandler {
+public class EngineeringEducatorQuestionsHandler {
 	static ArrayList<String> displayedQuestionFolders = new ArrayList<String>();
 	static String folderPath = "";
 	
-	public QuestionHandler(String folderPath){
-		this.folderPath = folderPath;
+	public EngineeringEducatorQuestionsHandler(String folderPath){
+		EngineeringEducatorQuestionsHandler.folderPath = folderPath;
 	}
 	
 	public static String FolderRandomSelection() {

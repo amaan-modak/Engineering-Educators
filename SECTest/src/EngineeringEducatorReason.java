@@ -4,11 +4,11 @@ import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.JRadioButton;
 
-public class TestReason {
+public class EngineeringEducatorReason {
 	String reason = "";
 	String answer = "";
 	
-	public TestReason(String reason, String answer) {
+	public EngineeringEducatorReason(String reason, String answer) {
 		// TODO Auto-generated constructor stub
 		this.reason = reason;
 		this.answer = answer;

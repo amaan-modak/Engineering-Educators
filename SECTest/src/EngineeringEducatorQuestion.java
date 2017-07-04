@@ -26,34 +26,37 @@ public class EngineeringEducatorQuestion {
 	ArrayList<String> data = new ArrayList<String>();
 	ArrayList<String> assumptions = new ArrayList<String>();
 	ArrayList<JCheckBox> assumptionChkbxList = new ArrayList<JCheckBox>();
-	HashMap<String,TestAssumption> assumptionObjMap = new HashMap<String,TestAssumption>();
-	//Key = assumption, value = Assumption class object
-	
-	int perReasonScore = 0;
-	
-	int maxScore = 0, perAssumScore = 0;
+	HashMap<String, EngineeringEducatorAssumption> assumptionObjMap = new HashMap<String, EngineeringEducatorAssumption>();
+	// Key = assumption, value = Assumption class object
 
-	/***Constructor***/
+	int perReasonScore = 0;
+
+	int maxScore = 0, perAssumScore = 0;
+	int perAssumNegScore = 0;
+	boolean anywrong = false;
+
+	/*** Constructor ***/
 	public EngineeringEducatorQuestion(String questionPath) {
 		// TODO Auto-generated constructor stub
 		this.questionPath = questionPath;
 	}
+
 	/***************/
-	
-	
-	/***Getters & Setters***/
-	
-	public TestAssumption getAssumObj(String assumption) {
+
+	/*** Getters & Setters ***/
+
+	public EngineeringEducatorAssumption getAssumObj(String assumption) {
 		return assumptionObjMap.get(assumption);
 	}
 
 	public int getNumberOfAssumptions() {
 		return assumptions.size();
 	}
-	
-	public String getAssumption(int idx){
+
+	public String getAssumption(int idx) {
 		return assumptions.get(idx);
 	}
+
 	public void setPerReasonScore(int score) {
 		perReasonScore = score;
 	}
@@ -61,7 +64,7 @@ public class EngineeringEducatorQuestion {
 	public int getPerReasonScore() {
 		return this.perReasonScore;
 	}
-	
+
 	public void setMaxScore(int score) {
 		maxScore = score;
 	}
@@ -70,22 +73,25 @@ public class EngineeringEducatorQuestion {
 		perAssumScore = score;
 	}
 
-	public JLabel getModelImage(){
+	public void setPerAssumNegScore(int score) {
+		perAssumNegScore = score;
+	}
+
+	public JLabel getModelImage() {
 		return modObj.getImage();
 	}
-	
-	public JLabel getFbdImage(){
+
+	public JLabel getFbdImage() {
 		return fbdObj.getImage();
 	}
-	
-	public String getAnswer(String assumption){
+
+	public String getAnswer(String assumption) {
 		return assumptionObjMap.get(assumption).getAnswer();
 	}
-	
+
 	public ArrayList<JCheckBox> getAssumptionChkbxList() {
 		return assumptionChkbxList;
 	}
-
 
 	public void setAssumptionChkbxList() {
 		int numAssum = getNumberOfAssumptions();
@@ -95,13 +101,13 @@ public class EngineeringEducatorQuestion {
 			this.assumptionChkbxList.add(chkBox);
 		}
 	}
-	
-	public JCheckBox getAssumptionCheckbox(int idx){
+
+	public JCheckBox getAssumptionCheckbox(int idx) {
 		return assumptionChkbxList.get(idx);
 	}
 
 	/*****************/
-	
+
 	// Call methods to set fbd, model images and method to read questions.txt
 	public void readQuestion() {
 		File dir1 = new File(questionPath);
@@ -121,7 +127,7 @@ public class EngineeringEducatorQuestion {
 		readScores();
 		setAssumptionChkbxList();
 	}
-	
+
 	public void readFbdImage(File imgFile) {
 		fbdObj.readImage(imgFile);
 	}
@@ -156,26 +162,26 @@ public class EngineeringEducatorQuestion {
 	public void readAssumptions() {
 		// Read each line of assumption
 		for (int dataIdx = 0; dataIdx < data.size(); dataIdx++) {
-			if (data.get(dataIdx).contains("Assumptions:"))
-			{
-				int assumIdx = dataIdx+1;
-				while(assumIdx < data.size()){
+			if (data.get(dataIdx).contains("Assumptions:")) {
+				int assumIdx = dataIdx + 1;
+				while (assumIdx < data.size()) {
 					String[] splitter = data.get(assumIdx).split("\\|");
-					TestAssumption assumObj = new TestAssumption(splitter[0],splitter[1]);
+					System.out.println(splitter[0]);
+					EngineeringEducatorAssumption assumObj = new EngineeringEducatorAssumption(splitter[0], splitter[1]);
 					assumptionObjMap.put(splitter[0], assumObj);
 					assumptions.add(splitter[0]);
-					if(splitter[1].equals("incorrect") || splitter[1].equals("complicated")){
-						// If incorrect/complicated, tell assumption class to create
+					if (splitter[1].equals("incorrect") || splitter[1].equals("complicated")) {
+						// If incorrect/complicated, tell assumption class to
+						// create
 						// reason list for that particular assumption, pass the
-						// data of text file, index from where list of reasons starts
+						// data of text file, index from where list of reasons
+						// starts
 						// method will return index where list of reasons ends
-						int reasonIdx = assumIdx + 2;
-						//int endReasonIdx = assumObj.setIncorrectAssumReasonMap(reasonIdx, data, splitter[0]);
+						int reasonIdx = assumIdx + 1;
 						int endReasonIdx = assumObj.setReasonList(reasonIdx, data);
 						assumIdx = endReasonIdx + 1;
-					}
-					else
-						//move to next assumption
+					} else
+						// move to next assumption
 						assumIdx++;
 				}
 				break;
@@ -195,49 +201,125 @@ public class EngineeringEducatorQuestion {
 				setPerAssumScore(new Integer(score[1]));
 			}
 
-			//Might be moved to assumption class
+			// Might be moved to assumption class
 			if (data.get(j).contains("ScorePerReason:")) {
 				String[] score = data.get(j).trim().split("\\:");
 				setPerReasonScore(new Integer(score[1]));
 			}
+
+			if (data.get(j).contains("ScorePerNegAssum:")) {
+				String[] score = data.get(j).trim().split("\\:");
+				setPerAssumNegScore(new Integer(score[1]));
+			}
 		}
 	}
 
-	public JLabel MessageType(String assumption){
+	public JLabel MessageType(String assumption) {
 		String assumtype = assumptionObjMap.get(assumption).getAnswer();
 		JLabel lblMessage = null;
-		
-		if(assumtype.equals("correct")){
-		//	reasonObject.listOfRdbtnListForReasons.add(null);
-		//	reasonObject.answers.add(-1);
-		//	reasonObject.reasonMsgLabelList.add(null);
+
+		if (assumtype.equals("correct")) {
+			// reasonObject.listOfRdbtnListForReasons.add(null);
+			// reasonObject.answers.add(-1);
+			// reasonObject.reasonMsgLabelList.add(null);
 		}
-		if(assumtype.equals("incorrect")){
+		if (assumtype.equals("incorrect")) {
 			lblMessage = new JLabel("This assumption is incorrect, what could be the reason?");
 			lblMessage.setFont(new Font("Georgia", Font.PLAIN, 16));
 			lblMessage.setVisible(false);
-		//	reasonObject.reasonMsgLabelList.add(lblIncorrect);
+			// reasonObject.reasonMsgLabelList.add(lblIncorrect);
 		}
-		if(assumtype.equals("complicated")){
+		if (assumtype.equals("complicated")) {
 			lblMessage = new JLabel("This assumption is a complicating factor, what could be the reason?");
 			lblMessage.setFont(new Font("Georgia", Font.PLAIN, 16));
 			lblMessage.setVisible(false);
-		//	reasonObject.reasonMsgLabelList.add(lblIncorrect);
+			// reasonObject.reasonMsgLabelList.add(lblIncorrect);
 		}
-		
+
 		return lblMessage;
-		
-		}
-	
-	public void disableCheckBoxes(){
-		for(int chkIdx = 0 ; chkIdx < assumptionChkbxList.size() ; chkIdx++){
+
+	}
+
+	public void disableCheckBoxes() {
+		for (int chkIdx = 0; chkIdx < assumptionChkbxList.size(); chkIdx++) {
 			assumptionChkbxList.get(chkIdx).setEnabled(false);
 		}
 	}
-	
-	//SCORE CALCULATION (int score)
-	//For each assumption object, get answer from assumption class
-	//If correct, then add perAssumption mark to score, do bg manipulation
-	//If incorrect/complicated, do bg manipulation, make list of radio button visible 
-	//Return score
+
+	// SCORE CALCULATION (int score)
+	// For each assumption object, get answer from assumption class
+	// If correct, then add perAssumption mark to score, do bg manipulation
+	// If incorrect/complicated, do bg manipulation, make list of radio button
+	// visible
+	// Return score
+	public int ScoreCalculation(int score) {
+		int tempscore = 0;
+		for (int j = 0; j < assumptionChkbxList.size(); j++) {
+			boolean ansChkbxComparison = true;
+			String assumans = getAnswer(assumptions.get(j));
+			// System.out.println(assumptions.get(j));
+			if (assumptionChkbxList.get(j).isSelected() && assumans.equals("correct"))
+				ansChkbxComparison = true;
+			else if (!assumptionChkbxList.get(j).isSelected()
+					&& (assumans.equals("incorrect") || assumans.equals("complicated")))
+				ansChkbxComparison = true;
+			else
+				ansChkbxComparison = false;
+			if (ansChkbxComparison == false) {
+
+				if (assumans.equals("incorrect")) {
+					assumptionChkbxList.get(j).setBackground(new Color(204, 0, 0)); // red
+					tempscore += perAssumNegScore;
+					anywrong = true;
+				} else if (assumans.equals("complicated")) {
+					assumptionChkbxList.get(j).setBackground(new Color(204, 51, 0)); // red
+					tempscore += perAssumNegScore;
+					anywrong = true;
+				} else if (assumans.equals("correct")) {
+					assumptionChkbxList.get(j).setBackground(new Color(0, 102, 34)); // green
+				}
+
+				if (assumptionObjMap.get(assumptions.get(j)).reasonRdbList.size() > 0) {
+					for (int k = 0; k < assumptionObjMap.get(assumptions.get(j)).reasonRdbList.size(); k++) {
+						assumptionObjMap.get(assumptions.get(j)).reasonRdbList.get(k).setVisible(true);
+					}
+				}
+			}
+			if (assumans.equals("correct")) {
+				assumptionChkbxList.get(j).setBackground(new Color(0, 102, 34)); // green
+			}
+			if (ansChkbxComparison == true && assumans.equals("correct")) {
+				tempscore += perAssumScore;
+			}
+
+		}
+		if (tempscore <= maxScore) {
+			score += tempscore;
+		}
+		return score;
+	}
+
+	public int ScoreCalculationReason(int score) {
+		int tempscore = 0;
+		anywrong = false;
+		System.out.println("Per Reason Score" + perReasonScore);
+		for (int j = 0; j < assumptions.size(); j++) {
+			if ((assumptionObjMap.get(assumptions.get(j)).reasonRdbList.size() > 0)) {
+				boolean reasonAnsStatus = assumptionObjMap.get(assumptions.get(j)).ScoreCalculation();
+				System.out.println(reasonAnsStatus);
+				System.out.println(tempscore);
+				if (!reasonAnsStatus) {
+					tempscore += perReasonScore;
+				}
+			}
+		}
+		System.out.println(anywrong);
+		if (tempscore <= maxScore) {
+			score += tempscore;
+		} else {
+			score += maxScore;
+		}
+
+		return score;
+	}
 }
