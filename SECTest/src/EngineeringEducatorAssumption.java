@@ -13,6 +13,9 @@ public class EngineeringEducatorAssumption {
 	ArrayList<String> reasonList = new ArrayList<String>();
 	HashMap<String,EngineeringEducatorReason> reasonObjMap = new HashMap<String,EngineeringEducatorReason>(); //Key = Reason, value = Reason class object
 	ArrayList<JRadioButton> reasonRdbList = new ArrayList<JRadioButton>();
+	// Button group for reasons radio buttons
+	ButtonGroup bgroup = new ButtonGroup();
+
 	boolean anywrongreason = false;
 
 	
@@ -80,6 +83,7 @@ public class EngineeringEducatorAssumption {
 		for (int i = 0; i < numAssum; i++) {
 			String reason = getReason(i);
 			JRadioButton rdbReason = reasonObjMap.get(reason).CreateRadioButton(reason);
+			bgroup.add(rdbReason);
 			this.reasonRdbList.add(rdbReason);
 		}
 	}
