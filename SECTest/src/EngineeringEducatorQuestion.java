@@ -294,13 +294,19 @@ public class EngineeringEducatorQuestion {
 				} else if (assumans.equals("correct")) {
 					assumptionChkbxList.get(j).setBackground(new Color(0, 102, 34)); // green
 				}
-
+				
+				//show reasons for incorrect assumption
 				if (assumptionObjMap.get(assumptions.get(j)).reasonRdbList.size() > 0) {
 					for (int k = 0; k < assumptionObjMap.get(assumptions.get(j)).reasonRdbList.size(); k++) {
 						assumptionObjMap.get(assumptions.get(j)).reasonRdbList.get(k).setVisible(true);
 					}
 				}
 			}
+			else if (ansChkbxComparison == true && !assumans.equals("correct")) {
+				assumptionChkbxList.get(j).setEnabled(false);
+			}
+			
+			
 			if (assumans.equals("correct")) {
 				assumptionChkbxList.get(j).setBackground(new Color(0, 102, 34)); // green
 			}
