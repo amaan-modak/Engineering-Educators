@@ -1,5 +1,7 @@
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -137,9 +139,29 @@ public class EngineeringEducatorAssumption {
 			if(reasonans.equals("valid")) {
 				reasonRdbList.get(i).setBackground(new Color(0, 102, 34)); // green	
 			}
+			
+			//disable the radio button
+			disableRadioButton(reasonRdbList.get(i));
+			
 		}
 				//DisableRadioButton(listOfRdbtnListForReasons.get(i));
 		//DisableRadioButton(listOfRdbtnListForReasons.get(i));
 		return anywrongreason;
+	}
+	
+	public void disableRadioButton(JRadioButton rdbutton) {
+//		rdbutton.setEnabled(false);
+		bgroup.remove(rdbutton);
+		rdbutton.addActionListener( new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if(rdbutton.isSelected())
+					rdbutton.setSelected(false);
+				else
+					rdbutton.setSelected(true);
+			}
+		});
 	}
 }
