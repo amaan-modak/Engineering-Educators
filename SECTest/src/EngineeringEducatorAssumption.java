@@ -134,7 +134,7 @@ public class EngineeringEducatorAssumption {
 				
 			}
 			System.out.println(reasonans);
-			if(reasonans.equals("correct")) {
+			if(reasonans.equals("valid")) {
 				reasonRdbList.get(i).setBackground(new Color(0, 102, 34)); // green	
 			}
 		}
