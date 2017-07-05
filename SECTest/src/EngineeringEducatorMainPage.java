@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -255,9 +256,10 @@ public class EngineeringEducatorMainPage {
 		int numAssum = questObject.getNumberOfAssumptions();
 		for (int i = 0; i < numAssum; i++) {
 			JCheckBox chkBox = questObject.getAssumptionCheckbox(i);
-			panel.add(chkBox,xAxisLocation + ((i * 2) + 10) + ", fill, default");
+			panel.add(chkBox);
 			JLabel lblMessage = questObject.MessageType(chkBox.getText());
-			
+//			panel.add(Box.createVerticalGlue());
+			panel.add(Box.createRigidArea(new Dimension(0,5)));
 			// Incorrect assumption
 			if (lblMessage != null) {
 				lblMessage.setForeground(Color.WHITE);
@@ -266,6 +268,8 @@ public class EngineeringEducatorMainPage {
 				// Calling method to add reasons for incorrect assumption
 				GUISettingReasonsList(chkBox.getText());
 			}
+			
+			
 		}
 	}
 
