@@ -293,6 +293,9 @@ public class EngineeringEducatorQuestion {
 					anywrong = true;
 				} else if (assumans.equals("correct")) {
 					assumptionChkbxList.get(j).setBackground(new Color(0, 102, 34)); // green
+					Font defultFont = assumptionChkbxList.get(j).getFont();
+					Font boldFont = new Font(defultFont.getFontName(), Font.BOLD+Font.ITALIC, defultFont.getSize());
+					assumptionChkbxList.get(j).setFont(boldFont);
 				}
 				
 				//show reasons for incorrect assumption
@@ -309,6 +312,9 @@ public class EngineeringEducatorQuestion {
 			
 			if (assumans.equals("correct")) {
 				assumptionChkbxList.get(j).setBackground(new Color(0, 102, 34)); // green
+				Font defultFont = assumptionChkbxList.get(j).getFont();
+				Font boldFont = new Font(defultFont.getFontName(), Font.BOLD+Font.ITALIC, defultFont.getSize());
+				assumptionChkbxList.get(j).setFont(boldFont);
 			}
 			if (ansChkbxComparison == true && assumans.equals("correct")) {
 				tempscore += perAssumScore;
