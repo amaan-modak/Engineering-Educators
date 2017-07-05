@@ -126,18 +126,19 @@ public class EngineeringEducatorAssumption {
 			if (ansRdbComparison == false) {
 				
 				if(reasonans.equals("invalid")) {
-					reasonRdbList.get(i).setBackground(new Color(204, 0, 0)); // red
+					reasonRdbList.get(i).setForeground(new Color(249, 29, 44)); // red
 					anywrongreason = true;
 				}
 				else if(reasonans.equals("valid")){
-					reasonRdbList.get(i).setBackground(new Color(0, 102, 34)); // green
+					
+					reasonRdbList.get(i).setForeground(new Color(49, 216, 23)); // green
 					anywrongreason = true;
 				}
 				
 			}
 			System.out.println(reasonans);
 			if(reasonans.equals("valid")) {
-				reasonRdbList.get(i).setBackground(new Color(0, 102, 34)); // green	
+				reasonRdbList.get(i).setForeground(new Color(49, 216, 23)); // green	
 			}
 			
 			//disable the radio button
