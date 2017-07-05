@@ -223,6 +223,7 @@ public class EngineeringEducatorMainPage {
 							nxtButton.setVisible(true);
 						}
 					}
+					questObject.disableCheckBoxes();
 					isSubmitted = true;
 				}
 			}

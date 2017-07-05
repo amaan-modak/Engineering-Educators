@@ -1,5 +1,7 @@
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -241,9 +243,23 @@ public class EngineeringEducatorQuestion {
 	}
 
 	public void disableCheckBoxes() {
-		for (int chkIdx = 0; chkIdx < assumptionChkbxList.size(); chkIdx++) {
-			assumptionChkbxList.get(chkIdx).setEnabled(false);
+		for (int i = 0; i < assumptionChkbxList.size(); i++) {
+//			assumptionChkbxList.get(i).setEnabled(false);
+			final int chkbxIndex = i;
+			assumptionChkbxList.get(i).addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					if(assumptionChkbxList.get(chkbxIndex).isSelected())
+						assumptionChkbxList.get(chkbxIndex).setSelected(false);
+					else
+						assumptionChkbxList.get(chkbxIndex).setSelected(true);
+//					assumptionChkbxList.get(chkbxIndex).setSelected(false);
+				}
+			});
 		}
+
 	}
 
 	// SCORE CALCULATION (int score)
