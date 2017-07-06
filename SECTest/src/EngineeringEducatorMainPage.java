@@ -253,7 +253,8 @@ public class EngineeringEducatorMainPage {
 		for (int i = 0; i < numAssum; i++) {
 			JCheckBox chkBox = questObject.getAssumptionCheckbox(i);
 			panel.add(chkBox);
-			JLabel lblMessage = questObject.MessageType(chkBox.getText());
+			EngineeringEducatorAssumption assumObject = questObject.getAssumObj(chkBox.getText());
+			JLabel lblMessage = assumObject.getlblMessage();
 //			panel.add(Box.createVerticalGlue());
 			panel.add(Box.createRigidArea(new Dimension(0,5)));
 			// Incorrect assumption
