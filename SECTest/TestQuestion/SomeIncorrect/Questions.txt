@@ -1,4 +1,3 @@
-MaxScore:8
 ScorePerAssum:3
 ScorePerReason:1
 ScorePerNegAssum:-2
