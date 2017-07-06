@@ -55,7 +55,7 @@ public class EngineeringEducatorAssumption {
 	
 	public int setReasonList(int reasonIdx, ArrayList<String> content) {
 		String reasonText = "";
-		System.out.println(reasonIdx);
+//		System.out.println(reasonIdx);
 		while (reasonIdx < content.size()) {
 			reasonText = content.get(reasonIdx);
 			//System.out.println(reasonText);
@@ -138,7 +138,7 @@ public class EngineeringEducatorAssumption {
 				}
 				
 			}
-			System.out.println(reasonans);
+//			System.out.println(reasonans);
 			if(reasonans.equals("valid")) {
 				reasonRdbList.get(i).setForeground(new Color(49, 216, 23)); // green	
 			}
