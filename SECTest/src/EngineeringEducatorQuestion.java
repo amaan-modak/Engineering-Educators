@@ -321,7 +321,9 @@ public class EngineeringEducatorQuestion {
 			}
 
 		}
-		
+		if(score<0)
+			score =0;
+		else
 			score += tempscore;
 		
 		return score;
