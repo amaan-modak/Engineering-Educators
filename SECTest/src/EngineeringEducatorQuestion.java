@@ -323,8 +323,6 @@ public class EngineeringEducatorQuestion {
 		}
 		if(score<0)
 			score =0;
-		else
-			score += tempscore;
 		
 		return score;
 	}
@@ -346,8 +344,6 @@ public class EngineeringEducatorQuestion {
 		System.out.println(anywrong);
 		if(score<0)
 			score =0;
-		else
-			score=score+tempscore;
 		
 
 		return score;
