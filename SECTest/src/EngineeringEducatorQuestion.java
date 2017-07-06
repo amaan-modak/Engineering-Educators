@@ -114,12 +114,12 @@ public class EngineeringEducatorQuestion {
 		File[] files = dir1.listFiles();
 		for (int i = 0; i < files.length; i++) {
 			if (files[i].getName().contains("fbd.")) {
-//				System.out.println(new File(files[i].getPath() + "      filename"));
+				System.out.println(new File(files[i].getPath() + "      filename"));
 				readFbdImage(new File(files[i].getAbsolutePath()));
 			} else if (files[i].getName().contains("model.")) {
 				readModelImage(new File(files[i].getAbsolutePath()));
 			} else if (files[i].getName().contains("Questions.")) {
-//				System.out.println(files[i] + " files ");
+				System.out.println(files[i] + " files ");
 				readTextFile(files[i].getPath());
 			}
 		}
@@ -166,7 +166,7 @@ public class EngineeringEducatorQuestion {
 				int assumIdx = dataIdx + 1;
 				while (assumIdx < data.size()) {
 					String[] splitter = data.get(assumIdx).split("\\|");
-//					System.out.println(splitter[0]);
+					System.out.println(splitter[0]);
 					EngineeringEducatorAssumption assumObj = new EngineeringEducatorAssumption(splitter[0], splitter[1]);
 					assumptionObjMap.put(splitter[0], assumObj);
 					assumptions.add(splitter[0]);
@@ -279,14 +279,14 @@ public class EngineeringEducatorQuestion {
 
 				if (assumans.equals("incorrect")) {
 					assumptionChkbxList.get(j).setBackground(new Color(204, 0, 0)); // red
-					if(tempscore<=0)
+					if(tempscore<0)
 						tempscore += minScore;
 					else
 						tempscore+=perAssumNegScore;
 					anywrong = true;
 				} else if (assumans.equals("complicated")) {
 					assumptionChkbxList.get(j).setBackground(new Color(204, 51, 0));// red
-					if(tempscore<=0)
+					if(tempscore<0)
 						tempscore += minScore;
 					else
 						tempscore+=perAssumNegScore;
@@ -330,19 +330,22 @@ public class EngineeringEducatorQuestion {
 	public int ScoreCalculationReason(int score) {
 		int tempscore = 0;
 		anywrong = false;
-//		System.out.println("Per Reason Score" + perReasonScore);
+		System.out.println("Per Reason Score" + perReasonScore);
 		for (int j = 0; j < assumptions.size(); j++) {
 			if ((assumptionObjMap.get(assumptions.get(j)).reasonRdbList.size() > 0)) {
 				boolean reasonAnsStatus = assumptionObjMap.get(assumptions.get(j)).ScoreCalculation();
-//				System.out.println(reasonAnsStatus);
-//				System.out.println(tempscore);
+				System.out.println(reasonAnsStatus);
+				System.out.println(tempscore);
 				if (!reasonAnsStatus) {
 					tempscore += perReasonScore;
 				}
 			}
 		}
-//		System.out.println(anywrong);
-			score += tempscore;
+		System.out.println(anywrong);
+		if(score<0)
+			score =0;
+		else
+			score=score+tempscore;
 		
 
 		return score;
