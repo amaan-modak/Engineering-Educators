@@ -22,28 +22,26 @@ EngineeringEducatorQuestionsHandler qh;
 		//fail("Not yet implemented");
 		String randomFolder = null;
 		randomFolder = qh.FolderRandomSelection();
-		System.out.println(qh.FolderRandomSelection());
 		assertNotNull(randomFolder);
-		assertTrue(randomFolder.equals("TestQuestion/AllCorrect") || randomFolder.equals("TestQuestion/SomeInCorrect"));
+		assertTrue(randomFolder.equals("TestQuestion/AllCorrect") || randomFolder.equals("TestQuestion/SomeIncorrect"));
 	
 	}
 
 	@Test
 	public void testGetTotalQuestions() {
-		//fail("Not yet implemented");
-		assertNotEquals(0, qh.getTotalQuestions());
+		assertEquals(2, qh.getTotalQuestions());
 	}
 
-	@Test
-	public void testSelectQuestion() {
-		//fail("Not yet implemented");
-		assertNotNull(qh.selectQuestion());
-	}
 
 	@Test
 	public void testIsLastQuestion() {
 		//fail("Not yet implemented");
-		
+		EngineeringEducatorQuestionsHandler qh2=new EngineeringEducatorQuestionsHandler("TestQuestion/");
+		assertFalse(qh2.isLastQuestion());
+		qh2.selectQuestion();
+		assertFalse(qh2.isLastQuestion());
+		qh2.selectQuestion();
+		assertTrue(qh2.isLastQuestion());
 	}
 
 }

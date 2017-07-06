@@ -13,7 +13,7 @@ public class EngineeringEducatorQuestionsHandler {
 	public static String FolderRandomSelection() {
 		String questionPath = null;
 		try{
-			System.out.println(folderPath);
+//			System.out.println(folderPath);
 			File dir = new File(folderPath);
 			String[] quesfolders = dir.list();
 			
