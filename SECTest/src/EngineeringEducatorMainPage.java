@@ -34,7 +34,7 @@ public class EngineeringEducatorMainPage {
 	// Global declaration of local variables
 	boolean isSubmitted = false;
 	int score = 0;
-	static String folderPath = "TestQuestion/";
+	static String folderPath = "Questions/";
 	static String questionPath = "";
 	
 
