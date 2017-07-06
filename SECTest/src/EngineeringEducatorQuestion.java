@@ -32,6 +32,7 @@ public class EngineeringEducatorQuestion {
 	// Key = assumption, value = Assumption class object
 
 	int perReasonScore = 0;
+	int minScore=0;
 
 	int maxScore = 0, perAssumScore = 0;
 	int perAssumNegScore = 0;
@@ -285,11 +286,17 @@ public class EngineeringEducatorQuestion {
 
 				if (assumans.equals("incorrect")) {
 					assumptionChkbxList.get(j).setBackground(new Color(204, 0, 0)); // red
-					tempscore += perAssumNegScore;
+					if(tempscore==0)
+						tempscore += minScore;
+					else
+						tempscore+=perAssumNegScore;
 					anywrong = true;
 				} else if (assumans.equals("complicated")) {
-					assumptionChkbxList.get(j).setBackground(new Color(204, 51, 0)); // red
-					tempscore += perAssumNegScore;
+					assumptionChkbxList.get(j).setBackground(new Color(204, 51, 0));// red
+					if(tempscore==0)
+						tempscore += minScore;
+					else
+						tempscore+=perAssumNegScore;
 					anywrong = true;
 				} else if (assumans.equals("correct")) {
 					assumptionChkbxList.get(j).setBackground(new Color(0, 102, 34)); // green
