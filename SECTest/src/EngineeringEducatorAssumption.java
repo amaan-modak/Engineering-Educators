@@ -9,11 +9,13 @@ import java.util.HashMap;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 
 public class EngineeringEducatorAssumption {
 	String assumption = "";
 	String answer = "";
+	JLabel lblMessage;
 	ArrayList<String> reasonList = new ArrayList<String>();
 	HashMap<String,EngineeringEducatorReason> reasonObjMap = new HashMap<String,EngineeringEducatorReason>(); //Key = Reason, value = Reason class object
 	ArrayList<JRadioButton> reasonRdbList = new ArrayList<JRadioButton>();
@@ -28,6 +30,16 @@ public class EngineeringEducatorAssumption {
 		// TODO Auto-generated constructor stub
 		this.assumption = assumption;
 		this.answer = answer;
+		if(answer.equals("incorrect")){
+			lblMessage = new JLabel("This assumption is incorrect, what could be the reason?");
+			lblMessage.setFont(new Font("Georgia", Font.PLAIN, 16));
+			lblMessage.setVisible(false);
+		}
+		else if (answer.equals("complicated")){
+			lblMessage = new JLabel("This assumption is a complicating factor, what could be the reason?");
+			lblMessage.setFont(new Font("Georgia", Font.PLAIN, 16));
+			lblMessage.setVisible(false);
+		}
 	}
 	/**************/
 
@@ -53,9 +65,12 @@ public class EngineeringEducatorAssumption {
 	}
 	/***********************/
 	
+	public JLabel getlblMessage(){
+		return lblMessage;
+	}
+	
 	public int setReasonList(int reasonIdx, ArrayList<String> content) {
 		String reasonText = "";
-//		System.out.println(reasonIdx);
 		while (reasonIdx < content.size()) {
 			reasonText = content.get(reasonIdx);
 			//System.out.println(reasonText);
@@ -68,7 +83,6 @@ public class EngineeringEducatorAssumption {
 			} else
 				break;
 		}
-		//System.out.println(reasonList.get(0));
 		setReasonRdbList();
 		return reasonIdx;
 	}
@@ -83,7 +97,6 @@ public class EngineeringEducatorAssumption {
 	
 	public void setReasonRdbList() {
 		int numAssum = getNumberOfReasons();
-		//System.out.println(numAssum);
 		for (int i = 0; i < numAssum; i++) {
 			String reason = getReason(i);
 			JRadioButton rdbReason = reasonObjMap.get(reason).CreateRadioButton(reason);
@@ -117,7 +130,6 @@ public class EngineeringEducatorAssumption {
 			
 			boolean ansRdbComparison = true;
 			String reasonans = reasonObjMap.get(reasonList.get(i)).answer;
-			//System.out.println(assumptions.get(j));
 			if (reasonRdbList.get(i).isSelected() && reasonans.equals("valid"))
 				ansRdbComparison = true;
 			else if (!reasonRdbList.get(i).isSelected() && reasonans.equals("invalid"))
@@ -138,7 +150,7 @@ public class EngineeringEducatorAssumption {
 				}
 				
 			}
-//			System.out.println(reasonans);
+
 			if(reasonans.equals("valid")) {
 				reasonRdbList.get(i).setForeground(new Color(49, 216, 23)); // green	
 			}
@@ -147,13 +159,10 @@ public class EngineeringEducatorAssumption {
 			disableRadioButton(reasonRdbList.get(i));
 			
 		}
-				//DisableRadioButton(listOfRdbtnListForReasons.get(i));
-		//DisableRadioButton(listOfRdbtnListForReasons.get(i));
 		return anywrongreason;
 	}
 	
 	public void disableRadioButton(JRadioButton rdbutton) {
-//		rdbutton.setEnabled(false);
 		bgroup.remove(rdbutton);
 		rdbutton.addActionListener( new ActionListener() {
 			
