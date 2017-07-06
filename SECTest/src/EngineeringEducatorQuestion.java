@@ -210,32 +210,6 @@ public class EngineeringEducatorQuestion {
 		}
 	}
 
-	public JLabel MessageType(String assumption) {
-		String assumtype = assumptionObjMap.get(assumption).getAnswer();
-		JLabel lblMessage = null;
-
-		if (assumtype.equals("correct")) {
-			// reasonObject.listOfRdbtnListForReasons.add(null);
-			// reasonObject.answers.add(-1);
-			// reasonObject.reasonMsgLabelList.add(null);
-		}
-		if (assumtype.equals("incorrect")) {
-			lblMessage = new JLabel("This assumption is incorrect, what could be the reason?");
-			lblMessage.setFont(new Font("Georgia", Font.PLAIN, 16));
-			lblMessage.setVisible(false);
-			// reasonObject.reasonMsgLabelList.add(lblIncorrect);
-		}
-		if (assumtype.equals("complicated")) {
-			lblMessage = new JLabel("This assumption is a complicating factor, what could be the reason?");
-			lblMessage.setFont(new Font("Georgia", Font.PLAIN, 16));
-			lblMessage.setVisible(false);
-			// reasonObject.reasonMsgLabelList.add(lblIncorrect);
-		}
-
-		return lblMessage;
-
-	}
-
 	public void disableCheckBoxes() {
 		for (int i = 0; i < assumptionChkbxList.size(); i++) {
 //			assumptionChkbxList.get(i).setEnabled(false);
@@ -279,6 +253,7 @@ public class EngineeringEducatorQuestion {
 
 				if (assumans.equals("incorrect")) {
 					assumptionChkbxList.get(j).setBackground(new Color(204, 0, 0)); // red
+					assumptionObjMap.get(assumptions.get(j)).getlblMessage().setVisible(true);
 					if(tempscore<0)
 						tempscore += minScore;
 					else
@@ -286,6 +261,7 @@ public class EngineeringEducatorQuestion {
 					anywrong = true;
 				} else if (assumans.equals("complicated")) {
 					assumptionChkbxList.get(j).setBackground(new Color(204, 51, 0));// red
+					assumptionObjMap.get(assumptions.get(j)).getlblMessage().setVisible(true);
 					if(tempscore<0)
 						tempscore += minScore;
 					else
@@ -344,8 +320,8 @@ public class EngineeringEducatorQuestion {
 			}
 		}
 		System.out.println(anywrong);
+		score += tempscore;
 		
-		score += tempscore;		
 
 		return score;
 	}
