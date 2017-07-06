@@ -279,14 +279,14 @@ public class EngineeringEducatorQuestion {
 
 				if (assumans.equals("incorrect")) {
 					assumptionChkbxList.get(j).setBackground(new Color(204, 0, 0)); // red
-					if(tempscore==0)
+					if(tempscore<=0)
 						tempscore += minScore;
 					else
 						tempscore+=perAssumNegScore;
 					anywrong = true;
 				} else if (assumans.equals("complicated")) {
 					assumptionChkbxList.get(j).setBackground(new Color(204, 51, 0));// red
-					if(tempscore==0)
+					if(tempscore<=0)
 						tempscore += minScore;
 					else
 						tempscore+=perAssumNegScore;
