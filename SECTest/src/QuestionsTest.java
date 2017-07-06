@@ -25,76 +25,6 @@ public class QuestionsTest {
 	}
 
 	@Test
-	public void testGetAssumObj() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetNumberOfAssumptions() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetAssumption() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testSetPerReasonScore() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetPerReasonScore() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testSetMaxScore() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testSetPerAssumScore() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testSetPerAssumNegScore() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetModelImage() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetFbdImage() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetAnswer() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetAssumptionChkbxList() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testSetAssumptionChkbxList() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetAssumptionCheckbox() {
-		fail("Not yet implemented");
-	}
-
-	@Test
 	public void testReadQuestion() {
 		// fail("Not yet implemented");
 		quest.readQuestion();
@@ -153,9 +83,8 @@ public class QuestionsTest {
 		// fail("Not yet implemented");
 		quest.readTextFile("TestQuestion/AllCorrect/Questions.txt");
 		quest.readScores();
-		assertNotEquals(0, quest.maxScore);
 		assertNotEquals(0, quest.perAssumScore);
-		assertNotEquals(-1, quest.perAssumNegScore);
+		assertNotEquals(0, quest.perAssumNegScore);
 		assertNotEquals(-1, quest.perReasonScore);
 	}
 
@@ -164,22 +93,12 @@ public class QuestionsTest {
 		// fail("Not yet implemented");
 		quest.readTextFile("TestQuestion/AllCorrect/Questions.txt");
 		quest.readAssumptions();
+		
 		for (int i = 0; i < quest.assumptions.size(); i++) {
-			// quest.MessageType(quest.assumptions.get(i));
-			// assertEquals("correct",
-			// quest.assumptionObjMap.get(quest.assumptions.get(i)).answer);
-			// assertEquals("incorrect",
-			// quest.assumptionObjMap.get(quest.assumptions.get(i)).answer);
-			// assertEquals("complicated",
-			// quest.assumptionObjMap.get(quest.assumptions.get(i)).answer);
-			assertNotNull(quest.MessageType(quest.assumptions.get(i)));
+			System.out.println(quest.assumptionObjMap.get(quest.assumptions.get(i)).getAnswer() +" !!!!! TEST ");
+			 quest.MessageType(quest.assumptions.get(i));
+			assertNotNull(quest.assumptionObjMap.get(quest.assumptions.get(i)).getAnswer());
 		}
-
-	}
-
-	@Test
-	public void testDisableCheckBoxes() {
-		fail("Not yet implemented");
 
 	}
 
