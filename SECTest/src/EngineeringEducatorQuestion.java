@@ -34,7 +34,7 @@ public class EngineeringEducatorQuestion {
 	int perReasonScore = 0;
 	int minScore=0;
 
-	int maxScore = 0, perAssumScore = 0;
+	int perAssumScore = 0;
 	int perAssumNegScore = 0;
 	boolean anywrong = false;
 
@@ -68,9 +68,6 @@ public class EngineeringEducatorQuestion {
 		return this.perReasonScore;
 	}
 
-	public void setMaxScore(int score) {
-		maxScore = score;
-	}
 
 	public void setPerAssumScore(int score) {
 		perAssumScore = score;
@@ -195,10 +192,6 @@ public class EngineeringEducatorQuestion {
 	public void readScores() {
 		// Splitting into assumptions and reasons
 		for (int j = 0; j < data.size(); j++) {
-			if (data.get(j).contains("MaxScore:")) {
-				String[] score = data.get(j).trim().split("\\:");
-				setMaxScore(new Integer(score[1]));
-			}
 			if (data.get(j).contains("ScorePerAssum:")) {
 				String[] score = data.get(j).trim().split("\\:");
 				setPerAssumScore(new Integer(score[1]));
@@ -328,9 +321,9 @@ public class EngineeringEducatorQuestion {
 			}
 
 		}
-		if (tempscore <= maxScore) {
+		
 			score += tempscore;
-		}
+		
 		return score;
 	}
 
@@ -349,11 +342,9 @@ public class EngineeringEducatorQuestion {
 			}
 		}
 		System.out.println(anywrong);
-		if (tempscore <= maxScore) {
+		
 			score += tempscore;
-		} else {
-			score += maxScore;
-		}
+		
 
 		return score;
 	}
