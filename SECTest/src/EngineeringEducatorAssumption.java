@@ -120,6 +120,7 @@ public class EngineeringEducatorAssumption {
 		chkbxAssumption.setBackground(new Color(0, 44, 61));
 		chkbxAssumption.setForeground(Color.WHITE);
 		chkbxAssumption.setFont(new Font("Georgia", Font.PLAIN, 16));
+		chkbxAssumption.setOpaque(true);
 		return chkbxAssumption;
 	}
 		
