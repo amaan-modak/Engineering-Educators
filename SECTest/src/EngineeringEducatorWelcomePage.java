@@ -53,14 +53,13 @@ public class EngineeringEducatorWelcomePage {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	@SuppressWarnings("serial")
 	private void initialize() {
 		homeFrame = new JFrame();
-		homeFrame.setBounds(0, 0, 800, 600);
+		homeFrame.setBounds(0, 0, 800, 650);
 		homeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		homeFrame.setLocationRelativeTo(null);
 		homeFrame.setAlwaysOnTop(true);
-		homeFrame.setTitle("Engineering Educators");
+		homeFrame.setTitle("eGuru");
 		homeFrame.setResizable(false);
 		
 		/* Designing panel */
@@ -82,26 +81,33 @@ public class EngineeringEducatorWelcomePage {
 		screen.setBackground(new Color(0, 44, 61));
 		screen.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50)); //Padding around panel
 		
-		JLabel lblIntro = new JLabel("Welcome to Engineering Educators");
-		lblIntro.setFont(new Font("Georgia", Font.ITALIC, 32));
+		JLabel lblIntro = new JLabel("Welcome to eGuru");
+		lblIntro.setFont(new Font("Georgia", Font.ITALIC, 36));
 		lblIntro.setForeground(Color.WHITE);
 		lblIntro.setAlignmentX(0.5f);
-		screen.add(Box.createVerticalStrut(40));
 		screen.add(lblIntro, BorderLayout.NORTH);
 		screen.add(Box.createVerticalStrut(40));
 
 		JLabel lblWcLogo = new JLabel("");
-		lblWcLogo.setIcon(new ImageIcon (Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/altlogo.png")))));
+		lblWcLogo.setIcon(new ImageIcon (Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/logoalt.png")))));
 		lblWcLogo.setAlignmentX(0.5f);
 		screen.add(lblWcLogo, BorderLayout.CENTER);
 		screen.add(Box.createVerticalStrut(40));
-		
-		JLabel lblInst = new JLabel("<html><div style='text-align: center;'>Click On The Start Test Button<br> Whenever You Are Ready To Begin</div></html>");
+
+		JLabel lblInst = new JLabel("<html><div style='text-align: center;'>There Will Be Negative Marking In The Case Of Choosing <br>The Incorrect Assumptions, So Please Choose Carefully.</div></html>");
 		lblInst.setFont(new Font("Georgia", Font.PLAIN, 24));
 		lblInst.setHorizontalAlignment(SwingConstants.CENTER);
 		lblInst.setForeground(Color.WHITE);
 		lblInst.setAlignmentX(0.5f);
 		screen.add(lblInst);
+		screen.add(Box.createVerticalStrut(40));
+		
+		JLabel lblFinalInst = new JLabel("<html><div style='text-align: center;'>Click On The Start Test Button<br> Whenever You Are Ready To Begin</div></html>");
+		lblFinalInst.setFont(new Font("Georgia", Font.PLAIN, 24));
+		lblFinalInst.setHorizontalAlignment(SwingConstants.CENTER);
+		lblFinalInst.setForeground(Color.WHITE);
+		lblFinalInst.setAlignmentX(0.5f);
+		screen.add(lblFinalInst);
 		screen.add(Box.createVerticalStrut(40));
 
 		JLabel lblLuck = new JLabel("GOOD LUCK!");

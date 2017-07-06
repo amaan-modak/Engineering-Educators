@@ -75,9 +75,9 @@ public class QuestionsTest {
 		assertEquals("Incorrect Assumption that includes a lot of text to make certain you can handle it #1.3", question.assumptions.get(7));
 		
 		//Test if scores are read correctly
-		assertEquals(2, question.perAssumScore);
+		assertEquals(3, question.perAssumScore);
 		assertEquals(1, question.perReasonScore);
-		assertEquals(-1, question.perAssumNegScore);
+		assertEquals(-2, question.perAssumNegScore);
 	}
 
 	@Test
@@ -101,10 +101,10 @@ public class QuestionsTest {
 		// fail("Not yet implemented");
 		question.readTextFile("TestQuestion/SomeIncorrect/Questions.txt");
 		assertNotNull(question.data);
-		assertEquals("MaxScore:8", question.data.get(0));
-		assertEquals("Hip acts as a pivot point (no lifting off the bed)|correct", question.data.get(5));
-		assertEquals("Invalid Reason #1.2.3|invalid", question.data.get(15));
-		assertEquals("End Reasons", question.data.get(28));
+		assertEquals("ScorePerAssum:3", question.data.get(0));
+		assertEquals("Hip acts as a pivot point (no lifting off the bed)|correct", question.data.get(4));
+		assertEquals("Invalid Reason #1.2.3|invalid", question.data.get(14));
+		assertEquals("End Reasons", question.data.get(27));
 		
 	}
 
@@ -131,9 +131,9 @@ public class QuestionsTest {
 		question.readTextFile("TestQuestion/SomeIncorrect/Questions.txt");
 		question.readScores();
 
-		assertEquals(2, question.perAssumScore);
+		assertEquals(3, question.perAssumScore);
 		assertEquals(1, question.perReasonScore);
-		assertEquals(-1, question.perAssumNegScore);
+		assertEquals(-2, question.perAssumNegScore);
 
 	}
 
@@ -148,7 +148,7 @@ public class QuestionsTest {
 		question.assumptionChkbxList.get(4).setSelected(true);
 		question.assumptionChkbxList.get(5).setSelected(true);
 		tempscore = question.ScoreCalculation(tempscore);	
-		assertEquals(8, tempscore);
+		assertEquals(12, tempscore);
 		
 		
 		// Now try with 2 correct 2 incorrect

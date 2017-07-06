@@ -7,7 +7,6 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -21,7 +20,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -93,7 +91,7 @@ public class EngineeringEducatorMainPage {
 		frame.setBackground(Color.RED);
 		frame.getContentPane().setBackground(new Color(0, 44, 61));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setTitle("Engineering Educators");
+		frame.setTitle("eGuru");
 		frame.setAlwaysOnTop(true);
 		frame.setLocationRelativeTo(null);
 
@@ -109,8 +107,7 @@ public class EngineeringEducatorMainPage {
 		/* Labels to display title and score at the top of the panel */
 		lblScore = new JLabel("Score = "+score);
 		lblTitle = new JLabel("");
-		//lblTitle.setIcon(new ImageIcon (Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/logo.png")))));
-		lblTitle.setIcon(new ImageIcon (Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/altlogo.png"))))); //For alternate logo design
+		lblTitle.setIcon(new ImageIcon (Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/logoalt.png"))))); //For alternate logo design
 		lblScore.setFont(new Font("Georgia", Font.ITALIC+Font.BOLD, 28));
 		lblScore.setForeground(Color.WHITE);
 		lblScore.setMaximumSize(new Dimension(1366, 100));
@@ -245,8 +242,7 @@ public class EngineeringEducatorMainPage {
 	 * (Correct/Incorrect/Complicated) Input: List of all assumptions
 	 */
 	public void GUISettingAssumptionsList() {
-		final String xAxisLocation = "22,";
-		
+				
 		// Split all assumptions in answer and statements, create check boxes
 		// Traverse through check boxes and add them on panel
 		//EngineeringEducatorAssumption.getAssumptions();

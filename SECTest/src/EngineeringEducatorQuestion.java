@@ -32,8 +32,9 @@ public class EngineeringEducatorQuestion {
 	// Key = assumption, value = Assumption class object
 
 	int perReasonScore = 0;
+	int minScore=0;
 
-	int maxScore = 0, perAssumScore = 0;
+	int perAssumScore = 0;
 	int perAssumNegScore = 0;
 	boolean anywrong = false;
 
@@ -67,9 +68,6 @@ public class EngineeringEducatorQuestion {
 		return this.perReasonScore;
 	}
 
-	public void setMaxScore(int score) {
-		maxScore = score;
-	}
 
 	public void setPerAssumScore(int score) {
 		perAssumScore = score;
@@ -194,10 +192,6 @@ public class EngineeringEducatorQuestion {
 	public void readScores() {
 		// Splitting into assumptions and reasons
 		for (int j = 0; j < data.size(); j++) {
-			if (data.get(j).contains("MaxScore:")) {
-				String[] score = data.get(j).trim().split("\\:");
-				setMaxScore(new Integer(score[1]));
-			}
 			if (data.get(j).contains("ScorePerAssum:")) {
 				String[] score = data.get(j).trim().split("\\:");
 				setPerAssumScore(new Integer(score[1]));
@@ -285,11 +279,17 @@ public class EngineeringEducatorQuestion {
 
 				if (assumans.equals("incorrect")) {
 					assumptionChkbxList.get(j).setBackground(new Color(204, 0, 0)); // red
-					tempscore += perAssumNegScore;
+					if(tempscore==0)
+						tempscore += minScore;
+					else
+						tempscore+=perAssumNegScore;
 					anywrong = true;
 				} else if (assumans.equals("complicated")) {
-					assumptionChkbxList.get(j).setBackground(new Color(204, 51, 0)); // red
-					tempscore += perAssumNegScore;
+					assumptionChkbxList.get(j).setBackground(new Color(204, 51, 0));// red
+					if(tempscore==0)
+						tempscore += minScore;
+					else
+						tempscore+=perAssumNegScore;
 					anywrong = true;
 				} else if (assumans.equals("correct")) {
 					assumptionChkbxList.get(j).setBackground(new Color(0, 102, 34)); // green
@@ -321,9 +321,9 @@ public class EngineeringEducatorQuestion {
 			}
 
 		}
-		if (tempscore <= maxScore) {
+		
 			score += tempscore;
-		}
+		
 		return score;
 	}
 
@@ -342,11 +342,8 @@ public class EngineeringEducatorQuestion {
 			}
 		}
 //		System.out.println(anywrong);
-		if (tempscore <= maxScore) {
 			score += tempscore;
-		} else {
-			score += maxScore;
-		}
+		
 
 		return score;
 	}

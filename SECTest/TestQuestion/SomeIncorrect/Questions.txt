@@ -1,7 +1,6 @@
-MaxScore:8
-ScorePerAssum:2
+ScorePerAssum:3
 ScorePerReason:1
-ScorePerNegAssum:-1
+ScorePerNegAssum:-2
 Assumptions:
 Hip acts as a pivot point (no lifting off the bed)|correct
 Incorrect Assumption #1.1|incorrect
