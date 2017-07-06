@@ -26,6 +26,7 @@ public class EngineeringEducatorEndPage {
 	private JFrame endFrame;
 	static JPanel screen;
 	static int score = 0;
+
 	/**
 	 * Launch the application.
 	 */
@@ -33,6 +34,7 @@ public class EngineeringEducatorEndPage {
 		if(args.length > 0) {
 			score = Integer.parseInt(args[0]);
 		}
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -56,13 +58,13 @@ public class EngineeringEducatorEndPage {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	void initialize() {
 		endFrame = new JFrame();
-		endFrame.setBounds(0, 0, 800, 600);
+		endFrame.setBounds(0, 0, 800, 700);
 		endFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		endFrame.setLocationRelativeTo(null);
 		endFrame.setAlwaysOnTop(true);
-		endFrame.setTitle("Engineering Educators");
+		endFrame.setTitle("eGuru");
 		endFrame.setResizable(false);
 		
 		/* Designing panel */
@@ -73,7 +75,7 @@ public class EngineeringEducatorEndPage {
 				Graphics2D g2d = (Graphics2D) gr;
 				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 				GradientPaint gp = new GradientPaint(0, 0, getBackground().brighter().brighter().brighter(),
-						0, getHeight(), getBackground().darker().darker().darker());
+						0, getHeight(), getBackground().darker().darker().darker().darker());
 	            g2d.setPaint(gp);
 	            g2d.fillRect(0, 0, getWidth(), getHeight()); 
 
@@ -82,31 +84,39 @@ public class EngineeringEducatorEndPage {
 	    };
 		screen.setLayout(new BoxLayout(screen, BoxLayout.Y_AXIS));
 		screen.setBackground(new Color(0, 44, 61));
-		screen.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50)); //Padding around panel
+		screen.setBorder(BorderFactory.createEmptyBorder(40,40,40,40)); //Padding around panel
 		
-		JLabel lblThank = new JLabel("Thank You For Using Engineering Educators");
-		lblThank.setFont(new Font("Georgia", Font.ITALIC, 28));
+		JLabel lblFinScore = new JLabel("Your Final Score is "+score);
+		lblFinScore.setFont(new Font("Georgia", Font.BOLD+Font.ITALIC, 40));
+		lblFinScore.setForeground(Color.WHITE);
+		lblFinScore.setAlignmentX(0.5f);
+		screen.add(Box.createVerticalStrut(10));
+		screen.add(lblFinScore);
+		screen.add(Box.createVerticalStrut(40));
+
+		JLabel lblThank = new JLabel("<html><div style='text-align: center;'>From <strong>Team NP</strong> We Would Like To Say <br>Thank You For Using eGuru</div></html>");
+		lblThank.setFont(new Font("Georgia", Font.ITALIC, 24));
+		lblThank.setHorizontalAlignment(SwingConstants.CENTER);
 		lblThank.setForeground(Color.WHITE);
 		lblThank.setAlignmentX(0.5f);
 		screen.add(lblThank, BorderLayout.NORTH);
 		screen.add(Box.createVerticalStrut(40));
 		
-		JLabel lblFinScore = new JLabel("Your Final Score is "+score);
-		lblFinScore.setFont(new Font("Georgia", Font.BOLD+Font.ITALIC, 34));
-		lblFinScore.setForeground(Color.WHITE);
-		lblFinScore.setAlignmentX(0.5f);
-		screen.add(lblFinScore);
-		screen.add(Box.createVerticalStrut(40));
-
-		//Team Photo
-		JLabel lblWcLogo = new JLabel("");
-		lblWcLogo.setIcon(new ImageIcon (Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/altlogo.png")))));
+		/**
+		 * Add Team Photo
+		 */
+		JLabel lblWcLogo = new JLabel("Team NP");
+		lblWcLogo.setIcon(new ImageIcon (Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/team.jpeg")))));
 		lblWcLogo.setAlignmentX(0.5f);
+		lblWcLogo.setHorizontalTextPosition(JLabel.CENTER);
+		lblWcLogo.setVerticalTextPosition(JLabel.BOTTOM);
+		lblWcLogo.setForeground(Color.WHITE);
+		lblWcLogo.setFont(new Font("Georgia", Font.ITALIC, 14));
 		screen.add(lblWcLogo, BorderLayout.CENTER);
 		screen.add(Box.createVerticalStrut(40));
 		
-		JLabel lblInst = new JLabel("<html><div style='text-align: center;'>PLEASE DO NOT EXIT OR CLOSE THIS SCREEN <br>UNTIL THE TA RECORDS YOUR FINAL SCORE.</div></html>");
-		lblInst.setFont(new Font("Georgia", Font.PLAIN, 24));
+		JLabel lblInst = new JLabel("<html><div style='text-align: center;'>PLEASE DO NOT EXIT OR CLOSE THIS WINDOW <br>UNTIL YOUR SCORE HAS BEEN NOTED.</div></html>");
+		lblInst.setFont(new Font("Georgia", Font.BOLD, 24));
 		lblInst.setHorizontalAlignment(SwingConstants.CENTER);
 		lblInst.setForeground(Color.WHITE);
 		lblInst.setAlignmentX(0.5f);
@@ -125,16 +135,17 @@ public class EngineeringEducatorEndPage {
 		exitButton.setAlignmentX(0.5f);
 		exitButton.setBackground(new Color(0, 44, 61));
 		exitButton.setFocusPainted(false);
-		screen.add(exitButton, BorderLayout.SOUTH);
+		screen.add(exitButton);
 		screen.add(Box.createVerticalStrut(40));
-		exitButton.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				endFrame.dispose();
+		
+		exitButton.addActionListener(new ActionListener() {		
+			 @Override
+			 public void actionPerformed(ActionEvent e) {
+			 	endFrame.dispose();
+			 	
+			 }
+		});	
 				
-			}
-		});		
 		endFrame.getContentPane().add(screen);
 	}
 
