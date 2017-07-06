@@ -344,9 +344,8 @@ public class EngineeringEducatorQuestion {
 			}
 		}
 		System.out.println(anywrong);
-		if(score<0)
-			score =0;
 		
+		score += tempscore;		
 
 		return score;
 	}
