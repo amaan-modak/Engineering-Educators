@@ -1,4 +1,0 @@
-Position of hip is irrelevant.|0
-Weight of upper leg is more than weight of lower leg.|0
-Angle between upper leg and bed is around 45 degree.|0
-hip is resting on bed with flat support.|1

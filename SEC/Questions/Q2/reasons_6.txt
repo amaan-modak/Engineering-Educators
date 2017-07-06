@@ -1,3 +1,0 @@
-there is a cable on t-bar between patients legs.|1
-Patient is asleep.|0
-The bed is at 0 degrees with respect to ground.|0

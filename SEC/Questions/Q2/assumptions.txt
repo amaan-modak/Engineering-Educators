@@ -1,7 +1,0 @@
-Hip acts as a pivot point (no lifting off the bed).|1
-Hip does not act as a pivot.|0
-Lower leg remains approximately perpendicular to upper leg.|1
-Tension in lift rope is independent of the weight of upper leg.|0
-Forces are reasonably approximated using static analysis.|1
-Patient does not slide on the bed.|2
-The height of pulley and the angle between rope and pulley vertical will change over time.|0

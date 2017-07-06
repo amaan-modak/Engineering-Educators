@@ -1,4 +1,0 @@
-The reaction in hip joint in x-direction and y-direction is same.|0
-angle between upper leg and lower leg remains constant.|1
-Tension in lift rope is directly proportional to weight of the upper leg.|0
-Height of pulley depends on length of upper leg.|0
