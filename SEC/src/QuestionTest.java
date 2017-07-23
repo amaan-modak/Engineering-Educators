@@ -9,7 +9,7 @@ import java.io.FileNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 
-public class QuestionsTest {
+public class QuestionTest {
 
 	Question question;
 	FBDImage fbd;
