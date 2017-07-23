@@ -100,10 +100,10 @@ public class QuestionTest {
 		// fail("Not yet implemented");
 		question.readTextFile("TestQuestion/SomeIncorrect/Questions.txt");
 		assertNotNull(question.data);
-		assertEquals("ScorePerAssum:3", question.data.get(0));
-		assertEquals("Hip acts as a pivot point (no lifting off the bed)|correct", question.data.get(4));
-		assertEquals("Invalid Reason #1.2.3|invalid", question.data.get(14));
-		assertEquals("End Reasons", question.data.get(27));
+		assertEquals("MaxScore:12", question.data.get(0));
+		assertEquals("Hip acts as a pivot point (no lifting off the bed)|correct", question.data.get(5));
+		assertEquals("Invalid Reason #1.2.3|invalid", question.data.get(15));
+		assertEquals("End Reasons", question.data.get(28));
 		
 	}
 

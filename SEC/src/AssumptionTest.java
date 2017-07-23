@@ -13,9 +13,9 @@ public class AssumptionTest {
 		question.readTextFile("TestQuestion/SomeIncorrect/Questions.txt");
 		Assumption assumption = new Assumption("Incorrect Assumption #1.1", "incorrect");
 		
-		int reasonIdx = 6;
+		int reasonIdx = 7;
 		reasonIdx = assumption.setReasonList(reasonIdx, question.data);
-		assertEquals(9, reasonIdx);
+		assertEquals(10, reasonIdx);
 	}
 
 	@Test
@@ -26,7 +26,7 @@ public class AssumptionTest {
 		question.readTextFile("TestQuestion/SomeIncorrect/Questions.txt");
 		Assumption assumption = new Assumption("Incorrect Assumption #1.1", "incorrect");
 		
-		int reasonIdx = 6;
+		int reasonIdx = 7;
 		reasonIdx = assumption.setReasonList(reasonIdx, question.data);
 		
 		assertEquals(3, assumption.getNumberOfReasons());
@@ -41,7 +41,7 @@ public class AssumptionTest {
 		question.readTextFile("TestQuestion/SomeIncorrect/Questions.txt");
 		Assumption assumption = new Assumption("Incorrect Assumption #1.1", "incorrect");
 		
-		int reasonIdx = 6;
+		int reasonIdx = 7;
 		reasonIdx = assumption.setReasonList(reasonIdx, question.data);
 		
 		assertEquals("Valid Reason #1.1.1", assumption.getReason(0));
@@ -57,7 +57,7 @@ public class AssumptionTest {
 		Assumption assumption = new Assumption("Incorrect Assumption #1.1", "incorrect");
 		
 		//select correct reason
-		int reasonIdx = 6;
+		int reasonIdx = 7;
 		reasonIdx = assumption.setReasonList(reasonIdx, question.data);
 		assumption.reasonRdbList.get(0).setSelected(true);
 		
