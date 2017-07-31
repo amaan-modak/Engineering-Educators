@@ -2,6 +2,17 @@ MaxScore:12
 ScorePerAssum:3
 ScorePerReason:1
 ScorePerNegAssum:-2
+Question:
+<html>
+<p> The Omantec Lift is a product currently being developed to assist in hygiene care of patients in the home and healthcare facilities. The system is comprised of a wall mounted winch connected to padded "t-bar" that is positioned behind the patient's knees. The winch system is activated to elevate the patients legs and buttocks. </p>
+<p>Develop model(s) to support design-decisions related to the following:</p>
+<ul>
+	<li>Sizing the motor for necessary torque and speed</li>
+	<li>Sizing the cable connecting the t-bar and drum</li>
+	<li>Sizing the bolts to secure the lift bracket to the wall in standard size wall studs</li>
+</ul>
+</html>
+End Question
 Assumptions:
 Hip acts as a pivot point (no lifting off the bed)|correct
 Incorrect Assumption #1.1|incorrect

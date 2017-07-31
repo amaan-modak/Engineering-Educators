@@ -105,8 +105,9 @@ public class EndPage {
 		/**
 		 * Add Team Photo
 		 */
-		JLabel lblWcLogo = new JLabel("Team NP");
-		lblWcLogo.setIcon(new ImageIcon (Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/team.jpeg")))));
+//		JLabel lblWcLogo = new JLabel("Team NP");
+		JLabel lblWcLogo = new JLabel("");
+		lblWcLogo.setIcon(new ImageIcon (Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/logoalt.png")))));
 		lblWcLogo.setAlignmentX(0.5f);
 		lblWcLogo.setHorizontalTextPosition(JLabel.CENTER);
 		lblWcLogo.setVerticalTextPosition(JLabel.BOTTOM);

@@ -28,6 +28,7 @@ public class Question {
 	ArrayList<String> assumptions = new ArrayList<String>();
 	ArrayList<JCheckBox> assumptionChkbxList = new ArrayList<JCheckBox>();
 	HashMap<String, Assumption> assumptionObjMap = new HashMap<String, Assumption>();
+	String problemDescription;
 	// Key = assumption, value = Assumption class object
 
 	int perReasonScore = 0;
@@ -125,6 +126,7 @@ public class Question {
 				readTextFile(files[i].getPath());
 			}
 		}
+		problemDescription = readProblemDescription();
 		readAssumptions();
 		readScores();
 		setAssumptionChkbxList();
@@ -156,6 +158,19 @@ public class Question {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private String readProblemDescription() {
+		int dataIdx = 0;
+		String retString = "";
+		while(!data.get(dataIdx).contains("Question:"))
+			dataIdx++;
+		dataIdx++;
+		while(!data.get(dataIdx).contains("End Question") && dataIdx<data.size()) {
+			retString += data.get(dataIdx);
+			dataIdx++;
+		}
+		return retString;
 	}
 
 	public void readAssumptions() {

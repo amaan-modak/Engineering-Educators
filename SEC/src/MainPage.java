@@ -87,12 +87,13 @@ public class MainPage {
 			frame.getContentPane().removeAll();
 		}
 		frame.setBounds(0, 0, 1366, 768);
+		frame.setSize(1366, 768);
 		frame.setForeground(Color.BLACK);
 		frame.setBackground(Color.RED);
 		frame.getContentPane().setBackground(new Color(0, 44, 61));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("eGuru");
-		frame.setAlwaysOnTop(true);
+//		frame.setAlwaysOnTop(true);
 		frame.setLocationRelativeTo(null);
 
 		/* Designing panel */
@@ -115,6 +116,15 @@ public class MainPage {
 		panel.add(lblTitle);
 		panel.add(lblScore);
 		panel.add(Box.createVerticalStrut(20));
+		
+		//Label for problem description
+		JLabel quesText = new JLabel();
+		quesText.setText(questObject.problemDescription);
+		quesText.setMaximumSize(new Dimension(1300, 768));
+		quesText.setForeground(Color.WHITE);
+		quesText.setFont(new Font("Arial", Font.PLAIN, 16));
+		
+		panel.add(quesText);
 
 		/*
 		 * Designing split panel to accommodate Model image and Free Body
@@ -134,16 +144,16 @@ public class MainPage {
 		innerPanel2.setBackground(new Color(0, 44, 61));
 
 		// Label for model image
-		innerPanel1.add(questObject.getModelImage(), "22, 2, fill, default");
+		innerPanel1.add(questObject.getModelImage());
 
 		// Label for FBD image
-		innerPanel2.add(questObject.getFbdImage(), "22, 6, fill, default");
+		innerPanel2.add(questObject.getFbdImage());
 
 		JSplitPane splitpane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, innerPanel1, innerPanel2);
 		splitpane.setAlignmentY(0.5f);
 		splitpane.setResizeWeight(0.5);
 		splitpane.setDividerSize(0);
-		splitpane.setMaximumSize(new Dimension(2000, 450));
+		splitpane.setMaximumSize(new Dimension(1366, 450));
 		splitpane.setBorder(null);
 		panel.add(splitpane);
 
@@ -232,6 +242,10 @@ public class MainPage {
 		panel.add(nxtButton);
 		panel.add(endButton);
 		JScrollPane scrollPane = new JScrollPane(panel);
+		//hides horizontal scroll bar
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		//vertical scroll speed
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		frame.setVisible(true);
 	}
