@@ -208,52 +208,17 @@ public class MainPage {
 		nxtButton.setVisible(false);
 
 		// Submit button
-		//Call Question class to get score for assumption selection
-		//For incorrect/complicated assumption, show list of reasons
-		//On submitting reason, we need to find a way to check which assumption has that reason
 		JButton submitButton = new JButton("Submit");
-		submitButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (isSubmitted) {
-					score = questObject.ScoreCalculationReason(score);
-					lblScore.setText("Score = " + score);
-					submitButton.setVisible(false);
-					if(qHandleObject.isLastQuestion()) {
-						nxtButton.setVisible(false);
-						endButton.setVisible(true);
-					}	
-					else {
-						nxtButton.setVisible(true);
-					}
-						
-				} else {
-					score = questObject.ScoreCalculation(score);
-					lblScore.setText("Score = " + score);
-					if(!questObject.anywrong){
-						submitButton.setVisible(false);
-						if(qHandleObject.isLastQuestion()){	
-							nxtButton.setVisible(false);
-							endButton.setVisible(true);
-						}
-						else {
-							nxtButton.setVisible(true);
-						}
-					}
-					questObject.disableCheckBoxes();
-					isSubmitted = true;
-				}
-			}
-		});
 		/* Gap between options and button */
 		panel.add(Box.createVerticalStrut(20));
 		panel.add(submitButton);
-		panel.add(nxtButton);
-		panel.add(endButton);
 		
-		
+				
+		//FBD Image Selection Start
 		JLabel imageQuesText = new JLabel("Select the points which form valid FBD: ");
 		imageQuesText.setForeground(Color.WHITE);
 		imageQuesText.setFont(new Font("Georgia", Font.BOLD, 16));
+		imageQuesText.setVisible(false);
 
 		panel.add(Box.createVerticalStrut(10));
 		panel.add(imageQuesText);
@@ -262,38 +227,89 @@ public class MainPage {
 		panel.add(Box.createVerticalStrut(10));
 		panel.add(imageLabel);
 		panel.add(Box.createVerticalStrut(10));
-		questObject.startFBDSelection();
+		imageLabel.setVisible(false);
 		
 		JButton restartFBD = new JButton("Restart FBD");
+		restartFBD.setVisible(false);
+		
+		fbdAnswer = new JLabel("Answer: ");
+		fbdAnswer.setForeground(Color.WHITE);
+		fbdAnswer.setFont(new Font("Georgia", Font.BOLD, 16));
+		fbdAnswer.setVisible(false);
+
+		JButton submitFBD = new JButton("Submit");
+		submitFBD.setVisible(false);
+		
+		
+		submitButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (isSubmitted) {
+					score = questObject.ScoreCalculationReason(score);
+					lblScore.setText("Score = " + score);
+					submitButton.setVisible(false);
+					imageLabel.setVisible(true);
+					questObject.startFBDSelection();
+					imageQuesText.setVisible(true);
+					restartFBD.setVisible(true);
+					submitFBD.setVisible(true);
+				} else {
+					score = questObject.ScoreCalculation(score);
+					lblScore.setText("Score = " + score);
+					if(!questObject.anywrong){
+						submitButton.setVisible(false);
+						imageLabel.setVisible(true);
+						questObject.startFBDSelection();
+						imageQuesText.setVisible(true);
+						restartFBD.setVisible(true);
+						submitFBD.setVisible(true);
+					}
+					questObject.disableCheckBoxes();
+					isSubmitted = true;
+				}
+			}
+		});
+		
+
 		restartFBD.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				fbdAnswer.setText("Answer: ");
+				fbdAnswer.setVisible(false);
 				questObject.startFBDSelection();
 				
 			}
 		});
-		fbdAnswer = new JLabel("Answer: ");
-		fbdAnswer.setForeground(Color.WHITE);
-		fbdAnswer.setFont(new Font("Georgia", Font.BOLD, 16));
-
-		JButton submitFBD = new JButton("Submit");
-		submitFBD.addActionListener(new ActionListener() {
-			
+		
+		submitFBD.addActionListener(new ActionListener() {	
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				if(questObject.getFBDAnswer())
+				if(questObject.getFBDAnswer()){
+					fbdAnswer.setVisible(true);
 					fbdAnswer.setText("Answer: Correct");
-				else
+				}
+				else{
+					fbdAnswer.setVisible(true);
 					fbdAnswer.setText("Answer: Incorrect");
+				}
+				
+				submitFBD.setVisible(false);
+				restartFBD.setVisible(false);
+				if(qHandleObject.isLastQuestion()) {
+					nxtButton.setVisible(false);
+					endButton.setVisible(true);
+				}	
+				else {
+					nxtButton.setVisible(true);
+				}
 			}
 		});
 		panel.add(restartFBD);
 		panel.add(submitFBD);
 		panel.add(fbdAnswer);
-
+		panel.add(nxtButton);
+		panel.add(endButton);
+		
 		
 		JScrollPane scrollPane = new JScrollPane(panel);
 		//hides horizontal scroll bar
