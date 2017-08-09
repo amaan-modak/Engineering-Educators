@@ -1,12 +1,17 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -29,7 +34,8 @@ public class MainPage {
 	 * Launch the application.
 	 */
 
-	
+	//variables for fbd selection
+	JLabel fbdAnswer;
 	
 	// Global declaration of local variables
 	boolean isSubmitted = false;
@@ -41,6 +47,8 @@ public class MainPage {
 	// Global declaration of GUI elements
 	private JFrame frame;
 	static JPanel panel;
+	
+	JLabel imageLabel;
 
 	// Global declaration of class objects
 	static Question questObject;
@@ -241,6 +249,52 @@ public class MainPage {
 		panel.add(submitButton);
 		panel.add(nxtButton);
 		panel.add(endButton);
+		
+		
+		JLabel imageQuesText = new JLabel("Select the points which form valid FBD: ");
+		imageQuesText.setForeground(Color.WHITE);
+		imageQuesText.setFont(new Font("Georgia", Font.BOLD, 16));
+
+		panel.add(Box.createVerticalStrut(10));
+		panel.add(imageQuesText);
+		
+		imageLabel = questObject.getFBDSelectionImageLabel();
+		panel.add(Box.createVerticalStrut(10));
+		panel.add(imageLabel);
+		panel.add(Box.createVerticalStrut(10));
+		questObject.startFBDSelection();
+		
+		JButton restartFBD = new JButton("Restart FBD");
+		restartFBD.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				fbdAnswer.setText("Answer: ");
+				questObject.startFBDSelection();
+				
+			}
+		});
+		fbdAnswer = new JLabel("Answer: ");
+		fbdAnswer.setForeground(Color.WHITE);
+		fbdAnswer.setFont(new Font("Georgia", Font.BOLD, 16));
+
+		JButton submitFBD = new JButton("Submit");
+		submitFBD.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if(questObject.getFBDAnswer())
+					fbdAnswer.setText("Answer: Correct");
+				else
+					fbdAnswer.setText("Answer: Incorrect");
+			}
+		});
+		panel.add(restartFBD);
+		panel.add(submitFBD);
+		panel.add(fbdAnswer);
+
+		
 		JScrollPane scrollPane = new JScrollPane(panel);
 		//hides horizontal scroll bar
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -303,4 +357,5 @@ public class MainPage {
 		}
 		assumObject.setRdbListVisibility(false);
 	}
+	
 }

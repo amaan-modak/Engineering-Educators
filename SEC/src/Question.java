@@ -29,6 +29,9 @@ public class Question {
 	ArrayList<JCheckBox> assumptionChkbxList = new ArrayList<JCheckBox>();
 	HashMap<String, Assumption> assumptionObjMap = new HashMap<String, Assumption>();
 	String problemDescription;
+	JLabel fbdSelectionLabel;
+	FBDSelection fbdSelection;
+	String fbdDataFileName;
 	// Key = assumption, value = Assumption class object
 
 	int perReasonScore = 0;
@@ -124,12 +127,27 @@ public class Question {
 				readModelImage(new File(files[i].getAbsolutePath()));
 			} else if (files[i].getName().contains("Questions.")) {
 				readTextFile(files[i].getPath());
+			} else if (files[i].getName().contains("fbdData.")) {
+				fbdDataFileName = files[i].getPath();
 			}
 		}
+		fbdSelection = new FBDSelection(fbdDataFileName, fbdObj.fbdImg);
 		problemDescription = readProblemDescription();
 		readAssumptions();
 		readScores();
 		setAssumptionChkbxList();
+	}
+	
+	public JLabel getFBDSelectionImageLabel() {
+		return fbdSelection.getImageLabel();
+	}
+	
+	public boolean getFBDAnswer() {
+		return fbdSelection.getFinalAnswer();
+	}
+	
+	public void startFBDSelection() {
+		fbdSelection.startTest();
 	}
 
 	public void readFbdImage(File imgFile) {
