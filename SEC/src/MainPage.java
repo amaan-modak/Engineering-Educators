@@ -49,6 +49,7 @@ public class MainPage {
 	static JPanel panel;
 	
 	JLabel imageLabel;
+	static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); 
 
 	// Global declaration of class objects
 	static Question questObject;
@@ -86,6 +87,7 @@ public class MainPage {
 	private void initialize() {
 		/* Local variable initialization */
 		JLabel lblTitle, lblScore, lblQuestion;
+		
 		isSubmitted = false;
 		questObject.readQuestion();
 		/* Designing frame */
@@ -119,7 +121,7 @@ public class MainPage {
 		lblTitle.setIcon(new ImageIcon (Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/logoalt.png"))))); //For alternate logo design
 		lblScore.setFont(new Font("Georgia", Font.ITALIC+Font.BOLD, 28));
 		lblScore.setForeground(Color.WHITE);
-		lblScore.setMaximumSize(new Dimension(1366, 100));
+		lblScore.setMaximumSize(screenSize);
 		lblScore.setHorizontalAlignment(SwingConstants.CENTER);
 		panel.add(lblTitle);
 		panel.add(lblScore);
@@ -128,7 +130,7 @@ public class MainPage {
 		//Label for problem description
 		JLabel quesText = new JLabel();
 		quesText.setText(questObject.problemDescription);
-		quesText.setMaximumSize(new Dimension(1300, 768));
+		quesText.setMaximumSize(new Dimension((int) (0.9*screenSize.getWidth()),(int) screenSize.getHeight()));
 		quesText.setForeground(Color.WHITE);
 		quesText.setFont(new Font("Arial", Font.PLAIN, 16));
 		
@@ -161,7 +163,7 @@ public class MainPage {
 		splitpane.setAlignmentY(0.5f);
 		splitpane.setResizeWeight(0.5);
 		splitpane.setDividerSize(0);
-		splitpane.setMaximumSize(new Dimension(1366, 450));
+		splitpane.setMaximumSize(screenSize);
 		splitpane.setBorder(null);
 		panel.add(splitpane);
 
@@ -225,6 +227,7 @@ public class MainPage {
 		
 		imageLabel = questObject.getFBDSelectionImageLabel();
 		panel.add(Box.createVerticalStrut(10));
+		
 		panel.add(imageLabel);
 		panel.add(Box.createVerticalStrut(10));
 		imageLabel.setVisible(false);

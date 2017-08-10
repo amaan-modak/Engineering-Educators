@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 
 
@@ -42,7 +43,6 @@ public class FBDSelection {
 	JLabel imageLabel;
 	int imageWidth = 800;
 	int imageHeight = 450;
-	int scissorWidth = 30, scissorHeight = 30;
 	boolean isFBDAnswered = false;
 	boolean finalAnswer = false;
 	
@@ -53,12 +53,14 @@ public class FBDSelection {
 	}
 
 	private void initialize(BufferedImage inputImage) {
-		
 		scissor = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/scissor-30.png"));
-		scissor.getScaledInstance(scissorWidth, scissorHeight, Image.SCALE_DEFAULT);
 		canvasImage = FBDImage.imageResizing(inputImage, imageWidth, imageHeight);
 		// display white image
 		imageLabel = new JLabel();
+		imageLabel.setMaximumSize(MainPage.screenSize);
+		imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		//imageLabel.setHorizontalTextPosition(JLabel.CENTER);
+		//imageLabel.setVerticalTextPosition(JLabel.CENTER);
 		setImage(canvasImage);
 		displayPoints(0, 100, 100);
 
@@ -161,8 +163,8 @@ public class FBDSelection {
 		Graphics2D g = canvasImage.createGraphics();
 		g.setColor(Color.black);
 
-		g.drawImage(scissor, x - (scissorWidth/2), y - (scissorHeight/2), null);
-		g.drawString(Integer.toString(i + 1), x - (scissorWidth/2), y - (scissorHeight/2));
+		g.drawImage(scissor, x - 15, y - 15, null);
+		g.drawString(Integer.toString(i + 1), x - 15, y - 15);
 		g.dispose();
 		imageLabel.repaint();
 	}
@@ -237,9 +239,9 @@ public class FBDSelection {
 				// System.out.println(p.getCutCounter());
 				p.setCorrect(false);
 			}
-			g.drawImage(scissor, p.x - (scissorWidth/2), p.y - (scissorHeight/2), null);
+			g.drawImage(scissor, p.x - 15, p.y - 15, null);
 			g.setColor(Color.BLACK);
-			g.drawString(Integer.toString(p.getCutCounter()), p.x - (scissorWidth/2), p.y - (scissorHeight/2));
+			g.drawString(Integer.toString(p.getCutCounter()), p.x - 15, p.y - 15);
 
 		}
 		g.dispose();
@@ -252,7 +254,7 @@ public class FBDSelection {
 		public void mouseClicked(MouseEvent e) {
 			Point clickedPoint = e.getPoint();
 			for (ZPoint p : cutsList) {
-				Rectangle clickThresholdRectangle = new Rectangle(p.x - (scissorWidth/2), p.y - (scissorHeight/2), scissorWidth, scissorHeight);
+				Rectangle clickThresholdRectangle = new Rectangle(p.x - 15, p.y - 15, 30, 30);
 				if (clickThresholdRectangle.contains(clickedPoint)) {
 					if (fbdStart != null && fbdStart == p) {
 						isFBDAnswered = true;
@@ -264,7 +266,7 @@ public class FBDSelection {
 					}
 					Graphics2D g = canvasImage.createGraphics();
 					g.setColor(Color.green);
-					g.drawRect(p.x - (scissorWidth/2), p.y - (scissorHeight/2), scissorWidth, scissorHeight);
+					g.drawRect(p.x - 15, p.y - 15, 30, 30);
 					if (fbdRecent != null) {
 						secondPoint = p;
 						Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0,
