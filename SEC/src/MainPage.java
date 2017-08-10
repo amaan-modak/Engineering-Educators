@@ -86,8 +86,6 @@ public class MainPage {
 	private void initialize() {
 		/* Local variable initialization */
 		JLabel lblTitle, lblScore, lblQuestion;
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); 
-		//screenSize.setSize(0.9*screenSize.getWidth(), screenSize.getHeight());
 		isSubmitted = false;
 		questObject.readQuestion();
 		/* Designing frame */
@@ -121,7 +119,7 @@ public class MainPage {
 		lblTitle.setIcon(new ImageIcon (Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/logoalt.png"))))); //For alternate logo design
 		lblScore.setFont(new Font("Georgia", Font.ITALIC+Font.BOLD, 28));
 		lblScore.setForeground(Color.WHITE);
-		lblScore.setMaximumSize(screenSize);
+		lblScore.setMaximumSize(new Dimension(1366, 100));
 		lblScore.setHorizontalAlignment(SwingConstants.CENTER);
 		panel.add(lblTitle);
 		panel.add(lblScore);
@@ -130,7 +128,7 @@ public class MainPage {
 		//Label for problem description
 		JLabel quesText = new JLabel();
 		quesText.setText(questObject.problemDescription);
-		quesText.setMaximumSize(new Dimension((int) (0.9*screenSize.getWidth()),(int) screenSize.getHeight()));
+		quesText.setMaximumSize(new Dimension(1300, 768));
 		quesText.setForeground(Color.WHITE);
 		quesText.setFont(new Font("Arial", Font.PLAIN, 16));
 		
@@ -160,10 +158,10 @@ public class MainPage {
 		innerPanel2.add(questObject.getFbdImage());
 
 		JSplitPane splitpane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, innerPanel1, innerPanel2);
-		splitpane.setAlignmentY(SwingConstants.CENTER);
+		splitpane.setAlignmentY(0.5f);
 		splitpane.setResizeWeight(0.5);
 		splitpane.setDividerSize(0);
-		splitpane.setMaximumSize(screenSize);
+		splitpane.setMaximumSize(new Dimension(1366, 450));
 		splitpane.setBorder(null);
 		panel.add(splitpane);
 
@@ -261,9 +259,7 @@ public class MainPage {
 		panel.add(imageQuesText);
 		
 		imageLabel = questObject.getFBDSelectionImageLabel();
-		panel.add(Box.createVerticalStrut(20));
-		imageLabel.setMaximumSize(screenSize);
-		imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		panel.add(Box.createVerticalStrut(10));
 		panel.add(imageLabel);
 		panel.add(Box.createVerticalStrut(10));
 		questObject.startFBDSelection();
