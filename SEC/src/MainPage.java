@@ -6,8 +6,11 @@ import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,6 +31,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 
 public class MainPage {
 	/**
@@ -277,6 +281,7 @@ public class MainPage {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				fbdAnswer.setText("Answer: ");
+				fbdAnswer.setAlignmentX(SwingConstants.CENTER);
 				fbdAnswer.setVisible(false);
 				questObject.startFBDSelection();
 				
@@ -307,10 +312,32 @@ public class MainPage {
 				}
 			}
 		});
-		panel.add(restartFBD);
-		panel.add(submitFBD);
-		panel.add(fbdAnswer);
-		panel.add(nxtButton);
+		
+		JPanel p = new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		p.add(restartFBD);
+		p.add(submitFBD);
+		p.setAlignmentY(0.5f);
+		p.setBackground(new Color(0, 44, 61));
+		p.setMaximumSize(screenSize);
+		p.setAlignmentX(SwingConstants.CENTER);
+		panel.add(p);
+		JPanel p1 = new JPanel(new GridBagLayout());
+		panel.add(Box.createVerticalStrut(20));
+		p1.add(fbdAnswer);
+		c.gridx=1;
+		c.ipady = 15;      
+		c.weightx = 0.0;
+		c.gridwidth = 3;
+		c.gridx = 0;
+		c.gridy = 1;
+		p1.add(nxtButton,c);
+		p1.setAlignmentY(0.5f);
+		p1.setBackground(new Color(0, 44, 61));
+		p1.setMaximumSize(screenSize);
+		p1.setAlignmentX(SwingConstants.CENTER);
+		
+		panel.add(p1);
 		panel.add(endButton);
 		
 		
