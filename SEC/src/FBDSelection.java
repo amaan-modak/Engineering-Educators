@@ -57,10 +57,10 @@ public class FBDSelection {
 		canvasImage = FBDImage.imageResizing(inputImage, imageWidth, imageHeight);
 		// display white image
 		imageLabel = new JLabel();
-		imageLabel.setMaximumSize(MainPage.screenSize);
-		imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		//imageLabel.setHorizontalTextPosition(JLabel.CENTER);
-		//imageLabel.setVerticalTextPosition(JLabel.CENTER);
+		//imageLabel.setMaximumSize(MainPage.screenSize);
+		//imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		imageLabel.setHorizontalTextPosition(JLabel.CENTER);
+		imageLabel.setVerticalTextPosition(JLabel.CENTER);
 		setImage(canvasImage);
 		displayPoints(0, 100, 100);
 
