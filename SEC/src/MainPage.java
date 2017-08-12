@@ -229,11 +229,16 @@ public class MainPage {
 		panel.add(Box.createVerticalStrut(10));
 		panel.add(imageQuesText);
 		
+		JPanel fbdPanel = new JPanel(new GridBagLayout());
 		imageLabel = questObject.getFBDSelectionImageLabel();
-		panel.add(Box.createVerticalStrut(10));
+		panel.add(Box.createVerticalStrut(20));
 		
-		panel.add(imageLabel);
-		panel.add(Box.createVerticalStrut(10));
+		fbdPanel.setMaximumSize(screenSize);
+		fbdPanel.setAlignmentX(SwingConstants.CENTER);
+		fbdPanel.add(imageLabel);
+		fbdPanel.setBackground(new Color(0, 44, 61));
+		panel.add(fbdPanel);
+		panel.add(Box.createVerticalStrut(20));
 		imageLabel.setVisible(false);
 		
 		JButton restartFBD = new JButton("Restart FBD");
