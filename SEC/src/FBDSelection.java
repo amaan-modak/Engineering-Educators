@@ -45,6 +45,7 @@ public class FBDSelection {
 	int imageHeight = 450;
 	boolean isFBDAnswered = false;
 	boolean finalAnswer = false;
+	boolean isFBDSame = true;
 	
 	public FBDSelection(String filename, BufferedImage inputImage) {
 
@@ -299,7 +300,7 @@ public class FBDSelection {
 //							System.out.println((int)l.getX1()+","+(int)l.getY1()+"|"+(int)l.getX2()+","+(int)l.getY2());
 //						}
 						
-						boolean isFBDSame = true;
+						
 						for(Line2D line: answerLineList) {
 							if(!isListContainLine(lineList, line)) {
 								isFBDSame = false;
@@ -337,7 +338,7 @@ public class FBDSelection {
 		
 	}
 	
-	public boolean getFinalAnswer() {
+	public static boolean getFinalAnswer() {
 		return finalAnswer;
 	}
 

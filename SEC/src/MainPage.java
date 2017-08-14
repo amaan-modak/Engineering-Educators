@@ -255,6 +255,7 @@ public class MainPage {
 		
 		submitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
 				if (isSubmitted) {
 					score = questObject.ScoreCalculationReason(score);
 					lblScore.setText("Score = " + score);
@@ -300,12 +301,16 @@ public class MainPage {
 				if(questObject.getFBDAnswer()){
 					fbdAnswer.setVisible(true);
 					fbdAnswer.setText("Answer: Correct");
+					score+=questObject.getFbdAttemptScore();
 				}
 				else{
 					fbdAnswer.setVisible(true);
 					fbdAnswer.setText("Answer: Incorrect");
+					score+=questObject.getFbdAttemptNegScore();
 				}
-				
+				if(score>0)
+					lblScore.setText("Score = " + score);
+					
 				submitFBD.setVisible(false);
 				restartFBD.setVisible(false);
 				if(qHandleObject.isLastQuestion()) {

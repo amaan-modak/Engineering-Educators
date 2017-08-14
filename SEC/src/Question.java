@@ -37,10 +37,13 @@ public class Question {
 	int perReasonScore = 0;
 	int minScore=0;
 	int maxScore=0;
-
+	
 	int perAssumScore = 0;
 	int perAssumNegScore = 0;
 	boolean anywrong = false;
+	
+	int fbdScore=0;
+	int fbdNegScore=0;
 
 	/*** Constructor ***/
 	public Question(String questionPath) {
@@ -84,7 +87,22 @@ public class Question {
 	public void setPerAssumNegScore(int score) {
 		perAssumNegScore = score;
 	}
+	
+	public void setFbdAttemptScore(int score){
+		fbdScore=score;
+	}
+	
+	public int getFbdAttemptNegScore(){
+		return this.fbdNegScore;
+	}
 
+	public void setFbdAttemptNegScore(int score){
+		fbdNegScore=score;
+	}
+	
+	public int getFbdAttemptScore(){
+		return this.fbdScore;
+	}
 	public JLabel getModelImage() {
 		return modObj.getImage();
 	}
@@ -241,6 +259,17 @@ public class Question {
 				String[] score = data.get(j).trim().split("\\:");
 				setPerAssumNegScore(new Integer(score[1]));
 			}
+			
+			if(data.get(j).contains("FBDScore:")) {
+				String[] score = data.get(j).trim().split("\\:");
+				setFbdAttemptScore(new Integer(score[1]));
+				System.out.println(new Integer(score[1]));
+			}
+			
+			if(data.get(j).contains("FBDNegScore:")) {
+				String[] score = data.get(j).trim().split("\\:");
+				setFbdAttemptNegScore(new Integer(score[1]));
+			}
 		}
 	}
 
@@ -322,12 +351,17 @@ public class Question {
 			}
 
 		}
+		if(tempscore<minScore)
+			tempscore=minScore;
+		else if(tempscore>maxScore)
+			tempscore=maxScore; 
+		
 		score += tempscore;
 				
-		if(score<minScore)
+	/*	if(score<minScore)
 			score=minScore;
 		else if(score>maxScore)
-			score=maxScore;
+			score=maxScore; */
 		
 		return score;
 	}
@@ -343,11 +377,14 @@ public class Question {
 				}
 			}
 		}
+		
+		if(tempscore<minScore)
+			tempscore=minScore;
+		else if(tempscore>maxScore)
+			tempscore=maxScore; 
+		
 		score += tempscore;
-		if(score<minScore)
-			score=minScore;
-		else if(score>maxScore)
-			score=maxScore;
+		
 
 		return score;
 	}
