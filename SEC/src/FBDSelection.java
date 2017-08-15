@@ -44,7 +44,7 @@ public class FBDSelection {
 	int imageWidth = 800;
 	int imageHeight = 450;
 	boolean isFBDAnswered = false;
-	boolean finalAnswer = false;
+	static boolean finalAnswer = false;
 	boolean isFBDSame = true;
 	
 	public FBDSelection(String filename, BufferedImage inputImage) {
