@@ -1,7 +1,12 @@
+package teamnp.eguru;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.Toolkit;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,9 +20,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import ForcePoint.EntityDirection;
-import ForcePoint.EntityProperty;
-import ForcePoint.EntityType;
+import teamnp.eguru.ForcePoint.EntityDirection;
+import teamnp.eguru.ForcePoint.EntityProperty;
+import teamnp.eguru.ForcePoint.EntityType;
 
 
 
@@ -39,6 +44,15 @@ public class ForceSelection {
 	// list of correct forces loaded from file
 	ArrayList<ForcePoint> correctForceDataList = new ArrayList<ForcePoint>();
 
+	ForcePoint.EntityType currentType = null;
+	ForcePoint.EntityProperty currentProperty = null;
+	ForcePoint.EntityDirection currentDirection = null;
+
+	static final Color KNOWN_FORCE_COLOR = new Color(0, 153, 51);
+	static final Color UNKNOWN_FORCE_COLOR = Color.RED;
+	int arrowLineLength = 50;
+	int arrowHeaderSize = 5;
+	int arrowLenght = arrowLineLength + arrowHeaderSize;
 
 	
 	public ForceSelection(String filename, BufferedImage inputImage) {
@@ -191,5 +205,108 @@ public class ForceSelection {
 		fp.setAngle(angle);
 		return fp;
 	}
+	
+	boolean fpListContainsLocation(ArrayList<ForcePoint> fpList, ForcePoint fp) {
+		boolean retValue = false;
+		for (ForcePoint p : fpList) {
+			if (p.x == fp.x && p.y == fp.y) {
+				retValue = true;
+			}
+		}
+		return retValue;
+	}
+
+	private void displayMoment(int x, int y, EntityDirection direction, EntityProperty property) {
+		Color arcColor = null;
+		currentProperty = property;
+		currentDirection = direction;
+		Point p = new Point(x, y);
+		Graphics2D g = canvasImage.createGraphics();
+		int arcRadius = arrowLenght / 2;
+		if (currentProperty == EntityProperty.KNOWN)
+			arcColor = KNOWN_FORCE_COLOR;
+		else if (currentProperty == EntityProperty.UNKNOWN)
+			arcColor = UNKNOWN_FORCE_COLOR;
+		g.setColor(arcColor);
+
+		if (currentDirection == EntityDirection.CLOCKWISE) {
+			g.drawArc(p.x - arcRadius, p.y - arcRadius, 2 * arcRadius, 2 * arcRadius, 300, 120);
+
+			Point arcArrowStartPoint = new Point((int) (arcRadius * Math.cos(Math.toRadians(315))),
+					(int) (-1 * arcRadius * Math.sin(Math.toRadians(315))));
+			arcArrowStartPoint = new Point(p.x + arcArrowStartPoint.x, p.y + arcArrowStartPoint.y);
+			Point arcArrowEndPoint = new Point((int) (arcRadius * Math.cos(Math.toRadians(300))),
+					(int) (-1 * arcRadius * Math.sin(Math.toRadians(300))));
+			arcArrowEndPoint = new Point(p.x + arcArrowEndPoint.x, p.y + arcArrowEndPoint.y);
+			drawArrow(arcArrowStartPoint, arcArrowEndPoint);
+
+		} else if (currentDirection == EntityDirection.ANTICLOCKWISE) {
+			g.drawArc(p.x - arcRadius, p.y - arcRadius, 2 * arcRadius, 2 * arcRadius, 120, 120);
+
+			Point arcArrowStartPoint = new Point((int) (arcRadius * Math.cos(Math.toRadians(135))),
+					(int) (-1 * arcRadius * Math.sin(Math.toRadians(135))));
+			arcArrowStartPoint = new Point(p.x + arcArrowStartPoint.x, p.y + arcArrowStartPoint.y);
+			Point arcArrowEndPoint = new Point((int) (arcRadius * Math.cos(Math.toRadians(120))),
+					(int) (-1 * arcRadius * Math.sin(Math.toRadians(120))));
+			arcArrowEndPoint = new Point(p.x + arcArrowEndPoint.x, p.y + arcArrowEndPoint.y);
+			drawArrow(arcArrowStartPoint, arcArrowEndPoint);
+
+		}
+
+		g.dispose();
+		imageLabel.repaint();
+
+	}
+
+	private void displayArrow(int x, int y, int angle, EntityProperty property) {
+		Point p1 = new Point(x, y);
+		int new_X = (int) (arrowLineLength * Math.cos(Math.toRadians(angle)));
+		int new_Y = (int) (-1 * arrowLineLength * Math.sin(Math.toRadians(angle)));
+		Point p2 = new Point(x + new_X, y + new_Y);
+		currentProperty = property;
+		drawArrow(p1, p2);
+
+	}
+	
+	private void drawArrow(Point p1, Point p2) {
+		int x1 = (int) p1.getX();
+		int y1 = (int) p1.getY();
+		int x2 = (int) p2.getX();
+		int y2 = (int) p2.getY();
+
+		Color arrowColor = null;
+
+		Graphics2D g2d = canvasImage.createGraphics();
+		AffineTransform tx = new AffineTransform();
+		Line2D.Double line = new Line2D.Double(x1, y1, x2, y2);
+
+		if (currentProperty == EntityProperty.KNOWN)
+			arrowColor = KNOWN_FORCE_COLOR;
+		else if (currentProperty == EntityProperty.UNKNOWN)
+			arrowColor = UNKNOWN_FORCE_COLOR;
+
+		g2d.setColor(arrowColor);
+		g2d.drawLine(x1, y1, x2, y2);
+
+		Polygon arrowHead = new Polygon();
+		arrowHead.addPoint(0, 5);
+		arrowHead.addPoint(-5, -5);
+		arrowHead.addPoint(5, -5);
+
+		tx.setToIdentity();
+		double angle = Math.atan2(line.y2 - line.y1, line.x2 - line.x1);
+		tx.translate(line.x2, line.y2);
+		tx.rotate((angle - Math.PI / 2d));
+
+		Graphics2D g = (Graphics2D) g2d.create();
+		g.setColor(arrowColor);
+
+		g.setTransform(tx);
+		g.fill(arrowHead);
+		g.dispose();
+
+		imageLabel.repaint();
+	}
+
 
 }
