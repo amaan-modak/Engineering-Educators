@@ -41,8 +41,8 @@ public class FBDSelection {
 	BufferedImage originalImage, canvasImage;
 	private Image scissor = null;
 	JLabel imageLabel;
-	int imageWidth = 800;
-	int imageHeight = 450;
+//	int imageWidth = 800;
+//	int imageHeight = 450;
 	boolean isFBDAnswered = false;
 	boolean finalAnswer = false;
 	
@@ -54,7 +54,7 @@ public class FBDSelection {
 
 	private void initialize(BufferedImage inputImage) {
 		scissor = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/scissor-30.png"));
-		canvasImage = FBDImage.imageResizing(inputImage, imageWidth, imageHeight);
+		canvasImage = FBDImage.imageResizing(inputImage, inputImage.getWidth(), inputImage.getHeight());
 		// display white image
 		imageLabel = new JLabel();
 		imageLabel.setMaximumSize(MainPage.screenSize);

@@ -131,7 +131,7 @@ public class Question {
 				fbdDataFileName = files[i].getPath();
 			}
 		}
-		fbdSelection = new FBDSelection(fbdDataFileName, fbdObj.fbdImg);
+		fbdSelection = new FBDSelection(fbdDataFileName, fbdObj.originalImage);
 		problemDescription = readProblemDescription();
 		readAssumptions();
 		readScores();

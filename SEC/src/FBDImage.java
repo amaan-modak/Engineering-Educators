@@ -13,11 +13,11 @@ import javax.swing.SwingConstants;
 public class FBDImage {
 	static BufferedImage fbdImg;
 	static JLabel lblFbdImg = new JLabel("Idealized Model");
-	
+	BufferedImage originalImage;
 	public void readImage(File dir){
 		try {
-			BufferedImage img = ImageIO.read(dir);
-			fbdImg = imageResizing(img, 600, 250);
+			originalImage = ImageIO.read(dir);
+			fbdImg = imageResizing(originalImage, 600, 250);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
