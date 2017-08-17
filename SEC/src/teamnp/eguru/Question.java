@@ -1,7 +1,9 @@
+package teamnp.eguru;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,8 +13,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.imageio.ImageIO;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /*
 Class having responsibility of maintaining question
@@ -32,18 +36,18 @@ public class Question {
 	JLabel fbdSelectionLabel;
 	FBDSelection fbdSelection;
 	String fbdDataFileName;
+	String forceDataFileName;
+	BufferedImage forceImage;
+	ForceSelection forceSelection;
 	// Key = assumption, value = Assumption class object
 
 	int perReasonScore = 0;
 	int minScore=0;
 	int maxScore=0;
-	
+
 	int perAssumScore = 0;
 	int perAssumNegScore = 0;
 	boolean anywrong = false;
-	
-	int fbdScore=0;
-	int fbdNegScore=0;
 
 	/*** Constructor ***/
 	public Question(String questionPath) {
@@ -87,22 +91,7 @@ public class Question {
 	public void setPerAssumNegScore(int score) {
 		perAssumNegScore = score;
 	}
-	
-	public void setFbdAttemptScore(int score){
-		fbdScore=score;
-	}
-	
-	public int getFbdAttemptNegScore(){
-		return this.fbdNegScore;
-	}
 
-	public void setFbdAttemptNegScore(int score){
-		fbdNegScore=score;
-	}
-	
-	public int getFbdAttemptScore(){
-		return this.fbdScore;
-	}
 	public JLabel getModelImage() {
 		return modObj.getImage();
 	}
@@ -147,9 +136,19 @@ public class Question {
 				readTextFile(files[i].getPath());
 			} else if (files[i].getName().contains("fbdData.")) {
 				fbdDataFileName = files[i].getPath();
+			} else if (files[i].getName().contains("forceData.")) {
+				forceDataFileName = files[i].getPath();
+			} else if (files[i].getName().contains("fbdCropped.")) {
+				try {
+					forceImage = ImageIO.read(new File(files[i].getAbsolutePath()));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
-		fbdSelection = new FBDSelection(fbdDataFileName, fbdObj.fbdImg);
+		fbdSelection = new FBDSelection(fbdDataFileName, fbdObj.originalImage);
+		forceSelection = new ForceSelection(forceDataFileName, forceImage);
 		problemDescription = readProblemDescription();
 		readAssumptions();
 		readScores();
@@ -166,6 +165,22 @@ public class Question {
 	
 	public void startFBDSelection() {
 		fbdSelection.startTest();
+	}
+	
+	public JLabel getForceSelectionImageLabel() {
+		return forceSelection.getImageLabel();
+	}
+	
+	public boolean getForceAnswer() {
+		return forceSelection.getFinalAnswer();
+	}
+	
+	public void startForceSelection() {
+		forceSelection.startTest();
+	}
+	
+	public JPanel getForceGui() {
+		return forceSelection.getGui();
 	}
 
 	public void readFbdImage(File imgFile) {
@@ -259,17 +274,6 @@ public class Question {
 				String[] score = data.get(j).trim().split("\\:");
 				setPerAssumNegScore(new Integer(score[1]));
 			}
-			
-			if(data.get(j).contains("FBDScore:")) {
-				String[] score = data.get(j).trim().split("\\:");
-				setFbdAttemptScore(new Integer(score[1]));
-				System.out.println(new Integer(score[1]));
-			}
-			
-			if(data.get(j).contains("FBDNegScore:")) {
-				String[] score = data.get(j).trim().split("\\:");
-				setFbdAttemptNegScore(new Integer(score[1]));
-			}
 		}
 	}
 
@@ -351,17 +355,12 @@ public class Question {
 			}
 
 		}
-		if(tempscore<minScore)
-			tempscore=minScore;
-		else if(tempscore>maxScore)
-			tempscore=maxScore; 
-		
 		score += tempscore;
 				
-	/*	if(score<minScore)
+		if(score<minScore)
 			score=minScore;
 		else if(score>maxScore)
-			score=maxScore; */
+			score=maxScore;
 		
 		return score;
 	}
@@ -377,14 +376,11 @@ public class Question {
 				}
 			}
 		}
-		
-		if(tempscore<minScore)
-			tempscore=minScore;
-		else if(tempscore>maxScore)
-			tempscore=maxScore; 
-		
 		score += tempscore;
-		
+		if(score<minScore)
+			score=minScore;
+		else if(score>maxScore)
+			score=maxScore;
 
 		return score;
 	}

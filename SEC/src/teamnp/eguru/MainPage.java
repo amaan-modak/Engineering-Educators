@@ -1,3 +1,4 @@
+package teamnp.eguru;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -255,7 +256,6 @@ public class MainPage {
 		
 		submitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
 				if (isSubmitted) {
 					score = questObject.ScoreCalculationReason(score);
 					lblScore.setText("Score = " + score);
@@ -301,16 +301,12 @@ public class MainPage {
 				if(questObject.getFBDAnswer()){
 					fbdAnswer.setVisible(true);
 					fbdAnswer.setText("Answer: Correct");
-					score+=questObject.getFbdAttemptScore();
 				}
 				else{
 					fbdAnswer.setVisible(true);
 					fbdAnswer.setText("Answer: Incorrect");
-					score+=questObject.getFbdAttemptNegScore();
 				}
-				if(score>0)
-					lblScore.setText("Score = " + score);
-					
+				
 				submitFBD.setVisible(false);
 				restartFBD.setVisible(false);
 				if(qHandleObject.isLastQuestion()) {
@@ -349,7 +345,41 @@ public class MainPage {
 		
 		panel.add(p1);
 		panel.add(endButton);
+
+		//Force part starts here
+		panel.add(questObject.getForceGui());
 		
+		// Force Answer label
+		JLabel forceAnswer = new JLabel("Answer: ");
+		forceAnswer.setForeground(Color.WHITE);
+		forceAnswer.setFont(new Font("Georgia", Font.BOLD, 16));
+		
+		JButton forceSubmit = new JButton("Submit");
+		forceSubmit.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if( questObject.getForceAnswer() ) {
+					forceAnswer.setText("Answer: Correct");
+				} else {
+					forceAnswer.setText("Answer: Incorrect");
+				}
+				
+			}
+		});
+		
+		JButton forceRestart = new JButton("Restart");
+		forceRestart.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				questObject.startForceSelection();
+			}
+		});
+		
+		panel.add(forceSubmit);
+		panel.add(forceRestart);
+		panel.add(forceAnswer);
 		
 		JScrollPane scrollPane = new JScrollPane(panel);
 		//hides horizontal scroll bar
