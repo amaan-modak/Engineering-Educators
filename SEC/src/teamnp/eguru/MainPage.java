@@ -345,7 +345,41 @@ public class MainPage {
 		
 		panel.add(p1);
 		panel.add(endButton);
+
+		//Force part starts here
+		panel.add(questObject.getForceGui());
 		
+		// Force Answer label
+		JLabel forceAnswer = new JLabel("Answer: ");
+		forceAnswer.setForeground(Color.WHITE);
+		forceAnswer.setFont(new Font("Georgia", Font.BOLD, 16));
+		
+		JButton forceSubmit = new JButton("Submit");
+		forceSubmit.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if( questObject.getForceAnswer() ) {
+					forceAnswer.setText("Answer: Correct");
+				} else {
+					forceAnswer.setText("Answer: Incorrect");
+				}
+				
+			}
+		});
+		
+		JButton forceRestart = new JButton("Restart");
+		forceRestart.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				questObject.startForceSelection();
+			}
+		});
+		
+		panel.add(forceSubmit);
+		panel.add(forceRestart);
+		panel.add(forceAnswer);
 		
 		JScrollPane scrollPane = new JScrollPane(panel);
 		//hides horizontal scroll bar

@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,8 +13,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.imageio.ImageIO;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /*
 Class having responsibility of maintaining question
@@ -33,6 +36,9 @@ public class Question {
 	JLabel fbdSelectionLabel;
 	FBDSelection fbdSelection;
 	String fbdDataFileName;
+	String forceDataFileName;
+	BufferedImage forceImage;
+	ForceSelection forceSelection;
 	// Key = assumption, value = Assumption class object
 
 	int perReasonScore = 0;
@@ -130,9 +136,19 @@ public class Question {
 				readTextFile(files[i].getPath());
 			} else if (files[i].getName().contains("fbdData.")) {
 				fbdDataFileName = files[i].getPath();
+			} else if (files[i].getName().contains("forceData.")) {
+				forceDataFileName = files[i].getPath();
+			} else if (files[i].getName().contains("fbdCropped.")) {
+				try {
+					forceImage = ImageIO.read(new File(files[i].getAbsolutePath()));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 		fbdSelection = new FBDSelection(fbdDataFileName, fbdObj.originalImage);
+		forceSelection = new ForceSelection(forceDataFileName, forceImage);
 		problemDescription = readProblemDescription();
 		readAssumptions();
 		readScores();
@@ -149,6 +165,22 @@ public class Question {
 	
 	public void startFBDSelection() {
 		fbdSelection.startTest();
+	}
+	
+	public JLabel getForceSelectionImageLabel() {
+		return forceSelection.getImageLabel();
+	}
+	
+	public boolean getForceAnswer() {
+		return forceSelection.getFinalAnswer();
+	}
+	
+	public void startForceSelection() {
+		forceSelection.startTest();
+	}
+	
+	public JPanel getForceGui() {
+		return forceSelection.getGui();
 	}
 
 	public void readFbdImage(File imgFile) {

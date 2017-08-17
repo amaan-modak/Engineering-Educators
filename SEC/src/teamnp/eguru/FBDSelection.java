@@ -32,7 +32,10 @@ public class FBDSelection {
 
 	ArrayList<ZPoint> cutsList = new ArrayList<ZPoint>();
 	int cutCount = 1;
+	// this list contains correct answer loaded from file
 	ArrayList<Line2D> lineList = new ArrayList<Line2D>();
+	
+	//this list contains answer entered by student
 	ArrayList<Line2D> answerLineList = new ArrayList<Line2D>();
 
 
