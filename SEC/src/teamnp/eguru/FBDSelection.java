@@ -1,3 +1,4 @@
+package teamnp.eguru;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -31,7 +32,10 @@ public class FBDSelection {
 
 	ArrayList<ZPoint> cutsList = new ArrayList<ZPoint>();
 	int cutCount = 1;
+	// this list contains correct answer loaded from file
 	ArrayList<Line2D> lineList = new ArrayList<Line2D>();
+	
+	//this list contains answer entered by student
 	ArrayList<Line2D> answerLineList = new ArrayList<Line2D>();
 
 
@@ -41,8 +45,8 @@ public class FBDSelection {
 	BufferedImage originalImage, canvasImage;
 	private Image scissor = null;
 	JLabel imageLabel;
-	int imageWidth = 800;
-	int imageHeight = 450;
+//	int imageWidth = 800;
+//	int imageHeight = 450;
 	boolean isFBDAnswered = false;
 	boolean finalAnswer = false;
 	
@@ -54,7 +58,7 @@ public class FBDSelection {
 
 	private void initialize(BufferedImage inputImage) {
 		scissor = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/scissor-30.png"));
-		canvasImage = FBDImage.imageResizing(inputImage, imageWidth, imageHeight);
+		canvasImage = FBDImage.imageResizing(inputImage, inputImage.getWidth(), inputImage.getHeight());
 		// display white image
 		imageLabel = new JLabel();
 		imageLabel.setMaximumSize(MainPage.screenSize);
