@@ -43,6 +43,7 @@ public class MainPage {
 	JLabel fbdAnswer;
 	int fbdRetryAttempts;
 	JLabel fbdHintText;
+	int c=1;
 	
 	// Global declaration of local variables
 	boolean isSubmitted = false;
@@ -235,6 +236,11 @@ public class MainPage {
 		panel.add(Box.createVerticalStrut(10));
 		panel.add(imageQuesText);
 		
+		JLabel forceQuesText = new JLabel("Draw appropriate forces and moments:");
+		forceQuesText.setForeground(Color.WHITE);
+		forceQuesText.setFont(new Font("Georgia", Font.BOLD, 16));
+		forceQuesText.setVisible(false);
+		
 		JPanel fbdPanel = new JPanel(new GridBagLayout());
 		imageLabel = questObject.getFBDSelectionImageLabel();
 		panel.add(Box.createVerticalStrut(20));
@@ -265,6 +271,38 @@ public class MainPage {
 		fbdHintText.setForeground(Color.WHITE);
 		fbdHintText.setFont(new Font("Georgia", Font.BOLD, 16));
 		fbdHintText.setVisible(false);
+		
+		JButton forceSubmit = new JButton("Submit");
+		JButton forceRestart = new JButton("Restart");
+		JLabel forceAnswer = new JLabel("Answer: ");
+				
+		JPanel forceButtons = new JPanel(new GridBagLayout());
+		forceButtons.add(forceSubmit);
+		forceButtons.add(forceRestart);
+		forceButtons.setAlignmentY(0.5f);
+		forceButtons.setBackground(new Color(0, 44, 61));
+		forceButtons.setMaximumSize(screenSize);
+		forceButtons.setAlignmentX(SwingConstants.CENTER);
+				
+		JPanel forceAns= new JPanel(new GridBagLayout());
+		GridBagConstraints c1 = new GridBagConstraints();
+		c1.gridx=1;
+		c1.ipady = 15;      
+		c1.weightx = 0.0;
+		c1.gridwidth = 3;
+		c1.gridx = 0;
+		c1.gridy = 1;
+		panel.add(Box.createVerticalStrut(20));
+		forceAns.add(forceAnswer);
+		forceAns.add(nxtButton,c1);
+		forceAns.setAlignmentY(0.5f);
+		forceAns.setBackground(new Color(0, 44, 61));
+		forceAns.setMaximumSize(screenSize);
+		forceAns.setAlignmentX(SwingConstants.CENTER);
+				
+		forceAns.setVisible(false);
+		panel.add(forceAns);
+				
 		
 		JButton submitFBD = new JButton("Submit");
 		submitFBD.setVisible(false);
@@ -334,12 +372,26 @@ public class MainPage {
 			}
 		});
 		
+		
 		submitFBD.addActionListener(new ActionListener() {	
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				
+				forceQuesText.setVisible(true);
+				if(c==1)
+					panel.add(Box.createVerticalStrut(20));
+				panel.add(questObject.getForceGui());
 				
+				if(c==1)
+					panel.add(Box.createVerticalStrut(20));
+				panel.add(forceButtons);
+				if(c==1)
+					panel.add(Box.createVerticalStrut(20));
+				panel.add(forceAns);
+				panel.add(nxtButton);
+				panel.add(endButton);
+				c=c+1;
 				if(!questObject.getFBDAnswer()){
 					//If incorrect
 					fbdRetryAttempts--;
@@ -370,11 +422,12 @@ public class MainPage {
 				if(fbdRetryAttempts == 0){
 					//Force attempts visible
 				}
+					
 			}
+			
 		});
 		
 		JPanel p = new JPanel(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
 		
 		p.add(restartFBD);
 		p.add(submitFBD);
@@ -389,12 +442,6 @@ public class MainPage {
 		panel.add(Box.createVerticalStrut(20));
 		
 		p1.add(fbdAnswer);
-		c.gridx=1;
-		c.ipady = 15;      
-		c.weightx = 0.0;
-		c.gridwidth = 3;
-		c.gridx = 0;
-		c.gridy = 1;
 		//p1.add(nxtButton,c);
 		p1.add(fbdHintText);
 		p1.setAlignmentY(0.5f);
@@ -403,17 +450,19 @@ public class MainPage {
 		p1.setAlignmentX(SwingConstants.CENTER);
 		
 		panel.add(p1);
-		panel.add(endButton);
+		
 
 		//Force part starts here
-		panel.add(questObject.getForceGui());
+		//panel.add(questObject.getForceGui());
+		panel.add(Box.createVerticalStrut(20));
+		panel.add(Box.createVerticalStrut(20));
+		panel.add(forceQuesText);
 		
 		// Force Answer label
-		JLabel forceAnswer = new JLabel("Answer: ");
 		forceAnswer.setForeground(Color.WHITE);
 		forceAnswer.setFont(new Font("Georgia", Font.BOLD, 16));
 		
-		JButton forceSubmit = new JButton("Submit");
+		
 		forceSubmit.addActionListener(new ActionListener() {
 			
 			@Override
@@ -434,7 +483,6 @@ public class MainPage {
 			}
 		});
 		
-		JButton forceRestart = new JButton("Restart");
 		forceRestart.addActionListener(new ActionListener() {
 			
 			@Override
@@ -443,9 +491,9 @@ public class MainPage {
 			}
 		});
 		
-		panel.add(forceSubmit);
-		panel.add(forceRestart);
-		panel.add(forceAnswer);
+		//panel.add(forceSubmit);
+		//panel.add(forceRestart);
+		//panel.add(forceAnswer);
 		panel.add(nxtButton);
 		
 		JScrollPane scrollPane = new JScrollPane(panel);
