@@ -365,6 +365,7 @@ public class MainPage {
 		hintFBD.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				fbdAnswer.setVisible(false);
 				hintFBD.setVisible(false);
 				fbdHintText.setText(questObject.getFBDHint());
 				fbdHintText.setVisible(true);
@@ -377,20 +378,12 @@ public class MainPage {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
-				forceQuesText.setVisible(true);
-				if(c==1)
-					panel.add(Box.createVerticalStrut(20));
-				panel.add(questObject.getForceGui());
-				
-				if(c==1)
-					panel.add(Box.createVerticalStrut(20));
-				panel.add(forceButtons);
-				if(c==1)
-					panel.add(Box.createVerticalStrut(20));
-				panel.add(forceAns);
-				panel.add(nxtButton);
-				panel.add(endButton);
+				fbdHintText.setVisible(false);
+//				if(c==1)
+//				
+//				if(c==1)
+//					
+//				if(c==1)
 				c=c+1;
 				if(!questObject.getFBDAnswer()){
 					//If incorrect
@@ -406,6 +399,19 @@ public class MainPage {
 						hintFBD.setVisible(false);
 						fbdAnswer.setVisible(true);
 						fbdAnswer.setText("Answer: Incorrect. You have used all attempts.");
+						
+						forceQuesText.setVisible(true);
+						panel.add(questObject.getForceGui());
+						panel.add(Box.createVerticalStrut(20));
+						panel.add(Box.createVerticalStrut(20));
+						panel.add(forceButtons);
+						panel.add(Box.createVerticalStrut(20));
+						panel.add(forceAns);
+						panel.add(nxtButton);
+						panel.add(endButton);
+
+						
+
 					}
 				}
 				else{
@@ -413,6 +419,17 @@ public class MainPage {
 					fbdAnswer.setVisible(true);
 					hintFBD.setVisible(false);
 					fbdAnswer.setText("Answer: Correct");
+					
+					forceQuesText.setVisible(true);
+					panel.add(questObject.getForceGui());
+					panel.add(Box.createVerticalStrut(20));
+					panel.add(Box.createVerticalStrut(20));
+					panel.add(forceButtons);
+					panel.add(Box.createVerticalStrut(20));
+					panel.add(forceAns);
+					panel.add(nxtButton);
+					panel.add(endButton);
+
 					
 				}
 				
@@ -467,6 +484,7 @@ public class MainPage {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				forceAns.setVisible(true);
 				if( questObject.getForceAnswer() ) {
 					forceAnswer.setText("Answer: Correct");
 				} else {
@@ -487,6 +505,7 @@ public class MainPage {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				forceAns.setVisible(false);
 				questObject.startForceSelection();
 			}
 		});
