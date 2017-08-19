@@ -1,21 +1,15 @@
 package teamnp.eguru;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -32,7 +26,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.border.EmptyBorder;
 
 public class MainPage {
 	/**
@@ -43,7 +36,7 @@ public class MainPage {
 	JLabel fbdAnswer;
 	int fbdRetryAttempts;
 	JLabel fbdHintText;
-	int c=1;
+	int c=1,hintcounter=0;
 	
 	// Global declaration of local variables
 	boolean isSubmitted = false;
@@ -351,6 +344,7 @@ public class MainPage {
 		retryFBD.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				score=score+questObject.getPerFBDNegScore();
 				fbdAnswer.setText("Answer: ");
 				fbdAnswer.setAlignmentX(SwingConstants.CENTER);
 				submitFBD.setVisible(true);
@@ -358,18 +352,27 @@ public class MainPage {
 				retryFBD.setVisible(false);
 				fbdAnswer.setVisible(false);
 				questObject.startFBDSelection();
-				
+				if(score>0)
+					lblScore.setText("Score = " + score);
+				else
+					lblScore.setText("Score = " + 0);
 			}
 		});
 		
 		hintFBD.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				score=score+questObject.getPerHintScore();
 				fbdAnswer.setVisible(false);
 				hintFBD.setVisible(false);
-				fbdHintText.setText(questObject.getFBDHint());
+				fbdHintText.setText(questObject.hintList.get(hintcounter));
 				fbdHintText.setVisible(true);
 				fbdHintText.setAlignmentX(SwingConstants.CENTER);
+				hintcounter++;
+				if(score>0)
+					lblScore.setText("Score = " + score);
+				else
+					lblScore.setText("Score = " + 0);
 			}
 		});
 		

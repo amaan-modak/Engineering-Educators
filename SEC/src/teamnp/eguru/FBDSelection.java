@@ -52,32 +52,13 @@ public class FBDSelection {
 	int retryAttempts = 3;
 	int fbdScore;
 	int fbdNegScore;
-	String hint;
 	
-	public FBDSelection(String filename, String fbdHintFile, BufferedImage inputImage) {
+	public FBDSelection(String filename,BufferedImage inputImage) {
 
 		initialize(inputImage);
 		readFBDFile(filename);
-		readFBDHintFile(fbdHintFile);
 	}
 	
-	public void readFBDHintFile(String fbdHintFile){
-		File fHint = new File(fbdHintFile);
-		try {
-			FileInputStream fstream = new FileInputStream(fHint);
-			BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
-
-			hint = br.readLine();
-
-			br.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 	private void initialize(BufferedImage inputImage) {
 		scissor = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/scissor-30.png"));
@@ -130,7 +111,7 @@ public class FBDSelection {
 			lineList.add(new Line2D.Double(p1, p2));
 		}
 		
-		hint = getHintFromText(fileText);
+		
 	}
 
 	public ArrayList<String> readTextFile(File f) {
@@ -195,18 +176,6 @@ public class FBDSelection {
 		g.drawString(Integer.toString(i + 1), x - 15, y - 15);
 		g.dispose();
 		imageLabel.repaint();
-	}
-	
-	private String getHintFromText(ArrayList<String> fileText){
-		String hint = "";
-		int dataIdx = 0;
-		while (!fileText.get(dataIdx).contains("Hint:"))
-			dataIdx++;
-		
-		String[] hintString = fileText.get(dataIdx).trim().split("\\:");
-		hint = hintString[1];
-		
-		return hint;
 	}
 
 	private ArrayList<String> getLinesFromText(ArrayList<String> fileText) {

@@ -31,12 +31,12 @@ public class Question {
 	ArrayList<String> data = new ArrayList<String>();
 	ArrayList<String> assumptions = new ArrayList<String>();
 	ArrayList<JCheckBox> assumptionChkbxList = new ArrayList<JCheckBox>();
+	ArrayList<String> hintList=new ArrayList<String>();
 	HashMap<String, Assumption> assumptionObjMap = new HashMap<String, Assumption>();
 	String problemDescription;
 	JLabel fbdSelectionLabel;
 	FBDSelection fbdSelection;
 	String fbdDataFileName;
-	String fbdHintFileName;
 	String forceDataFileName;
 	BufferedImage forceImage;
 	ForceSelection forceSelection;
@@ -176,9 +176,7 @@ public class Question {
 				fbdDataFileName = files[i].getPath();
 			} else if (files[i].getName().contains("forceData.")) {
 				forceDataFileName = files[i].getPath();
-			} else if (files[i].getName().contains("fbdHint.")) {
-				fbdHintFileName = files[i].getPath();
-			}else if (files[i].getName().contains("fbdCropped.")) {
+			} else if (files[i].getName().contains("fbdCropped.")) {
 				try {
 					forceImage = ImageIO.read(new File(files[i].getAbsolutePath()));
 				} catch (IOException e) {
@@ -187,12 +185,13 @@ public class Question {
 				}
 			}
 		}
-		fbdSelection = new FBDSelection(fbdDataFileName, fbdHintFileName, fbdObj.originalImage);
+		fbdSelection = new FBDSelection(fbdDataFileName, fbdObj.originalImage);
 		forceSelection = new ForceSelection(forceDataFileName, forceImage);
 		problemDescription = readProblemDescription();
 		readAssumptions();
 		readScores();
 		setAssumptionChkbxList();
+		readHints();
 	}
 	
 	public JLabel getFBDSelectionImageLabel() {
@@ -209,10 +208,6 @@ public class Question {
 	
 	public int getFBDRetryAttempts(){
 		return fbdSelection.retryAttempts;
-	}
-	
-	public String getFBDHint(){
-		return fbdSelection.hint;
 	}
 	
 	public JLabel getForceSelectionImageLabel() {
@@ -271,13 +266,14 @@ public class Question {
 		}
 		return retString;
 	}
+	
 
 	public void readAssumptions() {
 		// Read each line of assumption
 		for (int dataIdx = 0; dataIdx < data.size(); dataIdx++) {
 			if (data.get(dataIdx).contains("Assumptions:")) {
 				int assumIdx = dataIdx + 1;
-				while (assumIdx < data.size()) {
+				while (assumIdx < data.size() && (!data.get(assumIdx).contains("End Assumptions"))) {
 					String[] splitter = data.get(assumIdx).split("\\|");
 					Assumption assumObj = new Assumption(splitter[0], splitter[1]);
 					assumptionObjMap.put(splitter[0], assumObj);
@@ -297,6 +293,19 @@ public class Question {
 						assumIdx++;
 				}
 				break;
+			}
+		}
+	}
+	
+	public void readHints(){
+		for (int dataIdx = 0; dataIdx < data.size(); dataIdx++) {
+			if (data.get(dataIdx).contains("Hints:")) {
+				int hintIdx = dataIdx + 1;
+				while (hintIdx < data.size()){
+					hintList.add(data.get(hintIdx));
+					System.out.println(hintList);
+					hintIdx+=1;
+				}
 			}
 		}
 	}
@@ -326,25 +335,21 @@ public class Question {
 			if (data.get(j).contains("FBDScore:")) {
 				String[] score = data.get(j).trim().split("\\:");
 				setPerFBDScore(new Integer(score[1]));
-				System.out.println("FBD:"+getPerFBDScore());
 			}
 			
 			if (data.get(j).contains("FBDNegScore:")) {
 				String[] score = data.get(j).trim().split("\\:");
 				setPerFBDNegScore(new Integer(score[1]));
-				System.out.println("FBDneg:"+getPerFBDNegScore());
 			}
 			
 			if (data.get(j).contains("HintScore:")) {
 				String[] score = data.get(j).trim().split("\\:");
 				setPerHintScore(new Integer(score[1]));
-				System.out.println("hint:"+getPerHintScore());
 			}
 			
 			if (data.get(j).contains("ForceScore:")) {
 				String[] score = data.get(j).trim().split("\\:");
 				setPerForceScore(new Integer(score[1]));
-				System.out.println("force:"+getPerForceScore());
 			}
 			
 		}
