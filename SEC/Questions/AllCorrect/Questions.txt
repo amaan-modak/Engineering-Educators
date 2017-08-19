@@ -2,8 +2,10 @@ MaxScore:12
 ScorePerAssum:3
 ScorePerReason:1
 ScorePerNegAssum:-2
-FBDScore:5
+FBDScore:10
 FBDNegScore:-1
+HintScore:-1
+ForceScore:8
 Question:
 <html>
 <p> The Omantec Lift is a product currently being developed to assist in hygiene care of patients in the home and healthcare facilities. The system is comprised of a wall mounted winch connected to padded "t-bar" that is positioned behind the patient's knees. The <b>winch system</b> is activated to elevate the patients legs and buttocks. </p>
@@ -21,3 +23,7 @@ Forces are reasonably approximated using static analysis|correct
 Lower leg remains approximately perpendicular to upper leg|correct
 Hip acts as a pivot point (no lifting off the bed)|correct
 Patient does not slide on the bed|correct
+End Assumptions
+Hints:
+Hint 1
+Hint 2
