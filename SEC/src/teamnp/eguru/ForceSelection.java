@@ -1,5 +1,6 @@
 package teamnp.eguru;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -9,6 +10,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.Stroke;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -68,8 +70,13 @@ public class ForceSelection {
 	ForcePoint.EntityProperty currentProperty = null;
 	ForcePoint.EntityDirection currentDirection = null;
 
-	static final Color KNOWN_FORCE_COLOR = new Color(0, 153, 51);
-	static final Color UNKNOWN_FORCE_COLOR = Color.RED;
+//	static final Color KNOWN_FORCE_COLOR = new Color(0, 153, 51);
+//	static final Color UNKNOWN_FORCE_COLOR = Color.RED;
+	static final Color DRAWING_COLOR = Color.BLACK;
+	static final Color CORRECT_COLOR = new Color(0, 153, 51);
+	static final Color INCORRECT_COLOR = Color.RED;
+	Color currentColor = null;
+
 	int arrowLineLength = 50;
 	int arrowHeaderSize = 5;
 	int arrowLenght = arrowLineLength + arrowHeaderSize;
@@ -282,10 +289,14 @@ public class ForceSelection {
 		Point p = new Point(x, y);
 		Graphics2D g = canvasImage.createGraphics();
 		int arcRadius = arrowLenght / 2;
-		if (currentProperty == EntityProperty.KNOWN)
-			arcColor = KNOWN_FORCE_COLOR;
-		else if (currentProperty == EntityProperty.UNKNOWN)
-			arcColor = UNKNOWN_FORCE_COLOR;
+		arcColor = currentColor;
+		if (currentProperty == EntityProperty.KNOWN) {
+			Stroke dark = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL);
+			g.setStroke(dark);
+		} else if (currentProperty == EntityProperty.UNKNOWN) {
+			Stroke dashed = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 4 }, 0);
+			g.setStroke(dashed);
+		}
 		g.setColor(arcColor);
 
 		if (currentDirection == EntityDirection.CLOCKWISE) {
@@ -326,6 +337,15 @@ public class ForceSelection {
 		drawArrow(p1, p2);
 
 	}
+	
+	private void displayCircle(int x, int y) {
+		Graphics2D g = canvasImage.createGraphics();
+		g.setColor(currentColor);
+		g.drawOval(x-15, y-15, 30, 30);
+		g.dispose();
+		imageLabel.repaint();
+		
+	}
 
 	private void drawArrow(Point p1, Point p2) {
 		int x1 = (int) p1.getX();
@@ -338,11 +358,16 @@ public class ForceSelection {
 		Graphics2D g2d = canvasImage.createGraphics();
 		AffineTransform tx = new AffineTransform();
 		Line2D.Double line = new Line2D.Double(x1, y1, x2, y2);
+		arrowColor = currentColor;
+		if (currentProperty == EntityProperty.KNOWN) {
+			Stroke dark = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0);
+			g2d.setStroke(dark);
+		}
 
-		if (currentProperty == EntityProperty.KNOWN)
-			arrowColor = KNOWN_FORCE_COLOR;
-		else if (currentProperty == EntityProperty.UNKNOWN)
-			arrowColor = UNKNOWN_FORCE_COLOR;
+		else if (currentProperty == EntityProperty.UNKNOWN) {
+			Stroke dashed = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 4 }, 0);
+			g2d.setStroke(dashed);
+		}
 
 		g2d.setColor(arrowColor);
 		g2d.drawLine(x1, y1, x2, y2);
@@ -480,7 +505,7 @@ public class ForceSelection {
 		tb.add(selectDirectionCCW);
 		tb.addSeparator();
 		tb.add(undoButton);
-		tb.add(submitForces);
+//		tb.add(submitForces);
 		// tb.setVisible(false);
 		return tb;
 
@@ -592,10 +617,18 @@ public class ForceSelection {
 				undoImageStack.push(deepCopy(canvasImage));
 				Graphics2D g = canvasImage.createGraphics();
 				int arcRadius = arrowLenght / 2;
-				if (currentProperty == EntityProperty.KNOWN)
-					arcColor = KNOWN_FORCE_COLOR;
-				else if (currentProperty == EntityProperty.UNKNOWN)
-					arcColor = UNKNOWN_FORCE_COLOR;
+				arcColor = currentColor;
+				if (currentProperty == EntityProperty.KNOWN) {
+					Stroke dark = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL);
+					g.setStroke(dark);
+				}
+
+				else if (currentProperty == EntityProperty.UNKNOWN) {
+					Stroke dashed = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0,
+							new float[] { 4 }, 0);
+					g.setStroke(dashed);
+				}
+
 				g.setColor(arcColor);
 
 				if (currentDirection == EntityDirection.CLOCKWISE) {
@@ -730,12 +763,14 @@ public class ForceSelection {
 		selectDirectionCW.setEnabled(false);
 		selectDirectionCCW.setEnabled(false);
 		submitForces.setVisible(true);
+		undoButton.setEnabled(true);
 
 		forceDataList.clear();
 
 		currentType = EntityType.FORCE;
 		currentProperty = EntityProperty.KNOWN;
 		currentDirection = EntityDirection.CLOCKWISE;
+		currentColor = DRAWING_COLOR;
 
 		for (MouseListener m : imageLabel.getMouseListeners()) {
 			imageLabel.removeMouseListener(m);
@@ -785,19 +820,45 @@ public class ForceSelection {
 			// B is in A.
 
 			boolean forceFinalAnswer = true;
+			
+			//disable drawing after submission
+			for (MouseListener m : imageLabel.getMouseListeners()) {
+				imageLabel.removeMouseListener(m);
+			}
+			
+			//disable undo button after submission
+			undoButton.setEnabled(false);
+			
+			drawOriginal();
+			for(ForcePoint fp: fpList) {
+				displayForcePoint(fp.x, fp.y);
+			}
 
 			for (ForcePoint p : correctForceDataList) {
 				if (p.isCorrect()) {
-					if (!forceListContains(forceDataList, p))
+					if (!forceListContains(forceDataList, p)) {
 						forceFinalAnswer = false;
+						currentColor = INCORRECT_COLOR;
+						displayCircle(p.x, p.y);
+					}
+						
 				}
 			}
 			for (ForcePoint p : forceDataList) {
 				if (p.isCorrect()) {
-					if (!forceListContains(correctForceDataList, p))
+					if (!forceListContains(correctForceDataList, p)) {
 						forceFinalAnswer = false;
+						currentColor = INCORRECT_COLOR;
+					} else {
+						currentColor = CORRECT_COLOR;
+					}
+					if (p.type == EntityType.FORCE)
+						displayArrow(p.x, p.y, p.angle, p.property);
+					else
+						displayMoment(p.x, p.y, p.direction, p.property);
 				}
 			}
+
 
 //			forceDataList.clear();
 			return forceFinalAnswer;
