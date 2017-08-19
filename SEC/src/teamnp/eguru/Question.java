@@ -48,6 +48,12 @@ public class Question {
 
 	int perAssumScore = 0;
 	int perAssumNegScore = 0;
+	
+	int perFBDScore=0;
+	int perFBDNegScore=0;
+	int perHintScore=0;
+	int perForceScore=0;
+	
 	boolean anywrong = false;
 
 	/*** Constructor ***/
@@ -84,13 +90,44 @@ public class Question {
 		return this.perReasonScore;
 	}
 
+	public int getPerHintScore(){
+		return this.perHintScore;
+	}
+	
+	public int getPerFBDScore(){
+		return this.perFBDScore;
+	}
 
+	public int getPerFBDNegScore(){
+		return this.perFBDNegScore;
+	}
+	
+	public int getPerForceScore(){
+		return this.perForceScore;
+	}
+	
 	public void setPerAssumScore(int score) {
 		perAssumScore = score;
 	}
 
 	public void setPerAssumNegScore(int score) {
 		perAssumNegScore = score;
+	}
+	
+	public void setPerFBDScore(int score){
+		perFBDScore=score;
+	}
+	
+	public void setPerFBDNegScore(int score){
+		perFBDNegScore=score;
+	}
+	
+	public void setPerHintScore(int score){
+		perHintScore=score;
+	}
+	
+	public void setPerForceScore(int score){
+		perForceScore=score;
 	}
 
 	public JLabel getModelImage() {
@@ -288,13 +325,28 @@ public class Question {
 			
 			if (data.get(j).contains("FBDScore:")) {
 				String[] score = data.get(j).trim().split("\\:");
-				setPerAssumNegScore(new Integer(score[1]));
+				setPerFBDScore(new Integer(score[1]));
+				System.out.println("FBD:"+getPerFBDScore());
 			}
 			
 			if (data.get(j).contains("FBDNegScore:")) {
 				String[] score = data.get(j).trim().split("\\:");
-				setPerAssumNegScore(new Integer(score[1]));
+				setPerFBDNegScore(new Integer(score[1]));
+				System.out.println("FBDneg:"+getPerFBDNegScore());
 			}
+			
+			if (data.get(j).contains("HintScore:")) {
+				String[] score = data.get(j).trim().split("\\:");
+				setPerHintScore(new Integer(score[1]));
+				System.out.println("hint:"+getPerHintScore());
+			}
+			
+			if (data.get(j).contains("ForceScore:")) {
+				String[] score = data.get(j).trim().split("\\:");
+				setPerForceScore(new Integer(score[1]));
+				System.out.println("force:"+getPerForceScore());
+			}
+			
 		}
 	}
 
