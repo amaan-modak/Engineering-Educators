@@ -365,6 +365,8 @@ public class MainPage {
 				score=score+questObject.getPerHintScore();
 				fbdAnswer.setVisible(false);
 				hintFBD.setVisible(false);
+				submitFBD.setVisible(true);
+				restartFBD.setVisible(true);
 				fbdHintText.setText(questObject.hintList.get(hintcounter));
 				fbdHintText.setVisible(true);
 				fbdHintText.setAlignmentX(SwingConstants.CENTER);
