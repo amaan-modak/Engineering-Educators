@@ -178,7 +178,7 @@ public class ForceSelection {
 			ForcePoint fp = getFpFromString(forcesString.get(i));
 			correctForceDataList.add(fp);
 			if (!fpListContainsLocation(fpList, fp)) {
-				fpList.add(fp);
+				fpList.add(new ForcePoint(fp.getLocation()));
 			}
 		}
 
