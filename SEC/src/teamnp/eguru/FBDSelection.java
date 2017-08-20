@@ -347,6 +347,10 @@ public class FBDSelection {
 	}
 	
 	public boolean getFinalAnswer() {
+		for (MouseListener m : imageLabel.getMouseListeners()) {
+			imageLabel.removeMouseListener(m);
+		}
+
 		return finalAnswer;
 	}
 
