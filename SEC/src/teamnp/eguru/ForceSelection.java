@@ -98,6 +98,8 @@ public class ForceSelection {
 	BufferedImage subImage;
 	SizedStack<BufferedImage> undoImageStack = new SizedStack<BufferedImage>(10);
 	BufferedImage undoImage;
+	int retryAttempts = 3;
+	
 	public ForceSelection(String filename, BufferedImage inputImage) {
 		initialize(inputImage);
 		readForceFile(filename);

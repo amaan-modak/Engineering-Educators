@@ -211,7 +211,7 @@ public class Question {
 		readScores();
 		setAssumptionChkbxList();
 		readFBDHints();
-		readForceHints();
+//		readForceHints();
 	}
 	
 	public JLabel getFBDSelectionImageLabel() {
@@ -228,6 +228,10 @@ public class Question {
 	
 	public int getFBDRetryAttempts(){
 		return fbdSelection.retryAttempts;
+	}
+
+	public int getForceRetryAttempts(){
+		return forceSelection.retryAttempts;
 	}
 	
 	public JLabel getForceSelectionImageLabel() {

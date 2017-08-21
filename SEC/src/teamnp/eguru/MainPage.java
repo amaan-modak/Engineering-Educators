@@ -35,8 +35,8 @@ public class MainPage {
 	//variables for fbd selection
 	JLabel fbdAnswer;
 	int fbdRetryAttempts;
+	int forceRetryAttempts;
 	JLabel fbdHintText;
-	int c=1;
 	static int hintcounter=0;
 	
 	// Global declaration of local variables
@@ -230,7 +230,8 @@ public class MainPage {
 		panel.add(Box.createVerticalStrut(10));
 		panel.add(imageQuesText);
 		
-		JLabel forceQuesText = new JLabel("Draw appropriate forces and moments:");
+		forceRetryAttempts = questObject.getForceRetryAttempts();
+		JLabel forceQuesText = new JLabel("Draw appropriate forces and moments. You have " + forceRetryAttempts + " attempts:");
 		forceQuesText.setForeground(Color.WHITE);
 		forceQuesText.setFont(new Font("Georgia", Font.BOLD, 16));
 		forceQuesText.setVisible(false);
@@ -253,6 +254,9 @@ public class MainPage {
 		JButton retryFBD = new JButton("Retry");
 		retryFBD.setVisible(false);
 		
+		JButton retryForce = new JButton("Retry");
+		retryForce.setVisible(false);
+		
 		JButton hintFBD = new JButton("Hint");
 		hintFBD.setVisible(false);
 		
@@ -273,6 +277,7 @@ public class MainPage {
 		JPanel forceButtons = new JPanel(new GridBagLayout());
 		forceButtons.add(forceSubmit);
 		forceButtons.add(forceRestart);
+		forceButtons.add(retryForce);
 		forceButtons.setAlignmentY(0.5f);
 		forceButtons.setBackground(new Color(0, 44, 61));
 		forceButtons.setMaximumSize(screenSize);
@@ -355,6 +360,21 @@ public class MainPage {
 			}
 		});
 		
+		retryForce.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				forceAnswer.setText("Answer: ");
+				forceAnswer.setAlignmentX(SwingConstants.CENTER);
+				forceSubmit.setVisible(true);
+				forceRestart.setVisible(true);
+				retryForce.setVisible(false);
+				forceAnswer.setVisible(false);
+				questObject.startForceSelection();
+			}
+		});
+		
 		hintFBD.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -365,7 +385,7 @@ public class MainPage {
 					lblScore.setText("Score = " + "0");
 				fbdAnswer.setVisible(false);
 				hintFBD.setVisible(false);
-				retryFBD.setVisible(true);
+//				retryFBD.setVisible(true);
 				fbdHintText.setText(questObject.FBDhintList.get(hintcounter));
 				fbdHintText.setVisible(true);
 				fbdHintText.setAlignmentX(SwingConstants.CENTER);
@@ -379,12 +399,6 @@ public class MainPage {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				fbdHintText.setVisible(false);
-//				if(c==1)
-//				
-//				if(c==1)
-//					
-//				if(c==1)
-				c=c+1;
 				if(!questObject.getFBDAnswer()){
 					//If incorrect
 					score=score+questObject.getPerFBDNegScore();
@@ -499,23 +513,49 @@ public class MainPage {
 				if( questObject.getForceAnswer() ) {
 					score=score+questObject.getPerForceScore();
 					forceAnswer.setText("Answer: Correct");
+					
+					if(qHandleObject.isLastQuestion()) {
+						nxtButton.setVisible(false);
+						endButton.setVisible(true);
+					}	
+					else {
+						nxtButton.setVisible(true);
+					}
+
+					
 				} else {
 					score=score+questObject.getPerForceNegScore();
-					forceAnswer.setText("Answer: Incorrect");
+					forceRetryAttempts--;
+					if(forceRetryAttempts > 0) {
+						retryForce.setVisible(true);
+						forceAnswer.setVisible(true);
+						forceAnswer.setText("Answer: Incorrect. You have "+ forceRetryAttempts+" more attempts");
+					}
+					else {
+						retryForce.setVisible(false);
+						forceAnswer.setVisible(true);
+						forceAnswer.setText("Answer: Incorrect. You have used all attempts.");
+						if(qHandleObject.isLastQuestion()) {
+							nxtButton.setVisible(false);
+							endButton.setVisible(true);
+						}	
+						else {
+							nxtButton.setVisible(true);
+						}
+
+					}
+					
+					
 				}
+				
+				forceSubmit.setVisible(false);
+				forceRestart.setVisible(false);
 				
 				if(score>0)
 					lblScore.setText("Score = " + score);
 				else
 					lblScore.setText("Score = " + "0");
 				
-				if(qHandleObject.isLastQuestion()) {
-					nxtButton.setVisible(false);
-					endButton.setVisible(true);
-				}	
-				else {
-					nxtButton.setVisible(true);
-				}
 			}
 		});
 		

@@ -49,7 +49,3 @@ FBDHints:
 Hint 1
 Hint 2
 End FBDHints
-ForceHints:
-Hint 1
-Hint 2
-End ForceHints
