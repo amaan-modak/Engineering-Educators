@@ -26,7 +26,11 @@ Lower leg remains approximately perpendicular to upper leg|correct
 Hip acts as a pivot point (no lifting off the bed)|correct
 Patient does not slide on the bed|correct
 End Assumptions
-Hints:
+FBDHints:
 Hint 1
 Hint 2
-End Hints
+End FBDHints
+ForceHints:
+Hint 1
+Hint 2
+End ForceHints
