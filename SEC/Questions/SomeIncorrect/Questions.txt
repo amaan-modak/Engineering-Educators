@@ -45,7 +45,11 @@ Incorrect Assumption that includes a lot of text to make certain you can handle 
 Valid Reason #ExamplesAreHard|valid
 End Reasons
 End Assumptions
-Hints:
+FBDHints:
 Hint 1
 Hint 2
-End Hints
+End FBDHints
+ForceHints:
+Hint 1
+Hint 2
+End ForceHints
