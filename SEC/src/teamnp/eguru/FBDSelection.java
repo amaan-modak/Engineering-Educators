@@ -49,12 +49,16 @@ public class FBDSelection {
 //	int imageHeight = 450;
 	boolean isFBDAnswered = false;
 	boolean finalAnswer = false;
+	int retryAttempts = 3;
+	int fbdScore;
+	int fbdNegScore;
 	
-	public FBDSelection(String filename, BufferedImage inputImage) {
+	public FBDSelection(String filename,BufferedImage inputImage) {
 
 		initialize(inputImage);
 		readFBDFile(filename);
 	}
+	
 
 	private void initialize(BufferedImage inputImage) {
 		scissor = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/scissor-30.png"));
@@ -106,7 +110,8 @@ public class FBDSelection {
 			// drawLineOnImage(p1, p2);
 			lineList.add(new Line2D.Double(p1, p2));
 		}
-
+		
+		
 	}
 
 	public ArrayList<String> readTextFile(File f) {
@@ -342,6 +347,10 @@ public class FBDSelection {
 	}
 	
 	public boolean getFinalAnswer() {
+		for (MouseListener m : imageLabel.getMouseListeners()) {
+			imageLabel.removeMouseListener(m);
+		}
+
 		return finalAnswer;
 	}
 

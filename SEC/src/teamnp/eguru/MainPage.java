@@ -1,21 +1,15 @@
 package teamnp.eguru;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -32,7 +26,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.border.EmptyBorder;
 
 public class MainPage {
 	/**
@@ -41,6 +34,10 @@ public class MainPage {
 
 	//variables for fbd selection
 	JLabel fbdAnswer;
+	int fbdRetryAttempts;
+	int forceRetryAttempts;
+	JLabel fbdHintText;
+	static int hintcounter=0;
 	
 	// Global declaration of local variables
 	boolean isSubmitted = false;
@@ -222,18 +219,22 @@ public class MainPage {
 		
 				
 		//FBD Image Selection Start
-		JLabel imageQuesText = new JLabel("Select the points which form valid FBD: ");
+		fbdRetryAttempts = questObject.getFBDRetryAttempts();
+		JLabel imageQuesText = new JLabel("Select the points which form valid FBD. You have " + fbdRetryAttempts + 
+																										" attempts: ");
+		
 		imageQuesText.setForeground(Color.WHITE);
 		imageQuesText.setFont(new Font("Georgia", Font.BOLD, 16));
 		imageQuesText.setVisible(false);
-		
-		JLabel forceQuesText = new JLabel("Draw appropriate forces and moments:");
-		forceQuesText.setForeground(Color.WHITE);
-		forceQuesText.setFont(new Font("Georgia", Font.BOLD, 16));
-		forceQuesText.setVisible(false);
 
 		panel.add(Box.createVerticalStrut(10));
 		panel.add(imageQuesText);
+		
+		forceRetryAttempts = questObject.getForceRetryAttempts();
+		JLabel forceQuesText = new JLabel("Draw appropriate forces and moments. You have " + forceRetryAttempts + " attempts:");
+		forceQuesText.setForeground(Color.WHITE);
+		forceQuesText.setFont(new Font("Georgia", Font.BOLD, 16));
+		forceQuesText.setVisible(false);
 		
 		JPanel fbdPanel = new JPanel(new GridBagLayout());
 		imageLabel = questObject.getFBDSelectionImageLabel();
@@ -250,26 +251,38 @@ public class MainPage {
 		JButton restartFBD = new JButton("Restart FBD");
 		restartFBD.setVisible(false);
 		
+		JButton retryFBD = new JButton("Retry");
+		retryFBD.setVisible(false);
+		
+		JButton retryForce = new JButton("Retry");
+		retryForce.setVisible(false);
+		
+		JButton hintFBD = new JButton("Hint");
+		hintFBD.setVisible(false);
+		
 		fbdAnswer = new JLabel("Answer: ");
 		fbdAnswer.setForeground(Color.WHITE);
 		fbdAnswer.setFont(new Font("Georgia", Font.BOLD, 16));
 		fbdAnswer.setVisible(false);
 
-		JButton submitFBD = new JButton("Submit");
-		submitFBD.setVisible(false);
+		fbdHintText = new JLabel("Hint: ");
+		fbdHintText.setForeground(Color.WHITE);
+		fbdHintText.setFont(new Font("Georgia", Font.BOLD, 16));
+		fbdHintText.setVisible(false);
 		
 		JButton forceSubmit = new JButton("Submit");
 		JButton forceRestart = new JButton("Restart");
 		JLabel forceAnswer = new JLabel("Answer: ");
-		
+				
 		JPanel forceButtons = new JPanel(new GridBagLayout());
 		forceButtons.add(forceSubmit);
 		forceButtons.add(forceRestart);
+		forceButtons.add(retryForce);
 		forceButtons.setAlignmentY(0.5f);
 		forceButtons.setBackground(new Color(0, 44, 61));
 		forceButtons.setMaximumSize(screenSize);
 		forceButtons.setAlignmentX(SwingConstants.CENTER);
-		
+				
 		JPanel forceAns= new JPanel(new GridBagLayout());
 		GridBagConstraints c1 = new GridBagConstraints();
 		c1.gridx=1;
@@ -285,9 +298,13 @@ public class MainPage {
 		forceAns.setBackground(new Color(0, 44, 61));
 		forceAns.setMaximumSize(screenSize);
 		forceAns.setAlignmentX(SwingConstants.CENTER);
-		
+				
 		forceAns.setVisible(false);
 		panel.add(forceAns);
+				
+		
+		JButton submitFBD = new JButton("Submit");
+		submitFBD.setVisible(false);
 		
 		
 		submitButton.addActionListener(new ActionListener() {
@@ -330,50 +347,134 @@ public class MainPage {
 			}
 		});
 		
+		retryFBD.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				fbdAnswer.setText("Answer: ");
+				fbdAnswer.setAlignmentX(SwingConstants.CENTER);
+				submitFBD.setVisible(true);
+				restartFBD.setVisible(true);
+				retryFBD.setVisible(false);
+				fbdAnswer.setVisible(false);
+				questObject.startFBDSelection();
+			}
+		});
+		
+		retryForce.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				forceAnswer.setText("Answer: ");
+				forceAnswer.setAlignmentX(SwingConstants.CENTER);
+				forceSubmit.setVisible(true);
+				forceRestart.setVisible(true);
+				retryForce.setVisible(false);
+				forceAnswer.setVisible(false);
+				questObject.startForceSelection();
+			}
+		});
+		
+		hintFBD.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				score=score+questObject.getPerFBDHintScore();
+				if(score>0)
+					lblScore.setText("Score = " + score);
+				else
+					lblScore.setText("Score = " + "0");
+				fbdAnswer.setVisible(false);
+				hintFBD.setVisible(false);
+//				retryFBD.setVisible(true);
+				fbdHintText.setText(questObject.FBDhintList.get(hintcounter));
+				fbdHintText.setVisible(true);
+				fbdHintText.setAlignmentX(SwingConstants.CENTER);
+				hintcounter++;
+			}
+		});
+		
+		
 		submitFBD.addActionListener(new ActionListener() {	
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				if(questObject.getFBDAnswer()){
-					fbdAnswer.setVisible(true);
-					fbdAnswer.setText("Answer: Correct");
+				fbdHintText.setVisible(false);
+				if(!questObject.getFBDAnswer()){
+					//If incorrect
+					score=score+questObject.getPerFBDNegScore();
+					if(score>0)
+						lblScore.setText("Score = " + score);
+					else
+						lblScore.setText("Score = " + "0");
+					fbdRetryAttempts--;
+					if(fbdRetryAttempts>0){
+						retryFBD.setVisible(true);
+						hintFBD.setVisible(true);
+						fbdAnswer.setVisible(true);
+						fbdAnswer.setText("Answer: Incorrect. You have " + fbdRetryAttempts + " more attempts.");
+					}
+					else{
+						retryFBD.setVisible(false);
+						hintFBD.setVisible(false);
+						fbdAnswer.setVisible(true);
+						fbdAnswer.setText("Answer: Incorrect. You have used all attempts.");
+						
+						forceQuesText.setVisible(true);
+						panel.add(questObject.getForceGui());
+						panel.add(Box.createVerticalStrut(20));
+						panel.add(Box.createVerticalStrut(20));
+						panel.add(forceButtons);
+						panel.add(Box.createVerticalStrut(20));
+						panel.add(forceAns);
+						panel.add(nxtButton);
+						panel.add(endButton);
+
+						
+
+					}
+					
 				}
 				else{
+					//If correct
+					score=score+questObject.getPerFBDScore();
+					if(score>0)
+						lblScore.setText("Score = " + score);
+					else
+						lblScore.setText("Score = " + "0");
 					fbdAnswer.setVisible(true);
-					fbdAnswer.setText("Answer: Incorrect");
+					hintFBD.setVisible(false);
+					fbdAnswer.setText("Answer: Correct");
+					
+					forceQuesText.setVisible(true);
+					panel.add(questObject.getForceGui());
+					panel.add(Box.createVerticalStrut(20));
+					panel.add(Box.createVerticalStrut(20));
+					panel.add(forceButtons);
+					panel.add(Box.createVerticalStrut(20));
+					panel.add(forceAns);
+					panel.add(nxtButton);
+					panel.add(endButton);
+
+					
 				}
 				
 				submitFBD.setVisible(false);
 				restartFBD.setVisible(false);
-
-				forceQuesText.setVisible(true);
-				panel.add(Box.createVerticalStrut(20));
-				panel.add(questObject.getForceGui());
 				
-				
-				//panel.add(forceSubmit);
-				//panel.add(forceRestart);
-				panel.add(Box.createVerticalStrut(20));
-				panel.add(forceButtons);
-				panel.add(Box.createVerticalStrut(20));
-				panel.add(forceAns);
-				panel.add(nxtButton);
-				panel.add(endButton);
-				
-				if(qHandleObject.isLastQuestion()) {
-					nxtButton.setVisible(false);
-					endButton.setVisible(true);
-					
-				}	
-				else {
-					nxtButton.setVisible(true);
+				if(fbdRetryAttempts == 0){
+					//Force attempts visible
 				}
+					
 			}
+			
 		});
 		
 		JPanel p = new JPanel(new GridBagLayout());
+		
 		p.add(restartFBD);
 		p.add(submitFBD);
+		p.add(retryFBD);
+		p.add(hintFBD);
 		p.setAlignmentY(0.5f);
 		p.setBackground(new Color(0, 44, 61));
 		p.setMaximumSize(screenSize);
@@ -381,7 +482,10 @@ public class MainPage {
 		panel.add(p);
 		JPanel p1 = new JPanel(new GridBagLayout());
 		panel.add(Box.createVerticalStrut(20));
+		
 		p1.add(fbdAnswer);
+		//p1.add(nxtButton,c);
+		p1.add(fbdHintText);
 		p1.setAlignmentY(0.5f);
 		p1.setBackground(new Color(0, 44, 61));
 		p1.setMaximumSize(screenSize);
@@ -389,9 +493,10 @@ public class MainPage {
 		
 		panel.add(p1);
 		
+
 		//Force part starts here
+		//panel.add(questObject.getForceGui());
 		panel.add(Box.createVerticalStrut(20));
-		
 		panel.add(Box.createVerticalStrut(20));
 		panel.add(forceQuesText);
 		
@@ -406,23 +511,64 @@ public class MainPage {
 			public void actionPerformed(ActionEvent e) {
 				forceAns.setVisible(true);
 				if( questObject.getForceAnswer() ) {
+					score=score+questObject.getPerForceScore();
 					forceAnswer.setText("Answer: Correct");
+					
+					if(qHandleObject.isLastQuestion()) {
+						nxtButton.setVisible(false);
+						endButton.setVisible(true);
+					}	
+					else {
+						nxtButton.setVisible(true);
+					}
+
+					
 				} else {
-					forceAnswer.setText("Answer: Incorrect");
+					score=score+questObject.getPerForceNegScore();
+					forceRetryAttempts--;
+					if(forceRetryAttempts > 0) {
+						retryForce.setVisible(true);
+						forceAnswer.setVisible(true);
+						forceAnswer.setText("Answer: Incorrect. You have "+ forceRetryAttempts+" more attempts");
+					}
+					else {
+						retryForce.setVisible(false);
+						forceAnswer.setVisible(true);
+						forceAnswer.setText("Answer: Incorrect. You have used all attempts.");
+						if(qHandleObject.isLastQuestion()) {
+							nxtButton.setVisible(false);
+							endButton.setVisible(true);
+						}	
+						else {
+							nxtButton.setVisible(true);
+						}
+
+					}
+					
+					
 				}
+				
+				forceSubmit.setVisible(false);
+				forceRestart.setVisible(false);
+				
+				if(score>0)
+					lblScore.setText("Score = " + score);
+				else
+					lblScore.setText("Score = " + "0");
 				
 			}
 		});
-		
 		
 		forceRestart.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				forceAns.setVisible(false);
 				questObject.startForceSelection();
 			}
 		});
 		
+		panel.add(nxtButton);
 		
 		JScrollPane scrollPane = new JScrollPane(panel);
 		//hides horizontal scroll bar
