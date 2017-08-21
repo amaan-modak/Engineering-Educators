@@ -36,7 +36,8 @@ public class MainPage {
 	JLabel fbdAnswer;
 	int fbdRetryAttempts;
 	JLabel fbdHintText;
-	int c=1,hintcounter=0;
+	int c=1;
+	static int hintcounter=0;
 	
 	// Global declaration of local variables
 	boolean isSubmitted = false;
@@ -344,7 +345,6 @@ public class MainPage {
 		retryFBD.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				score=score+questObject.getPerFBDNegScore();
 				fbdAnswer.setText("Answer: ");
 				fbdAnswer.setAlignmentX(SwingConstants.CENTER);
 				submitFBD.setVisible(true);
@@ -352,29 +352,24 @@ public class MainPage {
 				retryFBD.setVisible(false);
 				fbdAnswer.setVisible(false);
 				questObject.startFBDSelection();
-				if(score>0)
-					lblScore.setText("Score = " + score);
-				else
-					lblScore.setText("Score = " + 0);
 			}
 		});
 		
 		hintFBD.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				score=score+questObject.getPerHintScore();
-				fbdAnswer.setVisible(false);
-				hintFBD.setVisible(false);
-				submitFBD.setVisible(true);
-				restartFBD.setVisible(true);
-				fbdHintText.setText(questObject.hintList.get(hintcounter));
-				fbdHintText.setVisible(true);
-				fbdHintText.setAlignmentX(SwingConstants.CENTER);
-				hintcounter++;
+				score=score+questObject.getPerFBDHintScore();
 				if(score>0)
 					lblScore.setText("Score = " + score);
 				else
-					lblScore.setText("Score = " + 0);
+					lblScore.setText("Score = " + "0");
+				fbdAnswer.setVisible(false);
+				hintFBD.setVisible(false);
+				retryFBD.setVisible(true);
+				fbdHintText.setText(questObject.FBDhintList.get(hintcounter));
+				fbdHintText.setVisible(true);
+				fbdHintText.setAlignmentX(SwingConstants.CENTER);
+				hintcounter++;
 			}
 		});
 		
@@ -392,6 +387,11 @@ public class MainPage {
 				c=c+1;
 				if(!questObject.getFBDAnswer()){
 					//If incorrect
+					score=score+questObject.getPerFBDNegScore();
+					if(score>0)
+						lblScore.setText("Score = " + score);
+					else
+						lblScore.setText("Score = " + "0");
 					fbdRetryAttempts--;
 					if(fbdRetryAttempts>0){
 						retryFBD.setVisible(true);
@@ -418,9 +418,15 @@ public class MainPage {
 						
 
 					}
+					
 				}
 				else{
 					//If correct
+					score=score+questObject.getPerFBDScore();
+					if(score>0)
+						lblScore.setText("Score = " + score);
+					else
+						lblScore.setText("Score = " + "0");
 					fbdAnswer.setVisible(true);
 					hintFBD.setVisible(false);
 					fbdAnswer.setText("Answer: Correct");
@@ -491,10 +497,17 @@ public class MainPage {
 			public void actionPerformed(ActionEvent e) {
 				forceAns.setVisible(true);
 				if( questObject.getForceAnswer() ) {
+					score=score+questObject.getPerForceScore();
 					forceAnswer.setText("Answer: Correct");
 				} else {
+					score=score+questObject.getPerForceNegScore();
 					forceAnswer.setText("Answer: Incorrect");
 				}
+				
+				if(score>0)
+					lblScore.setText("Score = " + score);
+				else
+					lblScore.setText("Score = " + "0");
 				
 				if(qHandleObject.isLastQuestion()) {
 					nxtButton.setVisible(false);
@@ -515,9 +528,6 @@ public class MainPage {
 			}
 		});
 		
-		//panel.add(forceSubmit);
-		//panel.add(forceRestart);
-		//panel.add(forceAnswer);
 		panel.add(nxtButton);
 		
 		JScrollPane scrollPane = new JScrollPane(panel);

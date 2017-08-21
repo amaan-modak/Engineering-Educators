@@ -31,7 +31,8 @@ public class Question {
 	ArrayList<String> data = new ArrayList<String>();
 	ArrayList<String> assumptions = new ArrayList<String>();
 	ArrayList<JCheckBox> assumptionChkbxList = new ArrayList<JCheckBox>();
-	ArrayList<String> hintList=new ArrayList<String>();
+	ArrayList<String> FBDhintList=new ArrayList<String>();
+	ArrayList<String> ForcehintList=new ArrayList<String>();
 	HashMap<String, Assumption> assumptionObjMap = new HashMap<String, Assumption>();
 	String problemDescription;
 	JLabel fbdSelectionLabel;
@@ -51,8 +52,10 @@ public class Question {
 	
 	int perFBDScore=0;
 	int perFBDNegScore=0;
-	int perHintScore=0;
+	int perFBDHintScore=0;
 	int perForceScore=0;
+	int perForceNegScore=0;
+	int perForceHintScore=0;
 	
 	boolean anywrong = false;
 
@@ -90,8 +93,16 @@ public class Question {
 		return this.perReasonScore;
 	}
 
-	public int getPerHintScore(){
-		return this.perHintScore;
+	public int getPerFBDHintScore(){
+		return this.perFBDHintScore;
+	}
+	
+	public int getPerForceHintScore(){
+		return this.perForceHintScore;
+	}
+	
+	public int getPerForceNegScore(){
+		return this.perForceNegScore;
 	}
 	
 	public int getPerFBDScore(){
@@ -122,8 +133,16 @@ public class Question {
 		perFBDNegScore=score;
 	}
 	
-	public void setPerHintScore(int score){
-		perHintScore=score;
+	public void setPerForceNegScore(int score){
+		perForceNegScore=score;
+	}
+	
+	public void setPerFBDHintScore(int score){
+		perFBDHintScore=score;
+	}
+	
+	public void setPerForceHintScore(int score){
+		perForceHintScore=score;
 	}
 	
 	public void setPerForceScore(int score){
@@ -191,7 +210,8 @@ public class Question {
 		readAssumptions();
 		readScores();
 		setAssumptionChkbxList();
-		readHints();
+		readFBDHints();
+		readForceHints();
 	}
 	
 	public JLabel getFBDSelectionImageLabel() {
@@ -297,13 +317,26 @@ public class Question {
 		}
 	}
 	
-	public void readHints(){
+	public void readFBDHints(){
+		MainPage.hintcounter=0;
 		for (int dataIdx = 0; dataIdx < data.size(); dataIdx++) {
-			if (data.get(dataIdx).contains("Hints:")) {
+			if (data.get(dataIdx).contains("FBDHints:")) {
 				int hintIdx = dataIdx + 1;
-				while (hintIdx < data.size()){
-					hintList.add(data.get(hintIdx));
-					System.out.println(hintList);
+				while (hintIdx < data.size()  && (!data.get(hintIdx).contains("End FBDHints"))){
+					FBDhintList.add(data.get(hintIdx));
+					hintIdx+=1;
+				}
+			}
+		}
+	}
+	
+	public void readForceHints(){
+		MainPage.hintcounter=0;
+		for (int dataIdx = 0; dataIdx < data.size(); dataIdx++) {
+			if (data.get(dataIdx).contains("ForceHints:")) {
+				int hintIdx = dataIdx + 1;
+				while (hintIdx < data.size()  && (!data.get(hintIdx).contains("End ForceHints"))){
+					ForcehintList.add(data.get(hintIdx));
 					hintIdx+=1;
 				}
 			}
@@ -342,14 +375,24 @@ public class Question {
 				setPerFBDNegScore(new Integer(score[1]));
 			}
 			
-			if (data.get(j).contains("HintScore:")) {
+			if (data.get(j).contains("FBDHintScore:")) {
 				String[] score = data.get(j).trim().split("\\:");
-				setPerHintScore(new Integer(score[1]));
+				setPerFBDHintScore(new Integer(score[1]));
 			}
 			
 			if (data.get(j).contains("ForceScore:")) {
 				String[] score = data.get(j).trim().split("\\:");
 				setPerForceScore(new Integer(score[1]));
+			}
+			
+			if (data.get(j).contains("ForceNegScore:")) {
+				String[] score = data.get(j).trim().split("\\:");
+				setPerForceNegScore(new Integer(score[1]));
+			}
+			
+			if (data.get(j).contains("ForceHintScore:")) {
+				String[] score = data.get(j).trim().split("\\:");
+				setPerForceHintScore(new Integer(score[1]));
 			}
 			
 		}
