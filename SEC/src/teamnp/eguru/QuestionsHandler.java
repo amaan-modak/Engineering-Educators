@@ -1,5 +1,6 @@
 package teamnp.eguru;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -15,7 +16,12 @@ public class QuestionsHandler {
 		String questionPath = null;
 		try{
 			File dir = new File(folderPath);
-			String[] quesfolders = dir.list();
+			String[] quesfolders = dir.list(new FilenameFilter() {
+				  @Override
+				  public boolean accept(File current, String name) {
+				    return new File(current, name).isDirectory();
+				  }
+				});
 			
 			Random rand = new Random();
 			
@@ -33,7 +39,12 @@ public class QuestionsHandler {
 		int num = 0;
 		try{
 			File dir = new File(folderPath);
-			String[] quesfolders = dir.list();
+			String[] quesfolders = dir.list(new FilenameFilter() {
+				  @Override
+				  public boolean accept(File current, String name) {
+				    return new File(current, name).isDirectory();
+				  }
+				});
 			num = quesfolders.length;
 			
 		}catch(Exception ex){

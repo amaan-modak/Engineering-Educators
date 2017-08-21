@@ -379,6 +379,7 @@ public class MainPage {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				score=score+questObject.getPerFBDHintScore();
+				if(score<0) score = 0;
 				if(score>0)
 					lblScore.setText("Score = " + score);
 				else
@@ -402,6 +403,7 @@ public class MainPage {
 				if(!questObject.getFBDAnswer()){
 					//If incorrect
 					score=score+questObject.getPerFBDNegScore();
+					if(score<0) score = 0;
 					if(score>0)
 						lblScore.setText("Score = " + score);
 					else
@@ -437,6 +439,7 @@ public class MainPage {
 				else{
 					//If correct
 					score=score+questObject.getPerFBDScore();
+					if(score<0) score = 0;
 					if(score>0)
 						lblScore.setText("Score = " + score);
 					else
@@ -525,6 +528,7 @@ public class MainPage {
 					
 				} else {
 					score=score+questObject.getPerForceNegScore();
+					if(score<0) score = 0;
 					forceRetryAttempts--;
 					if(forceRetryAttempts > 0) {
 						retryForce.setVisible(true);
