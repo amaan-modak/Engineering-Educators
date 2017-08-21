@@ -10,6 +10,8 @@ import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -190,6 +192,17 @@ public class MainPage {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				if(!qHandleObject.questionsFolderExists){
+					//String localPath = "Git";
+					System.out.println("Yes");
+					File lp = new File("Git");
+					try {
+						qHandleObject.deleteDir(lp);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
 				frame.dispose();
 				String [] arguments = {""+score};
 				EndPage.main(arguments);
