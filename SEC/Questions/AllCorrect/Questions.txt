@@ -4,8 +4,10 @@ ScorePerReason:1
 ScorePerNegAssum:-2
 FBDScore:10
 FBDNegScore:-1
-HintScore:-1
+FBDHintScore:-1
 ForceScore:8
+ForceNegScore:-1
+ForceHintScore:-1
 Question:
 <html>
 <p> The Omantec Lift is a product currently being developed to assist in hygiene care of patients in the home and healthcare facilities. The system is comprised of a wall mounted winch connected to padded "t-bar" that is positioned behind the patient's knees. The <b>winch system</b> is activated to elevate the patients legs and buttocks. </p>
@@ -27,3 +29,4 @@ End Assumptions
 Hints:
 Hint 1
 Hint 2
+End Hints
