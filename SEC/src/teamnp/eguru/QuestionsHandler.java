@@ -20,6 +20,7 @@ public class QuestionsHandler {
 	static ArrayList<String> displayedQuestionFolders = new ArrayList<String>();
 	static String folderPath = "";
 	static boolean questionsFolderExists;
+    String gitCloneFolderName = "temp";
 	
 	public QuestionsHandler(String folderPath){
 		File direx = new File(folderPath);
@@ -108,8 +109,21 @@ public class QuestionsHandler {
 	}
 	public String GitClone() throws IOException{
 		
-		String localPath = "Git"; //The directory where the repo will be cloned (This is also needed to call the deleteDir() method)
-        String remotePath = "https://github.com/amaan-modak/Engineering-Educators.git"; //URL for the GIT repo
+		String localPath = gitCloneFolderName; //The directory where the repo will be cloned (This is also needed to call the deleteDir() method)
+//        String remotePath = "https://github.com/amaan-modak/Engineering-Educators.git"; //URL for the GIT repo
+		
+    	if(SystemUtils.IS_OS_WINDOWS){
+    		System.out.println("Windows");
+    		Path path = Paths.get(localPath);
+    		Files.setAttribute(path, "dos:hidden", Boolean.TRUE, LinkOption.NOFOLLOW_LINKS);
+    	}
+    	if(SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC_OSX ||SystemUtils.IS_OS_MAC){
+    		localPath = ".".concat(localPath);
+    	}
+    	
+    	gitCloneFolderName = localPath;
+
+		String remotePath = "https://github.com/bakshizaki/eGuruQuestions.git"; //URL for the GIT repo
         FileRepository localRepo = new FileRepository(localPath + "/.git");
         File lp = new File(localPath); //Converting input string into directory
         Git git = new Git(localRepo); //Creating GIT repo
@@ -119,7 +133,7 @@ public class QuestionsHandler {
         }
         
         try {
-       		System.out.println("try1");
+       		System.out.println("Downloading");
        		//This is to clone the repo, all fields needed
        		git = Git.cloneRepository()
 				  .setURI(remotePath)
@@ -128,7 +142,7 @@ public class QuestionsHandler {
 				  .setBranch("master")
 				  .setCloneAllBranches(false)
 				  .call();
-       		System.out.println("try2");
+       		System.out.println("Download Complete");
        	}
         catch (Exception e) {
        		// TODO Auto-generated catch block
@@ -137,20 +151,14 @@ public class QuestionsHandler {
        		System.out.println("catch2");
        	}
 
-    	if(SystemUtils.IS_OS_WINDOWS){
-    		System.out.println("Windows");
-    		Path path = Paths.get(localPath);
-    		Files.setAttribute(path, "dos:hidden", Boolean.TRUE, LinkOption.NOFOLLOW_LINKS);
-    	}
-    	if(SystemUtils.IS_OS_LINUX){
-    		localPath = ".".concat(localPath);
-    	}
 
-		localPath = "Git/SEC/Questions/";
+		localPath = localPath + "/Questions/";
 		return localPath;
 	}
 	void deleteDir(File file) throws IOException {
-		System.out.println("deleting");
+//		System.out.println("deleting");
+		if(file == null || !file.exists())
+			return;
 	    File[] contents = file.listFiles();
 	    if (contents != null) {
 	        for (File f : contents) {
