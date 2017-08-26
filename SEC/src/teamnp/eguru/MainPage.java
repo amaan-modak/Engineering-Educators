@@ -10,6 +10,10 @@ import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -67,6 +71,18 @@ public class MainPage {
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
+				}
+			}
+		});
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			public void run() {
+				System.out.println("Deleting temp files");
+				File lp = new File(qHandleObject.gitCloneFolderName);
+				try {
+					qHandleObject.deleteDir(lp);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 			}
 		});
@@ -190,6 +206,17 @@ public class MainPage {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				if(!qHandleObject.questionsFolderExists){
+					//String localPath = "Git";
+					System.out.println("Deleting temp files");
+					File lp = new File(qHandleObject.gitCloneFolderName);
+					try {
+						qHandleObject.deleteDir(lp);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
 				frame.dispose();
 				String [] arguments = {""+score};
 				EndPage.main(arguments);
@@ -379,6 +406,7 @@ public class MainPage {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				score=score+questObject.getPerFBDHintScore();
+				if(score<0) score = 0;
 				if(score>0)
 					lblScore.setText("Score = " + score);
 				else
@@ -402,6 +430,7 @@ public class MainPage {
 				if(!questObject.getFBDAnswer()){
 					//If incorrect
 					score=score+questObject.getPerFBDNegScore();
+					if(score<0) score = 0;
 					if(score>0)
 						lblScore.setText("Score = " + score);
 					else
@@ -437,6 +466,7 @@ public class MainPage {
 				else{
 					//If correct
 					score=score+questObject.getPerFBDScore();
+					if(score<0) score = 0;
 					if(score>0)
 						lblScore.setText("Score = " + score);
 					else
@@ -525,6 +555,7 @@ public class MainPage {
 					
 				} else {
 					score=score+questObject.getPerForceNegScore();
+					if(score<0) score = 0;
 					forceRetryAttempts--;
 					if(forceRetryAttempts > 0) {
 						retryForce.setVisible(true);
@@ -599,7 +630,6 @@ public class MainPage {
 			JLabel lblMessage = assumObject.getlblMessage();
 //			panel.add(Box.createVerticalGlue());
 			panel.add(Box.createRigidArea(new Dimension(0,5)));
-			// Incorrect assumption
 			if (lblMessage != null) {
 				lblMessage.setForeground(Color.WHITE);
 				lblMessage.setBorder(BorderFactory.createEmptyBorder(5, 30, 5, 30));

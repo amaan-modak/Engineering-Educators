@@ -291,7 +291,6 @@ public class Question {
 		return retString;
 	}
 	
-
 	public void readAssumptions() {
 		// Read each line of assumption
 		for (int dataIdx = 0; dataIdx < data.size(); dataIdx++) {
@@ -302,20 +301,10 @@ public class Question {
 					Assumption assumObj = new Assumption(splitter[0], splitter[1]);
 					assumptionObjMap.put(splitter[0], assumObj);
 					assumptions.add(splitter[0]);
-					if (splitter[1].equals("incorrect") || splitter[1].equals("complicated")) {
-						// If incorrect/complicated, tell assumption class to
-						// create
-						// reason list for that particular assumption, pass the
-						// data of text file, index from where list of reasons
-						// starts
-						// method will return index where list of reasons ends
-						int reasonIdx = assumIdx + 1;
-						int endReasonIdx = assumObj.setReasonList(reasonIdx, data);
-						assumIdx = endReasonIdx + 1;
-					} else
-						// move to next assumption
-						assumIdx++;
-				}
+					int reasonIdx = assumIdx + 1;
+					int endReasonIdx = assumObj.setReasonList(reasonIdx, data);
+					assumIdx = endReasonIdx + 1;
+					}
 				break;
 			}
 		}
@@ -438,6 +427,7 @@ public class Question {
 				ansChkbxComparison = true;
 			else
 				ansChkbxComparison = false;
+			
 			if (ansChkbxComparison == false) {
 
 				if (assumans.equals("incorrect")) {
@@ -452,9 +442,11 @@ public class Question {
 					anywrong = true;
 				} else if (assumans.equals("correct")) {
 					assumptionChkbxList.get(j).setBackground(new Color(0, 102, 34)); // green
+					assumptionObjMap.get(assumptions.get(j)).getlblMessage().setVisible(true);
 					Font defultFont = assumptionChkbxList.get(j).getFont();
 					Font boldFont = new Font(defultFont.getFontName(), Font.BOLD+Font.ITALIC, defultFont.getSize());
 					assumptionChkbxList.get(j).setFont(boldFont);
+					anywrong = true;
 				}
 				
 				//show reasons for incorrect assumption

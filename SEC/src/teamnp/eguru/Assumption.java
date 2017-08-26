@@ -39,6 +39,11 @@ public class Assumption {
 			lblMessage.setFont(new Font("Georgia", Font.PLAIN, 16));
 			lblMessage.setVisible(false);
 		}
+		else if (answer.equals("correct")){
+			lblMessage = new JLabel("This assumption is correct, what could be the reason?");
+			lblMessage.setFont(new Font("Georgia", Font.PLAIN, 16));
+			lblMessage.setVisible(false);
+		}
 	}
 	/**************/
 
