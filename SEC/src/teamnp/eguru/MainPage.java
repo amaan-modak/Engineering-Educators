@@ -630,7 +630,6 @@ public class MainPage {
 			JLabel lblMessage = assumObject.getlblMessage();
 //			panel.add(Box.createVerticalGlue());
 			panel.add(Box.createRigidArea(new Dimension(0,5)));
-			// Incorrect assumption
 			if (lblMessage != null) {
 				lblMessage.setForeground(Color.WHITE);
 				lblMessage.setBorder(BorderFactory.createEmptyBorder(5, 30, 5, 30));
