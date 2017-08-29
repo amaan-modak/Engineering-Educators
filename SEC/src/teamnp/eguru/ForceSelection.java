@@ -70,8 +70,8 @@ public class ForceSelection {
 	ForcePoint.EntityProperty currentProperty = null;
 	ForcePoint.EntityDirection currentDirection = null;
 
-//	static final Color KNOWN_FORCE_COLOR = new Color(0, 153, 51);
-//	static final Color UNKNOWN_FORCE_COLOR = Color.RED;
+	// static final Color KNOWN_FORCE_COLOR = new Color(0, 153, 51);
+	// static final Color UNKNOWN_FORCE_COLOR = Color.RED;
 	static final Color DRAWING_COLOR = Color.BLACK;
 	static final Color CORRECT_COLOR = new Color(0, 153, 51);
 	static final Color INCORRECT_COLOR = Color.RED;
@@ -99,7 +99,7 @@ public class ForceSelection {
 	SizedStack<BufferedImage> undoImageStack = new SizedStack<BufferedImage>(10);
 	BufferedImage undoImage;
 	int retryAttempts = 3;
-	
+
 	public ForceSelection(String filename, BufferedImage inputImage) {
 		initialize(inputImage);
 		readForceFile(filename);
@@ -302,27 +302,9 @@ public class ForceSelection {
 		g.setColor(arcColor);
 
 		if (currentDirection == EntityDirection.CLOCKWISE) {
-			g.drawArc(p.x - arcRadius, p.y - arcRadius, 2 * arcRadius, 2 * arcRadius, 300, 120);
-
-			Point arcArrowStartPoint = new Point((int) (arcRadius * Math.cos(Math.toRadians(315))),
-					(int) (-1 * arcRadius * Math.sin(Math.toRadians(315))));
-			arcArrowStartPoint = new Point(p.x + arcArrowStartPoint.x, p.y + arcArrowStartPoint.y);
-			Point arcArrowEndPoint = new Point((int) (arcRadius * Math.cos(Math.toRadians(300))),
-					(int) (-1 * arcRadius * Math.sin(Math.toRadians(300))));
-			arcArrowEndPoint = new Point(p.x + arcArrowEndPoint.x, p.y + arcArrowEndPoint.y);
-			drawArrow(arcArrowStartPoint, arcArrowEndPoint);
-
+			drawClockwiseMoment(g, p, arcRadius);
 		} else if (currentDirection == EntityDirection.ANTICLOCKWISE) {
-			g.drawArc(p.x - arcRadius, p.y - arcRadius, 2 * arcRadius, 2 * arcRadius, 120, 120);
-
-			Point arcArrowStartPoint = new Point((int) (arcRadius * Math.cos(Math.toRadians(135))),
-					(int) (-1 * arcRadius * Math.sin(Math.toRadians(135))));
-			arcArrowStartPoint = new Point(p.x + arcArrowStartPoint.x, p.y + arcArrowStartPoint.y);
-			Point arcArrowEndPoint = new Point((int) (arcRadius * Math.cos(Math.toRadians(120))),
-					(int) (-1 * arcRadius * Math.sin(Math.toRadians(120))));
-			arcArrowEndPoint = new Point(p.x + arcArrowEndPoint.x, p.y + arcArrowEndPoint.y);
-			drawArrow(arcArrowStartPoint, arcArrowEndPoint);
-
+			drawAntiClockwiseMoment(g, p, arcRadius);
 		}
 
 		g.dispose();
@@ -339,14 +321,14 @@ public class ForceSelection {
 		drawArrow(p1, p2);
 
 	}
-	
+
 	private void displayCircle(int x, int y) {
 		Graphics2D g = canvasImage.createGraphics();
 		g.setColor(currentColor);
-		g.drawOval(x-15, y-15, 30, 30);
+		g.drawOval(x - 15, y - 15, 30, 30);
 		g.dispose();
 		imageLabel.repaint();
-		
+
 	}
 
 	private void drawArrow(Point p1, Point p2) {
@@ -507,7 +489,7 @@ public class ForceSelection {
 		tb.add(selectDirectionCCW);
 		tb.addSeparator();
 		tb.add(undoButton);
-//		tb.add(submitForces);
+		// tb.add(submitForces);
 		// tb.setVisible(false);
 		return tb;
 
@@ -634,27 +616,9 @@ public class ForceSelection {
 				g.setColor(arcColor);
 
 				if (currentDirection == EntityDirection.CLOCKWISE) {
-					g.drawArc(p.x - arcRadius, p.y - arcRadius, 2 * arcRadius, 2 * arcRadius, 300, 120);
-
-					Point arcArrowStartPoint = new Point((int) (arcRadius * Math.cos(Math.toRadians(315))),
-							(int) (-1 * arcRadius * Math.sin(Math.toRadians(315))));
-					arcArrowStartPoint = new Point(p.x + arcArrowStartPoint.x, p.y + arcArrowStartPoint.y);
-					Point arcArrowEndPoint = new Point((int) (arcRadius * Math.cos(Math.toRadians(300))),
-							(int) (-1 * arcRadius * Math.sin(Math.toRadians(300))));
-					arcArrowEndPoint = new Point(p.x + arcArrowEndPoint.x, p.y + arcArrowEndPoint.y);
-					drawArrow(arcArrowStartPoint, arcArrowEndPoint);
-
+					drawClockwiseMoment(g, p, arcRadius);
 				} else if (currentDirection == EntityDirection.ANTICLOCKWISE) {
-					g.drawArc(p.x - arcRadius, p.y - arcRadius, 2 * arcRadius, 2 * arcRadius, 120, 120);
-
-					Point arcArrowStartPoint = new Point((int) (arcRadius * Math.cos(Math.toRadians(135))),
-							(int) (-1 * arcRadius * Math.sin(Math.toRadians(135))));
-					arcArrowStartPoint = new Point(p.x + arcArrowStartPoint.x, p.y + arcArrowStartPoint.y);
-					Point arcArrowEndPoint = new Point((int) (arcRadius * Math.cos(Math.toRadians(120))),
-							(int) (-1 * arcRadius * Math.sin(Math.toRadians(120))));
-					arcArrowEndPoint = new Point(p.x + arcArrowEndPoint.x, p.y + arcArrowEndPoint.y);
-					drawArrow(arcArrowStartPoint, arcArrowEndPoint);
-
+					drawAntiClockwiseMoment(g, p, arcRadius);
 				}
 
 				g.dispose();
@@ -822,17 +786,17 @@ public class ForceSelection {
 			// B is in A.
 
 			boolean forceFinalAnswer = true;
-			
-			//disable drawing after submission
+
+			// disable drawing after submission
 			for (MouseListener m : imageLabel.getMouseListeners()) {
 				imageLabel.removeMouseListener(m);
 			}
-			
-			//disable undo button after submission
+
+			// disable undo button after submission
 			undoButton.setEnabled(false);
-			
+
 			drawOriginal();
-			for(ForcePoint fp: fpList) {
+			for (ForcePoint fp : fpList) {
 				displayForcePoint(fp.x, fp.y);
 			}
 
@@ -843,7 +807,7 @@ public class ForceSelection {
 						currentColor = INCORRECT_COLOR;
 						displayCircle(p.x, p.y);
 					}
-						
+
 				}
 			}
 			for (ForcePoint p : forceDataList) {
@@ -861,8 +825,7 @@ public class ForceSelection {
 				}
 			}
 
-
-//			forceDataList.clear();
+			// forceDataList.clear();
 			return forceFinalAnswer;
 
 		}
@@ -946,6 +909,32 @@ public class ForceSelection {
 				}
 			}
 		}
+
+	}
+
+	void drawClockwiseMoment(Graphics2D g, Point p, int arcRadius) {
+		g.drawArc(p.x - arcRadius, p.y - arcRadius, 2 * arcRadius, 2 * arcRadius, 120, 120);
+
+		Point arcArrowStartPoint = new Point((int) (arcRadius * Math.cos(Math.toRadians(135))),
+				(int) (-1 * arcRadius * Math.sin(Math.toRadians(135))));
+		arcArrowStartPoint = new Point(p.x + arcArrowStartPoint.x, p.y + arcArrowStartPoint.y);
+		Point arcArrowEndPoint = new Point((int) (arcRadius * Math.cos(Math.toRadians(120))),
+				(int) (-1 * arcRadius * Math.sin(Math.toRadians(120))));
+		arcArrowEndPoint = new Point(p.x + arcArrowEndPoint.x, p.y + arcArrowEndPoint.y);
+		drawArrow(arcArrowStartPoint, arcArrowEndPoint);
+
+	}
+
+	void drawAntiClockwiseMoment(Graphics2D g, Point p, int arcRadius) {
+		g.drawArc(p.x - arcRadius, p.y - arcRadius, 2 * arcRadius, 2 * arcRadius, 300, 120);
+
+		Point arcArrowStartPoint = new Point((int) (arcRadius * Math.cos(Math.toRadians(55))),
+				(int) (-1 * arcRadius * Math.sin(Math.toRadians(55))));
+		arcArrowStartPoint = new Point(p.x + arcArrowStartPoint.x, p.y + arcArrowStartPoint.y);
+		Point arcArrowEndPoint = new Point((int) (arcRadius * Math.cos(Math.toRadians(60))),
+				(int) (-1 * arcRadius * Math.sin(Math.toRadians(60))));
+		arcArrowEndPoint = new Point(p.x + arcArrowEndPoint.x, p.y + arcArrowEndPoint.y);
+		drawArrow(arcArrowStartPoint, arcArrowEndPoint);
 
 	}
 }
