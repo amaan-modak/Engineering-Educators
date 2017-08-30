@@ -64,6 +64,10 @@ public class MainPage {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					if(qHandleObject.selectRandomFolder == false){
+						qHandleObject.questionsInOrder();
+						System.out.println("Done");
+					}
 					questionPath = qHandleObject.selectQuestion();
 					questObject = new Question(questionPath);
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); // Set Look and Feel of the UI
