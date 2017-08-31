@@ -352,6 +352,7 @@ public class MainPage {
 					imageQuesText.setVisible(true);
 					restartFBD.setVisible(true);
 					submitFBD.setVisible(true);
+					currScore = 0;
 				} else {
 					score = questObject.ScoreCalculation(score);
 					lblScore.setText("Score = " + score);
@@ -413,6 +414,7 @@ public class MainPage {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				score=score+questObject.getPerFBDHintScore();
+				currScore += questObject.getPerFBDHintScore();
 				if(score<0) score = 0;
 				if(score>0)
 					lblScore.setText("Score = " + score);
@@ -454,6 +456,7 @@ public class MainPage {
 						retryFBD.setVisible(false);
 						hintFBD.setVisible(false);
 						fbdAnswer.setVisible(true);
+						currScore=currScore+questObject.perFBDNegScore;
 						fbdAnswer.setText("Answer: Incorrect. You have used all attempts."+ "Current Score: "+currScore);						
 						forceQuesText.setVisible(true);
 						panel.add(questObject.getForceGui());
@@ -480,10 +483,10 @@ public class MainPage {
 						lblScore.setText("Score = " + "0");
 					fbdAnswer.setVisible(true);
 					hintFBD.setVisible(false);
-					if(hintRetry==true || fbdretry==true)
+//					if(hintRetry==true || fbdretry==true)
 						fbdAnswer.setText("Answer: Correct  Current score(FBD): "+(questObject.getPerFBDScore()+currScore));
-					else
-						fbdAnswer.setText("Answer: Correct  Current score(FBD): "+questObject.getPerFBDScore());
+//					else
+//						fbdAnswer.setText("Answer: Correct  Current score(FBD): "+questObject.getPerFBDScore());
 										
 					forceQuesText.setVisible(true);
 					panel.add(questObject.getForceGui());
@@ -494,6 +497,7 @@ public class MainPage {
 					panel.add(forceAns);
 					panel.add(nxtButton);
 					panel.add(endButton);
+					currScore = 0;
 
 					
 				}
@@ -552,7 +556,9 @@ public class MainPage {
 				forceAns.setVisible(true);
 				if( questObject.getForceAnswer() ) {
 					score=score+questObject.getPerForceScore();
-					forceAnswer.setText("Answer: Correct");
+					currScore += questObject.getPerForceScore();
+					forceAnswer.setVisible(true);
+					forceAnswer.setText("Answer: Correct  Score:"+currScore);
 					
 					if(qHandleObject.isLastQuestion()) {
 						nxtButton.setVisible(false);
@@ -565,17 +571,18 @@ public class MainPage {
 					
 				} else {
 					score=score+questObject.getPerForceNegScore();
+					currScore += questObject.getPerForceNegScore();
 					if(score<0) score = 0;
 					forceRetryAttempts--;
 					if(forceRetryAttempts > 0) {
 						retryForce.setVisible(true);
 						forceAnswer.setVisible(true);
-						forceAnswer.setText("Answer: Incorrect. You have "+ forceRetryAttempts+" more attempts");
+						forceAnswer.setText("Answer: Incorrect. You have "+ forceRetryAttempts+" more attempts.  Score:"+currScore);
 					}
 					else {
 						retryForce.setVisible(false);
 						forceAnswer.setVisible(true);
-						forceAnswer.setText("Answer: Incorrect. You have used all attempts.");
+						forceAnswer.setText("Answer: Incorrect. You have used all attempts.  Score:"+currScore);
 						if(qHandleObject.isLastQuestion()) {
 							nxtButton.setVisible(false);
 							endButton.setVisible(true);
