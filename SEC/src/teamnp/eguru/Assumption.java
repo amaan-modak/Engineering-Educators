@@ -144,6 +144,7 @@ public class Assumption {
 			if (ansRdbComparison == false) {
 				
 				if(reasonans.equals("invalid")) {
+					reasonRdbList.get(i).setText(reasonRdbList.get(i).getText()+"  (0)");
 					reasonRdbList.get(i).setForeground(new Color(249, 29, 44)); // red
 					anywrongreason = true;
 				}
@@ -155,7 +156,8 @@ public class Assumption {
 				
 			}
 
-			if(reasonans.equals("valid")) {
+			if(reasonans.equals("valid") && reasonRdbList.get(i).isSelected()) {
+				reasonRdbList.get(i).setText(reasonRdbList.get(i).getText()+"  ("+Question.perReasonScore+")");
 				reasonRdbList.get(i).setForeground(new Color(49, 216, 23)); // green	
 			}
 			

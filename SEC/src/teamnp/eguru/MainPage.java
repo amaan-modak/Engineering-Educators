@@ -54,6 +54,9 @@ public class MainPage {
 	private JFrame frame;
 	static JPanel panel;
 	
+	int currScore=questObject.getPerFBDScore();
+	boolean fbdretry=false,hintRetry=false;
+	
 	JLabel imageLabel;
 	static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); 
 
@@ -444,14 +447,14 @@ public class MainPage {
 						retryFBD.setVisible(true);
 						hintFBD.setVisible(true);
 						fbdAnswer.setVisible(true);
-						fbdAnswer.setText("Answer: Incorrect. You have " + fbdRetryAttempts + " more attempts.");
-					}
+						currScore=currScore+questObject.perFBDNegScore;
+						fbdAnswer.setText("Answer: Incorrect. You have " + fbdRetryAttempts + " more attempts."+ "Current Score: "+currScore);
+																}
 					else{
 						retryFBD.setVisible(false);
 						hintFBD.setVisible(false);
 						fbdAnswer.setVisible(true);
-						fbdAnswer.setText("Answer: Incorrect. You have used all attempts.");
-						
+						fbdAnswer.setText("Answer: Incorrect. You have used all attempts."+ "Current Score: "+currScore);						
 						forceQuesText.setVisible(true);
 						panel.add(questObject.getForceGui());
 						panel.add(Box.createVerticalStrut(20));
@@ -477,8 +480,11 @@ public class MainPage {
 						lblScore.setText("Score = " + "0");
 					fbdAnswer.setVisible(true);
 					hintFBD.setVisible(false);
-					fbdAnswer.setText("Answer: Correct");
-					
+					if(hintRetry==true || fbdretry==true)
+						fbdAnswer.setText("Answer: Correct  Current score(FBD): "+(questObject.getPerFBDScore()+currScore));
+					else
+						fbdAnswer.setText("Answer: Correct  Current score(FBD): "+questObject.getPerFBDScore());
+										
 					forceQuesText.setVisible(true);
 					panel.add(questObject.getForceGui());
 					panel.add(Box.createVerticalStrut(20));

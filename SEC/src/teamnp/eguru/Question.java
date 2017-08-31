@@ -43,7 +43,7 @@ public class Question {
 	ForceSelection forceSelection;
 	// Key = assumption, value = Assumption class object
 
-	int perReasonScore = 0;
+	static int perReasonScore = 0;
 	int minScore=0;
 	int maxScore=0;
 
@@ -415,7 +415,92 @@ public class Question {
 	// If incorrect/complicated, do bg manipulation, make list of radio button
 	// visible
 	// Return score
+	
 	public int ScoreCalculation(int score) {
+				int tempscore = 0;
+				for (int j = 0; j < assumptionChkbxList.size(); j++) {
+					boolean ansChkbxComparison = true;
+					String assumans = getAnswer(assumptions.get(j));
+					if (assumptionChkbxList.get(j).isSelected() && assumans.equals("correct")) {
+						ansChkbxComparison = true;
+						assumptionChkbxList.get(j).setText(assumptionChkbxList.get(j).getText()+ "   ("+perAssumScore+")");
+						}
+					else if (!assumptionChkbxList.get(j).isSelected()
+							&& (assumans.equals("incorrect") || assumans.equals("complicated"))) {
+						ansChkbxComparison = true;
+						assumptionChkbxList.get(j).setText(assumptionChkbxList.get(j).getText()+ "   (0)");
+					}
+					else if(assumptionChkbxList.get(j).isSelected()
+							&& (assumans.equals("incorrect") || assumans.equals("complicated"))){
+						ansChkbxComparison = false;
+						assumptionChkbxList.get(j).setText(assumptionChkbxList.get(j).getText()+ "   ("+perAssumNegScore+")");
+					}
+					else{
+						ansChkbxComparison = false;
+						assumptionChkbxList.get(j).setText(assumptionChkbxList.get(j).getText()+ "   (0"+")");
+		
+					}
+					if (ansChkbxComparison == false) {
+		
+						if (assumans.equals("incorrect")) {
+							
+							assumptionChkbxList.get(j).setBackground(new Color(204, 0, 0)); // red
+							assumptionObjMap.get(assumptions.get(j)).getlblMessage().setVisible(true);
+							tempscore+=perAssumNegScore;
+							anywrong = true;
+						} else if (assumans.equals("complicated")) {
+							assumptionChkbxList.get(j).setBackground(new Color(204, 51, 0));// red
+							assumptionObjMap.get(assumptions.get(j)).getlblMessage().setVisible(true);
+							tempscore+=perAssumNegScore;
+							anywrong = true;
+						} else if (assumans.equals("correct")) {
+							assumptionChkbxList.get(j).setBackground(new Color(0, 102, 34)); // green
+							assumptionObjMap.get(assumptions.get(j)).getlblMessage().setVisible(true);
+							Font defultFont = assumptionChkbxList.get(j).getFont();
+							Font boldFont = new Font(defultFont.getFontName(), Font.BOLD+Font.ITALIC, defultFont.getSize());
+							assumptionChkbxList.get(j).setFont(boldFont);
+							anywrong = true;
+						}
+						
+						//show reasons for incorrect assumption
+						if (assumptionObjMap.get(assumptions.get(j)).reasonRdbList.size() > 0) {
+							for (int k = 0; k < assumptionObjMap.get(assumptions.get(j)).reasonRdbList.size(); k++) {
+								assumptionObjMap.get(assumptions.get(j)).reasonRdbList.get(k).setVisible(true);
+							}
+						}
+					}
+					else if (ansChkbxComparison == true && !assumans.equals("correct")) {
+						assumptionChkbxList.get(j).setEnabled(false);
+					}
+					
+					
+					if (assumans.equals("correct")) {
+						assumptionChkbxList.get(j).setBackground(new Color(0, 102, 34)); // green
+						Font defultFont = assumptionChkbxList.get(j).getFont();
+						Font boldFont = new Font(defultFont.getFontName(), Font.BOLD+Font.ITALIC, defultFont.getSize());
+						assumptionChkbxList.get(j).setFont(boldFont);
+					}
+					if (ansChkbxComparison == true && assumans.equals("correct")) {
+						tempscore += perAssumScore;
+					}
+		
+				}
+				score += tempscore;
+						
+				if(score<minScore)
+					score=minScore;
+				else if(score>maxScore)
+					score=maxScore;
+				
+				return score;
+			}
+	
+	
+	
+	
+	
+	
+	/*public int ScoreCalculation(int score) {
 		int tempscore = 0;
 		for (int j = 0; j < assumptionChkbxList.size(); j++) {
 			boolean ansChkbxComparison = true;
@@ -480,7 +565,7 @@ public class Question {
 			score=maxScore;
 		
 		return score;
-	}
+	} */
 
 	public int ScoreCalculationReason(int score) {
 		int tempscore = 0;
