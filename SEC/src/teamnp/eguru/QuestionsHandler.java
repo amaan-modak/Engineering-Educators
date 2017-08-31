@@ -20,7 +20,14 @@ public class QuestionsHandler {
 	static ArrayList<String> displayedQuestionFolders = new ArrayList<String>();
 	static String folderPath = "";
 	static boolean questionsFolderExists;
+<<<<<<< HEAD
     String gitCloneFolderName = "temp";
+=======
+	static boolean selectRandomFolder = false;
+    String gitCloneFolderName = "temp";
+    String[] orderedquesfolders;
+    int quesNum = 0;
+>>>>>>> 0481a15ffde2a4574f91c2fca0d7c9c121ee32b7
 	
 	public QuestionsHandler(String folderPath){
 		File direx = new File(folderPath);
@@ -87,7 +94,12 @@ public class QuestionsHandler {
 		String questionPath = "";
 		int totQuestions = getTotalQuestions();
 		do{
-			questionPath = FolderRandomSelection();
+			if(selectRandomFolder == false){
+				questionPath = folderPath+orderedquesfolders[quesNum++];
+			}
+			else{
+				questionPath = FolderRandomSelection();
+			}
 			if(!displayedQuestionFolders.contains(questionPath)){
 				displayedQuestionFolders.add(questionPath);
 				isDisplayed = false;
@@ -168,6 +180,21 @@ public class QuestionsHandler {
 	    file.delete();
 		//FileUtils.deleteDirectory(file);
 	}
+<<<<<<< HEAD
+=======
+	
+	void questionsInOrder(){
+		File dir = new File(folderPath);
+		orderedquesfolders = dir.list(new FilenameFilter() {
+			  @Override
+			  public boolean accept(File current, String name) {
+			    return new File(current, name).isDirectory();
+			  }
+			});
+		Arrays.sort(orderedquesfolders);
+		System.out.println(orderedquesfolders[0]+" "+orderedquesfolders[1]);
+	}
+>>>>>>> 0481a15ffde2a4574f91c2fca0d7c9c121ee32b7
 
 
 }
