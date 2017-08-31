@@ -21,20 +21,35 @@ Question:
 End Question
 Assumptions:
 Hip acts as a pivot point (no lifting off the bed)|correct
-Incorrect Assumption #1.1|incorrect
 Valid Reason #1.1.1|valid
 Invalid Reason #1.1.2|invalid
-Invalid Reason #1.1.3|invalid
 End Reasons
-Lower leg remains approximately perpendicular to upper leg|correct
-Incorrect Assumption #1.2|incorrect
-Invalid Reason #1.2.1|invalid
+Incorrect Assumption #1.1|incorrect
+Valid Reason #1.2.1|valid
 Invalid Reason #1.2.2|invalid
 Invalid Reason #1.2.3|invalid
-Valid Reason #1.2.4|valid
+End Reasons
+Lower leg remains approximately perpendicular to upper leg|correct
+Invalid Reason #1.3.1|invalid
+Valid Reason #1.3.2|valid
+End Reasons
+Incorrect Assumption #1.2|incorrect
+Invalid Reason #1.4.1|invalid
+Invalid Reason #1.4.2|invalid
+Invalid Reason #1.4.3|invalid
+Valid Reason #1.4.4|valid
 End Reasons
 Forces are reasonably approximated using static analysis|correct
+Invalid Reason #1.5.1|invalid
+Invalid Reason #1.5.2|invalid
+Invalid Reason #1.5.3|invalid
+Valid Reason #1.5.4|valid
+End Reasons
 Patient does not slide on the bed|correct
+Invalid Reason #1.6.1|invalid
+Invalid Reason #1.6.3|invalid
+Valid Reason #1.6.4|valid
+End Reasons
 Complicating Assumption #Who Cares I Am Making All This Up?|complicated
 Invalid Reason #x.y.z|invalid
 Valid Reason #something|valid
