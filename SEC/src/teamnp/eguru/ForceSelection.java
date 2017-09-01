@@ -850,10 +850,20 @@ public class ForceSelection {
 
 		private boolean forceListContainsForce(ArrayList<ForcePoint> forceList, ForcePoint p) {
 			for (ForcePoint listPoint : forceList) {
-				if (p.x == listPoint.x && p.y == listPoint.y && listPoint.isCorrect == true && p.type == listPoint.type
-						&& p.getProperty() == listPoint.getProperty()
-						&& (equalWithTolerance(p.getAngle(), listPoint.getAngle()) || equalWithTolerance(p.getAngle(), (180+listPoint.getAngle())%360)))
-					return true;
+				// if unknown then check angle for angle+180 as well, else just compare normally
+				if(p.getProperty() == EntityProperty.UNKNOWN) {
+					if (p.x == listPoint.x && p.y == listPoint.y && listPoint.isCorrect == true && p.type == listPoint.type
+							&& p.getProperty() == listPoint.getProperty()
+							&& (equalWithTolerance(p.getAngle(), listPoint.getAngle()) || equalWithTolerance(p.getAngle(), (180+listPoint.getAngle())%360)))
+						return true;	
+				}
+				else {
+					if (p.x == listPoint.x && p.y == listPoint.y && listPoint.isCorrect == true && p.type == listPoint.type
+							&& p.getProperty() == listPoint.getProperty()
+							&& (equalWithTolerance(p.getAngle(), listPoint.getAngle()) ))
+						return true;
+				}
+				
 			}
 			return false;
 		}
