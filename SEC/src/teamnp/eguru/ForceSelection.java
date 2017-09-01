@@ -662,6 +662,9 @@ public class ForceSelection {
 				double angleRad = Math.atan2((new_Y - firstForcePoint.getY()) * -1, new_X - firstForcePoint.getX());
 				double angleDeg = Math.toDegrees(angleRad);
 				angleDeg = (angleDeg + 360) % 360;
+				//convert (0-360) to (0 - 180 --> -179 - -1)
+				angleDeg = angleDeg<=180 ? angleDeg : -1 * (360-angleDeg);
+				
 
 				Graphics2D g = canvasImage.createGraphics();
 				// g.drawImage(subImage, (int) firstForcePoint.getX() -
