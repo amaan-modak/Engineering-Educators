@@ -30,17 +30,17 @@ public class Assumption {
 		this.assumption = assumption;
 		this.answer = answer;
 		if(answer.equals("incorrect")){
-			lblMessage = new JLabel("This assumption is incorrect, what could be the reason?");
+			lblMessage = new JLabel("This assumption is incorrect, why?");
 			lblMessage.setFont(new Font("Georgia", Font.PLAIN, 16));
 			lblMessage.setVisible(false);
 		}
 		else if (answer.equals("complicated")){
-			lblMessage = new JLabel("This assumption is a complicating factor, what could be the reason?");
+			lblMessage = new JLabel("This assumption makes the analysis more complicated, why?");
 			lblMessage.setFont(new Font("Georgia", Font.PLAIN, 16));
 			lblMessage.setVisible(false);
 		}
 		else if (answer.equals("correct")){
-			lblMessage = new JLabel("This assumption is correct, what could be the reason?");
+			lblMessage = new JLabel("This assumption should be selected, why is this necessary?");
 			lblMessage.setFont(new Font("Georgia", Font.PLAIN, 16));
 			lblMessage.setVisible(false);
 		}

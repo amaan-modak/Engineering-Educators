@@ -57,6 +57,10 @@ public class Question {
 	int perForceNegScore=0;
 	int perForceHintScore=0;
 	
+	Color assumptionIncorrectColor = new Color(204, 0, 0);
+	Color assumptionCorrectColor = new Color(0, 102, 34);
+	Color assumptionComplicatedColor = new Color(153, 102, 51);
+	
 	boolean anywrong = false;
 
 	/*** Constructor ***/
@@ -444,17 +448,17 @@ public class Question {
 		
 						if (assumans.equals("incorrect")) {
 							
-							assumptionChkbxList.get(j).setBackground(new Color(204, 0, 0)); // red
+							assumptionChkbxList.get(j).setBackground(assumptionIncorrectColor); // red
 							assumptionObjMap.get(assumptions.get(j)).getlblMessage().setVisible(true);
 							tempscore+=perAssumNegScore;
 							anywrong = true;
 						} else if (assumans.equals("complicated")) {
-							assumptionChkbxList.get(j).setBackground(new Color(204, 51, 0));// red
+							assumptionChkbxList.get(j).setBackground(assumptionComplicatedColor);// brown
 							assumptionObjMap.get(assumptions.get(j)).getlblMessage().setVisible(true);
 							tempscore+=perAssumNegScore;
 							anywrong = true;
 						} else if (assumans.equals("correct")) {
-							assumptionChkbxList.get(j).setBackground(new Color(0, 102, 34)); // green
+							assumptionChkbxList.get(j).setBackground(assumptionCorrectColor); // green
 							assumptionObjMap.get(assumptions.get(j)).getlblMessage().setVisible(true);
 							Font defultFont = assumptionChkbxList.get(j).getFont();
 							Font boldFont = new Font(defultFont.getFontName(), Font.BOLD+Font.ITALIC, defultFont.getSize());
@@ -475,7 +479,7 @@ public class Question {
 					
 					
 					if (assumans.equals("correct")) {
-						assumptionChkbxList.get(j).setBackground(new Color(0, 102, 34)); // green
+						assumptionChkbxList.get(j).setBackground(assumptionCorrectColor); // green
 						Font defultFont = assumptionChkbxList.get(j).getFont();
 						Font boldFont = new Font(defultFont.getFontName(), Font.BOLD+Font.ITALIC, defultFont.getSize());
 						assumptionChkbxList.get(j).setFont(boldFont);
