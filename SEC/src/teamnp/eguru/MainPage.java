@@ -459,6 +459,7 @@ public class MainPage {
 						currScore=currScore+questObject.perFBDNegScore;
 						fbdAnswer.setText("Answer: Incorrect. You have used all attempts."+ "Current Score: "+currScore);						
 						forceQuesText.setVisible(true);
+						currScore = 0;
 						panel.add(questObject.getForceGui());
 						panel.add(Box.createVerticalStrut(20));
 						panel.add(Box.createVerticalStrut(20));
