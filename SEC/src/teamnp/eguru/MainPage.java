@@ -1,6 +1,8 @@
 package teamnp.eguru;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
@@ -10,12 +12,14 @@ import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -36,44 +40,47 @@ public class MainPage {
 	 * Launch the application.
 	 */
 
-	//variables for fbd selection
+	// variables for fbd selection
 	JLabel fbdAnswer;
 	int fbdRetryAttempts;
 	int forceRetryAttempts;
 	JLabel fbdHintText;
-	static int hintcounter=0;
-	
+	static int hintcounter = 0;
+
 	// Global declaration of local variables
 	boolean isSubmitted = false;
 	int score = 0;
 	static String folderPath = "Questions/";
 	static String questionPath = "";
-	
 
 	// Global declaration of GUI elements
 	private JFrame frame;
 	static JPanel panel;
-	
-	int currScore=questObject.getPerFBDScore();
-	boolean fbdretry=false,hintRetry=false;
-	
+
+	int currScore = questObject.getPerFBDScore();
+	boolean fbdretry = false, hintRetry = false;
+
 	JLabel imageLabel;
-	static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); 
+	static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
 	// Global declaration of class objects
 	static Question questObject;
-	static QuestionsHandler qHandleObject  = new QuestionsHandler(folderPath);
+	static QuestionsHandler qHandleObject = new QuestionsHandler(folderPath);
+	
+	static String sessionTimestamp;
+	int captureIndex = 1;
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					if(qHandleObject.selectRandomFolder == false){
+					if (qHandleObject.selectRandomFolder == false) {
 						qHandleObject.questionsInOrder();
-						System.out.println("Done");
 					}
 					questionPath = qHandleObject.selectQuestion();
 					questObject = new Question(questionPath);
-					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); // Set Look and Feel of the UI
+					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+					sessionTimestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
 					MainPage window = new MainPage();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
@@ -94,8 +101,7 @@ public class MainPage {
 			}
 		});
 	}
-	
-	
+
 	/**
 	 * Create the application.
 	 * 
@@ -112,7 +118,7 @@ public class MainPage {
 	private void initialize() {
 		/* Local variable initialization */
 		JLabel lblTitle, lblScore, lblQuestion;
-		
+
 		isSubmitted = false;
 		questObject.readQuestion();
 		/* Designing frame */
@@ -128,7 +134,7 @@ public class MainPage {
 		frame.getContentPane().setBackground(new Color(0, 44, 61));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("eGuru");
-//		frame.setAlwaysOnTop(true);
+		// frame.setAlwaysOnTop(true);
 		frame.setLocationRelativeTo(null);
 
 		/* Designing panel */
@@ -138,27 +144,33 @@ public class MainPage {
 			panel.removeAll();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setBackground(new Color(0, 44, 61));
-		panel.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30)); //Padding around panel
+		panel.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30)); // Padding
+																			// around
+																			// panel
 
 		/* Labels to display title and score at the top of the panel */
-		lblScore = new JLabel("Score = "+score);
+		lblScore = new JLabel("Score = " + score);
 		lblTitle = new JLabel("");
-		lblTitle.setIcon(new ImageIcon (Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/logoalt.png"))))); //For alternate logo design
-		lblScore.setFont(new Font("Georgia", Font.ITALIC+Font.BOLD, 28));
+		lblTitle.setIcon(
+				new ImageIcon(Toolkit.getDefaultToolkit().getImage((getClass().getResource("/images/logoalt.png"))))); // For
+																														// alternate
+																														// logo
+																														// design
+		lblScore.setFont(new Font("Georgia", Font.ITALIC + Font.BOLD, 28));
 		lblScore.setForeground(Color.WHITE);
 		lblScore.setMaximumSize(screenSize);
 		lblScore.setHorizontalAlignment(SwingConstants.CENTER);
 		panel.add(lblTitle);
 		panel.add(lblScore);
 		panel.add(Box.createVerticalStrut(20));
-		
-		//Label for problem description
+
+		// Label for problem description
 		JLabel quesText = new JLabel();
 		quesText.setText(questObject.problemDescription);
-		quesText.setMaximumSize(new Dimension((int) (0.9*screenSize.getWidth()),(int) screenSize.getHeight()));
+		quesText.setMaximumSize(new Dimension((int) (0.9 * screenSize.getWidth()), (int) screenSize.getHeight()));
 		quesText.setForeground(Color.WHITE);
 		quesText.setFont(new Font("Arial", Font.PLAIN, 16));
-		
+
 		panel.add(quesText);
 
 		/*
@@ -194,10 +206,10 @@ public class MainPage {
 
 		/* Gap between splitpane, and assumptions and reasons */
 		panel.add(Box.createVerticalStrut(10));
-		
+
 		/* Question String */
-	    lblQuestion = new JLabel("Q: Which of the following assumptions are needed?");
-	    lblQuestion.setForeground(Color.WHITE);
+		lblQuestion = new JLabel("Q: Which of the following assumptions are needed?");
+		lblQuestion.setForeground(Color.WHITE);
 		lblQuestion.setFont(new Font("Georgia", Font.PLAIN, 17));
 		panel.add(Box.createVerticalStrut(20));
 		panel.add(lblQuestion);
@@ -206,15 +218,16 @@ public class MainPage {
 		/* Designing check boxes for assumptions */
 		GUISettingAssumptionsList();
 
-		//End Test Button
+		// End Test Button
 		JButton endButton = new JButton("End Test");
 		endButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				if(!qHandleObject.questionsFolderExists){
-					//String localPath = "Git";
+				saveScreenShot();
+				if (!qHandleObject.questionsFolderExists) {
+					// String localPath = "Git";
 					System.out.println("Deleting temp files");
 					File lp = new File(qHandleObject.gitCloneFolderName);
 					try {
@@ -225,12 +238,12 @@ public class MainPage {
 					}
 				}
 				frame.dispose();
-				String [] arguments = {""+score};
+				String[] arguments = { "" + score };
 				EndPage.main(arguments);
 			}
 		});
 		endButton.setVisible(false);
-		
+
 		// Next Button
 		JButton nxtButton = new JButton("Next Question");
 		nxtButton.addActionListener(new ActionListener() {
@@ -238,6 +251,7 @@ public class MainPage {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				saveScreenShot();
 				questionPath = qHandleObject.selectQuestion();
 				questObject = new Question(questionPath);
 				initialize();
@@ -250,30 +264,30 @@ public class MainPage {
 		/* Gap between options and button */
 		panel.add(Box.createVerticalStrut(20));
 		panel.add(submitButton);
-		
-				
-		//FBD Image Selection Start
+
+		// FBD Image Selection Start
 		fbdRetryAttempts = questObject.getFBDRetryAttempts();
-		JLabel imageQuesText = new JLabel("Select the points which form valid FBD. You have " + fbdRetryAttempts + 
-																										" attempts: ");
-		
+		JLabel imageQuesText = new JLabel(
+				"Select the points which form valid FBD. You have " + fbdRetryAttempts + " attempts: ");
+
 		imageQuesText.setForeground(Color.WHITE);
 		imageQuesText.setFont(new Font("Georgia", Font.BOLD, 16));
 		imageQuesText.setVisible(false);
 
 		panel.add(Box.createVerticalStrut(10));
 		panel.add(imageQuesText);
-		
+
 		forceRetryAttempts = questObject.getForceRetryAttempts();
-		JLabel forceQuesText = new JLabel("Draw appropriate forces and moments. You have " + forceRetryAttempts + " attempts:");
+		JLabel forceQuesText = new JLabel(
+				"Draw appropriate forces and moments. You have " + forceRetryAttempts + " attempts:");
 		forceQuesText.setForeground(Color.WHITE);
 		forceQuesText.setFont(new Font("Georgia", Font.BOLD, 16));
 		forceQuesText.setVisible(false);
-		
+
 		JPanel fbdPanel = new JPanel(new GridBagLayout());
 		imageLabel = questObject.getFBDSelectionImageLabel();
 		panel.add(Box.createVerticalStrut(20));
-		
+
 		fbdPanel.setMaximumSize(screenSize);
 		fbdPanel.setAlignmentX(SwingConstants.CENTER);
 		fbdPanel.add(imageLabel);
@@ -281,19 +295,19 @@ public class MainPage {
 		panel.add(fbdPanel);
 		panel.add(Box.createVerticalStrut(20));
 		imageLabel.setVisible(false);
-		
+
 		JButton restartFBD = new JButton("Restart FBD");
 		restartFBD.setVisible(false);
-		
+
 		JButton retryFBD = new JButton("Retry");
 		retryFBD.setVisible(false);
-		
+
 		JButton retryForce = new JButton("Retry");
 		retryForce.setVisible(false);
-		
+
 		JButton hintFBD = new JButton("Hint");
 		hintFBD.setVisible(false);
-		
+
 		fbdAnswer = new JLabel("Answer: ");
 		fbdAnswer.setForeground(Color.WHITE);
 		fbdAnswer.setFont(new Font("Georgia", Font.BOLD, 16));
@@ -303,11 +317,11 @@ public class MainPage {
 		fbdHintText.setForeground(Color.WHITE);
 		fbdHintText.setFont(new Font("Georgia", Font.BOLD, 16));
 		fbdHintText.setVisible(false);
-		
+
 		JButton forceSubmit = new JButton("Submit");
 		JButton forceRestart = new JButton("Restart");
 		JLabel forceAnswer = new JLabel("Answer: ");
-				
+
 		JPanel forceButtons = new JPanel(new GridBagLayout());
 		forceButtons.add(forceSubmit);
 		forceButtons.add(forceRestart);
@@ -316,31 +330,29 @@ public class MainPage {
 		forceButtons.setBackground(new Color(0, 44, 61));
 		forceButtons.setMaximumSize(screenSize);
 		forceButtons.setAlignmentX(SwingConstants.CENTER);
-				
-		JPanel forceAns= new JPanel(new GridBagLayout());
+
+		JPanel forceAns = new JPanel(new GridBagLayout());
 		GridBagConstraints c1 = new GridBagConstraints();
-		c1.gridx=1;
-		c1.ipady = 15;      
+		c1.gridx = 1;
+		c1.ipady = 15;
 		c1.weightx = 0.0;
 		c1.gridwidth = 3;
 		c1.gridx = 0;
 		c1.gridy = 1;
 		panel.add(Box.createVerticalStrut(20));
 		forceAns.add(forceAnswer);
-		forceAns.add(nxtButton,c1);
+		forceAns.add(nxtButton, c1);
 		forceAns.setAlignmentY(0.5f);
 		forceAns.setBackground(new Color(0, 44, 61));
 		forceAns.setMaximumSize(screenSize);
 		forceAns.setAlignmentX(SwingConstants.CENTER);
-				
+
 		forceAns.setVisible(false);
 		panel.add(forceAns);
-				
-		
+
 		JButton submitFBD = new JButton("Submit");
 		submitFBD.setVisible(false);
-		
-		
+
 		submitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (isSubmitted) {
@@ -356,7 +368,7 @@ public class MainPage {
 				} else {
 					score = questObject.ScoreCalculation(score);
 					lblScore.setText("Score = " + score);
-					if(!questObject.anywrong){
+					if (!questObject.anywrong) {
 						submitButton.setVisible(false);
 						imageLabel.setVisible(true);
 						questObject.startFBDSelection();
@@ -369,7 +381,6 @@ public class MainPage {
 				}
 			}
 		});
-		
 
 		restartFBD.addActionListener(new ActionListener() {
 			@Override
@@ -378,10 +389,10 @@ public class MainPage {
 				fbdAnswer.setAlignmentX(SwingConstants.CENTER);
 				fbdAnswer.setVisible(false);
 				questObject.startFBDSelection();
-				
+
 			}
 		});
-		
+
 		retryFBD.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -394,9 +405,9 @@ public class MainPage {
 				questObject.startFBDSelection();
 			}
 		});
-		
+
 		retryForce.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -409,55 +420,57 @@ public class MainPage {
 				questObject.startForceSelection();
 			}
 		});
-		
+
 		hintFBD.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				score=score+questObject.getPerFBDHintScore();
+				score = score + questObject.getPerFBDHintScore();
 				currScore += questObject.getPerFBDHintScore();
-				if(score<0) score = 0;
-				if(score>0)
+				if (score < 0)
+					score = 0;
+				if (score > 0)
 					lblScore.setText("Score = " + score);
 				else
 					lblScore.setText("Score = " + "0");
 				fbdAnswer.setVisible(false);
 				hintFBD.setVisible(false);
-//				retryFBD.setVisible(true);
+				// retryFBD.setVisible(true);
 				fbdHintText.setText(questObject.FBDhintList.get(hintcounter));
 				fbdHintText.setVisible(true);
 				fbdHintText.setAlignmentX(SwingConstants.CENTER);
 				hintcounter++;
 			}
 		});
-		
-		
-		submitFBD.addActionListener(new ActionListener() {	
+
+		submitFBD.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				fbdHintText.setVisible(false);
-				if(!questObject.getFBDAnswer()){
-					//If incorrect
-					score=score+questObject.getPerFBDNegScore();
-					if(score<0) score = 0;
-					if(score>0)
+				if (!questObject.getFBDAnswer()) {
+					// If incorrect
+					score = score + questObject.getPerFBDNegScore();
+					if (score < 0)
+						score = 0;
+					if (score > 0)
 						lblScore.setText("Score = " + score);
 					else
 						lblScore.setText("Score = " + "0");
 					fbdRetryAttempts--;
-					if(fbdRetryAttempts>0){
+					if (fbdRetryAttempts > 0) {
 						retryFBD.setVisible(true);
 						hintFBD.setVisible(true);
 						fbdAnswer.setVisible(true);
-						currScore=currScore+questObject.perFBDNegScore;
-						fbdAnswer.setText("Answer: Incorrect. You have " + fbdRetryAttempts + " more attempts."+ "Current Score: "+currScore);
-																}
-					else{
+						currScore = currScore + questObject.perFBDNegScore;
+						fbdAnswer.setText("Answer: Incorrect. You have " + fbdRetryAttempts + " more attempts."
+								+ "Current Score: " + currScore);
+					} else {
 						retryFBD.setVisible(false);
 						hintFBD.setVisible(false);
 						fbdAnswer.setVisible(true);
-						currScore=currScore+questObject.perFBDNegScore;
-						fbdAnswer.setText("Answer: Incorrect. You have used all attempts."+ "Current Score: "+currScore);						
+						currScore = currScore + questObject.perFBDNegScore;
+						fbdAnswer.setText(
+								"Answer: Incorrect. You have used all attempts." + "Current Score: " + currScore);
 						forceQuesText.setVisible(true);
 						currScore = 0;
 						panel.add(questObject.getForceGui());
@@ -469,26 +482,26 @@ public class MainPage {
 						panel.add(nxtButton);
 						panel.add(endButton);
 
-						
-
 					}
-					
-				}
-				else{
-					//If correct
-					score=score+questObject.getPerFBDScore();
-					if(score<0) score = 0;
-					if(score>0)
+
+				} else {
+					// If correct
+					score = score + questObject.getPerFBDScore();
+					if (score < 0)
+						score = 0;
+					if (score > 0)
 						lblScore.setText("Score = " + score);
 					else
 						lblScore.setText("Score = " + "0");
 					fbdAnswer.setVisible(true);
 					hintFBD.setVisible(false);
-//					if(hintRetry==true || fbdretry==true)
-						fbdAnswer.setText("Answer: Correct  Current score(FBD): "+(questObject.getPerFBDScore()+currScore));
-//					else
-//						fbdAnswer.setText("Answer: Correct  Current score(FBD): "+questObject.getPerFBDScore());
-										
+					// if(hintRetry==true || fbdretry==true)
+					fbdAnswer.setText(
+							"Answer: Correct  Current score(FBD): " + (questObject.getPerFBDScore() + currScore));
+					// else
+					// fbdAnswer.setText("Answer: Correct Current score(FBD):
+					// "+questObject.getPerFBDScore());
+
 					forceQuesText.setVisible(true);
 					panel.add(questObject.getForceGui());
 					panel.add(Box.createVerticalStrut(20));
@@ -500,22 +513,21 @@ public class MainPage {
 					panel.add(endButton);
 					currScore = 0;
 
-					
 				}
-				
+
 				submitFBD.setVisible(false);
 				restartFBD.setVisible(false);
-				
-				if(fbdRetryAttempts == 0){
-					//Force attempts visible
+
+				if (fbdRetryAttempts == 0) {
+					// Force attempts visible
 				}
-					
+
 			}
-			
+
 		});
-		
+
 		JPanel p = new JPanel(new GridBagLayout());
-		
+
 		p.add(restartFBD);
 		p.add(submitFBD);
 		p.add(retryFBD);
@@ -527,102 +539,97 @@ public class MainPage {
 		panel.add(p);
 		JPanel p1 = new JPanel(new GridBagLayout());
 		panel.add(Box.createVerticalStrut(20));
-		
+
 		p1.add(fbdAnswer);
-		//p1.add(nxtButton,c);
+		// p1.add(nxtButton,c);
 		p1.add(fbdHintText);
 		p1.setAlignmentY(0.5f);
 		p1.setBackground(new Color(0, 44, 61));
 		p1.setMaximumSize(screenSize);
 		p1.setAlignmentX(SwingConstants.CENTER);
-		
-		panel.add(p1);
-		
 
-		//Force part starts here
-		//panel.add(questObject.getForceGui());
+		panel.add(p1);
+
+		// Force part starts here
+		// panel.add(questObject.getForceGui());
 		panel.add(Box.createVerticalStrut(20));
 		panel.add(Box.createVerticalStrut(20));
 		panel.add(forceQuesText);
-		
+
 		// Force Answer label
 		forceAnswer.setForeground(Color.WHITE);
 		forceAnswer.setFont(new Font("Georgia", Font.BOLD, 16));
-		
-		
+
 		forceSubmit.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				forceAns.setVisible(true);
-				if( questObject.getForceAnswer() ) {
-					score=score+questObject.getPerForceScore();
+				if (questObject.getForceAnswer()) {
+					score = score + questObject.getPerForceScore();
 					currScore += questObject.getPerForceScore();
 					forceAnswer.setVisible(true);
-					forceAnswer.setText("Answer: Correct  Score:"+currScore);
-					
-					if(qHandleObject.isLastQuestion()) {
+					forceAnswer.setText("Answer: Correct  Score:" + currScore);
+
+					if (qHandleObject.isLastQuestion()) {
 						nxtButton.setVisible(false);
 						endButton.setVisible(true);
-					}	
-					else {
+					} else {
 						nxtButton.setVisible(true);
 					}
 
-					
 				} else {
-					score=score+questObject.getPerForceNegScore();
+					score = score + questObject.getPerForceNegScore();
 					currScore += questObject.getPerForceNegScore();
-					if(score<0) score = 0;
+					if (score < 0)
+						score = 0;
 					forceRetryAttempts--;
-					if(forceRetryAttempts > 0) {
+					if (forceRetryAttempts > 0) {
 						retryForce.setVisible(true);
 						forceAnswer.setVisible(true);
-						forceAnswer.setText("Answer: Incorrect. You have "+ forceRetryAttempts+" more attempts.  Score:"+currScore);
-					}
-					else {
+						forceAnswer.setText("Answer: Incorrect. You have " + forceRetryAttempts
+								+ " more attempts.  Score:" + currScore);
+					} else {
 						retryForce.setVisible(false);
 						forceAnswer.setVisible(true);
-						forceAnswer.setText("Answer: Incorrect. You have used all attempts.  Score:"+currScore);
-						if(qHandleObject.isLastQuestion()) {
+						forceAnswer.setText("Answer: Incorrect. You have used all attempts.  Score:" + currScore);
+						if (qHandleObject.isLastQuestion()) {
 							nxtButton.setVisible(false);
 							endButton.setVisible(true);
-						}	
-						else {
+						} else {
 							nxtButton.setVisible(true);
 						}
 
 					}
-					
-					
+
 				}
-				
+
 				forceSubmit.setVisible(false);
 				forceRestart.setVisible(false);
-				
-				if(score>0)
+
+				if (score > 0)
 					lblScore.setText("Score = " + score);
 				else
 					lblScore.setText("Score = " + "0");
-				
+
 			}
 		});
-		
+
 		forceRestart.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				forceAns.setVisible(false);
 				questObject.startForceSelection();
 			}
 		});
-		
+
 		panel.add(nxtButton);
-		
+
 		JScrollPane scrollPane = new JScrollPane(panel);
-		//hides horizontal scroll bar
+		// hides horizontal scroll bar
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		//vertical scroll speed
+		// vertical scroll speed
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		frame.setVisible(true);
@@ -634,11 +641,11 @@ public class MainPage {
 	 * (Correct/Incorrect/Complicated) Input: List of all assumptions
 	 */
 	public void GUISettingAssumptionsList() {
-				
+
 		// Split all assumptions in answer and statements, create check boxes
 		// Traverse through check boxes and add them on panel
-		//EngineeringEducatorAssumption.getAssumptions();
-		//JLabel lblIncorrect = assumObject.AssumptionType(reasonObject);
+		// EngineeringEducatorAssumption.getAssumptions();
+		// JLabel lblIncorrect = assumObject.AssumptionType(reasonObject);
 
 		int numAssum = questObject.getNumberOfAssumptions();
 		for (int i = 0; i < numAssum; i++) {
@@ -646,8 +653,8 @@ public class MainPage {
 			panel.add(chkBox);
 			Assumption assumObject = questObject.getAssumObj(chkBox.getText());
 			JLabel lblMessage = assumObject.getlblMessage();
-//			panel.add(Box.createVerticalGlue());
-			panel.add(Box.createRigidArea(new Dimension(0,5)));
+			// panel.add(Box.createVerticalGlue());
+			panel.add(Box.createRigidArea(new Dimension(0, 5)));
 			if (lblMessage != null) {
 				lblMessage.setForeground(Color.WHITE);
 				lblMessage.setBorder(BorderFactory.createEmptyBorder(5, 30, 5, 30));
@@ -655,8 +662,7 @@ public class MainPage {
 				// Calling method to add reasons for incorrect assumption
 				GUISettingReasonsList(chkBox.getText());
 			}
-			
-			
+
 		}
 	}
 
@@ -670,7 +676,7 @@ public class MainPage {
 		ArrayList<JRadioButton> rdbList = new ArrayList<JRadioButton>();
 		Assumption assumObject = questObject.getAssumObj(assumption);
 		rdbList = assumObject.getReasonRdbList();
-		
+
 		if (rdbList != null) {
 			// Create radio buttons for all reasons
 			for (int rdbIndex = 0; rdbIndex < rdbList.size(); rdbIndex++) {
@@ -680,5 +686,33 @@ public class MainPage {
 		}
 		assumObject.setRdbListVisibility(false);
 	}
+
+	public static BufferedImage getScreenShot(Component component) {
+
+		BufferedImage image = new BufferedImage(component.getWidth(), component.getHeight(),
+				BufferedImage.TYPE_INT_RGB);
+		// call the Component's paint method, using
+		// the Graphics object of the image.
+		component.paint(image.getGraphics()); // alternately use .printAll(..)
+		return image;
+	}
 	
+	void saveScreenShot() {
+
+		BufferedImage img = getScreenShot(panel);
+		img = img.getSubimage(0, 0,(int) screenSize.getWidth(), img.getHeight());
+		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+		
+		File captureDir = new File("Screenshots");
+		if(!captureDir.exists())
+			captureDir.mkdirs();
+
+		try {
+			ImageIO.write(img, "png", new File(captureDir+File.separator+sessionTimestamp+"_"+captureIndex+".png"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		captureIndex++;
+	}
 }
