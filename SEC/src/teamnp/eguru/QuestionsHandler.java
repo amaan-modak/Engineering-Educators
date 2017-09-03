@@ -120,12 +120,8 @@ public class QuestionsHandler {
 		
 		String localPath = gitCloneFolderName; //The directory where the repo will be cloned (This is also needed to call the deleteDir() method)
 //        String remotePath = "https://github.com/amaan-modak/Engineering-Educators.git"; //URL for the GIT repo
+
 		
-    	if(SystemUtils.IS_OS_WINDOWS){
-    		System.out.println("Windows");
-    		Path path = Paths.get(localPath);
-    		Files.setAttribute(path, "dos:hidden", Boolean.TRUE, LinkOption.NOFOLLOW_LINKS);
-    	}
     	if(SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC_OSX ||SystemUtils.IS_OS_MAC){
     		localPath = ".".concat(localPath);
     	}
@@ -136,7 +132,8 @@ public class QuestionsHandler {
         FileRepository localRepo = new FileRepository(localPath + "/.git");
         File lp = new File(localPath); //Converting input string into directory
         Git git = new Git(localRepo); //Creating GIT repo
-        
+
+		
         if(lp.exists()){
         	deleteDir(lp);	
         }
@@ -159,9 +156,20 @@ public class QuestionsHandler {
        		e.printStackTrace();
        		System.out.println("catch2");
        	}
+        
+        if(SystemUtils.IS_OS_WINDOWS){
+    		System.out.println("Windows");
+//    		File tempDir = new File(localPath);
+//    		if(!tempDir.exists())
+//    			tempDir.mkdirs();
+    		Path path = Paths.get(localPath);
+    		System.out.println(path);
+    		Files.setAttribute(path, "dos:hidden", Boolean.TRUE, LinkOption.NOFOLLOW_LINKS);
+    	}
 
 
 		localPath = localPath + "/Questions/";
+		git.getRepository().close();
 		return localPath;
 	}
 	void deleteDir(File file) throws IOException {

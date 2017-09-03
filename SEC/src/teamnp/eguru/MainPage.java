@@ -127,8 +127,8 @@ public class MainPage {
 		else {
 			frame.getContentPane().removeAll();
 		}
-		frame.setBounds(0, 0, 1366, 768);
-		frame.setSize(1366, 768);
+		frame.setBounds(0, 0, (int)screenSize.getWidth(), (int)screenSize.getHeight());
+		frame.setSize(screenSize);
 		frame.setForeground(Color.BLACK);
 		frame.setBackground(Color.RED);
 		frame.getContentPane().setBackground(new Color(0, 44, 61));
@@ -136,6 +136,9 @@ public class MainPage {
 		frame.setTitle("eGuru");
 		// frame.setAlwaysOnTop(true);
 		frame.setLocationRelativeTo(null);
+		//maximize window
+		frame.setExtendedState( frame.getExtendedState()|JFrame.MAXIMIZED_BOTH );
+
 
 		/* Designing panel */
 		if (panel == null)
