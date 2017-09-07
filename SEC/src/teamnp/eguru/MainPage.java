@@ -703,7 +703,7 @@ public class MainPage {
 	void saveScreenShot() {
 
 		BufferedImage img = getScreenShot(panel);
-		img = img.getSubimage(0, 0,(int) screenSize.getWidth(), img.getHeight());
+		img = img.getSubimage(0, 0,(int) screenSize.getWidth()-20, img.getHeight());
 		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
 		
 		File captureDir = new File("Screenshots");
