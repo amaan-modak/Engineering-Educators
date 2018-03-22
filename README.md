@@ -1,9 +1,9 @@
 # Engineering-Educators
 CSE 542 - Software Engineering Concepts Project. Creating a software which is a complete tutoring system, for engineering students.
 
-To run the executable jar file directly, simply double click on the SEC.jar file.
+To run the executable jar file directly, simply double click on the eGuru-04-01-2018.jar file.
 
-To run the executable jar file from command prompt: java -jar SEC.jar 
+To run the executable jar file from command prompt: java -jar eGuru-04-01-2018.jar
 
 NOTE for Instructors: 
 1. The repository holding all the questions is https://github.com/bakshizaki/eGuruQuestions. Simply go to the mentioned link and add/edit/remove the questions as necessary.
